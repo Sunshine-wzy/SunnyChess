@@ -5,12 +5,12 @@
 
 #define CHESSBOARD_SIZE 19
 
-class Chessboard {
+class ChessBoard {
 private:
     ChessSlot slots[CHESSBOARD_SIZE][CHESSBOARD_SIZE];
     
 public:
-    Chessboard();
+    ChessBoard();
     
 };
 

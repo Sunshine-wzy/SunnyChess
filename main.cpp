@@ -1,11 +1,15 @@
 #include <graphics.h>
 #include <conio.h>
 
-int main() {
-    // 初始化图形模式
-    initgraph(640, 480);
+#include "MainMenu.h"
 
-    circle(320, 240, 100);
+
+int main() {
+    MainMenu mainMenu;
+    
+    // 初始化主菜单
+    mainMenu.init();
+    
     _getch();
     
     // 关闭图形模式
