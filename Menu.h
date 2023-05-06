@@ -25,13 +25,10 @@ public:
     // 启动菜单
     virtual void onEnable() = 0;
     
-    
     // 添加按钮
     void addButton(Button *button, ButtonAction action);
-    
     // 绘制所有按钮
     void drawButtons() const;
-    
     // 点击(x, y) 若该坐标位于某个按钮的区域内，则触发其回调
     void clickButton(int x, int y) const;
     
