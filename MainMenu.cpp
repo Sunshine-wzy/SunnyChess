@@ -1,4 +1,6 @@
 #include "MainMenu.h"
+#include "MenuManager.h"
+#include "RoundRectangleButton.h"
 #include <iostream>
 
 MainMenu::MainMenu() {
@@ -6,16 +8,15 @@ MainMenu::MainMenu() {
     lineStyle.thickness = 3;
 }
 
-void MainMenu::init() {
-    // 初始化图形模式
-    initgraph(WIDTH, HEIGHT);
-    
+void MainMenu::onInit() {
     // 设置线条样式
     setlinestyle(&getLineStyle());
-    
-    // 绘制按钮
-    drawButtons();
-    
+
+    // 设置按钮
+    setButtons();
+}
+
+void MainMenu::onEnable() {
     // 消息处理
     flushmessage();
     while (true) {
@@ -23,19 +24,21 @@ void MainMenu::init() {
         switch (message.message) {
             // 鼠标左键弹起
             case WM_LBUTTONUP:
-                std::cout << "LBUTTONUP" << std::endl;
+                clickButton(message.x, message.y);
                 break;
         }
     }
 }
 
-void MainMenu::drawButtons() {
-    drawSelectingButton(WIDTH / 4, HEIGHT / 4 * 3);
-    drawSelectingButton(WIDTH / 4 * 3, HEIGHT / 4 * 3);
-}
+void MainMenu::setButtons() {
+    addButton(new RoundRectangleButton(WIDTH / 4, HEIGHT / 4 * 3), [] {
+        std::cout << "b1" << std::endl;
+        MenuManager::gomoku.open();
+    });
 
-void MainMenu::drawSelectingButton(int x, int y) {
-    
+    addButton(new RoundRectangleButton(WIDTH / 4 * 3, HEIGHT / 4 * 3), [] {
+        std::cout << "b2" << std::endl;
+    });
 }
 
 LINESTYLE &MainMenu::getLineStyle() {

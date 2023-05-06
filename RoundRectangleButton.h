@@ -11,10 +11,12 @@ private:
     
 public:
     RoundRectangleButton(int x, int y, int width = BUTTON_WIDTH, int height = BUTTON_HEIGHT, int ellipseWidth = ELLIPSE_WIDTH, int ellipseHeight = ELLIPSE_HEIGHT);
+    ~RoundRectangleButton() override;
 
     void draw() override;
+    bool isInside(int x, int y) override;
 
-    
+
     // 圆角矩形的圆角的椭圆的默认大小
     static const int ELLIPSE_WIDTH = 50;
     static const int ELLIPSE_HEIGHT = 50;

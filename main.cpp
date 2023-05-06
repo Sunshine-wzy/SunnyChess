@@ -1,14 +1,15 @@
 #include <graphics.h>
 #include <conio.h>
 
-#include "MainMenu.h"
+#include "MenuManager.h"
 
 
 int main() {
-    MainMenu mainMenu;
+    // 初始化图形模式
+    initgraph(MainMenu::WIDTH, MainMenu::HEIGHT);
     
-    // 初始化主菜单
-    mainMenu.init();
+    // 打开主菜单
+    MenuManager::main.open();
     
     _getch();
     

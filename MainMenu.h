@@ -2,24 +2,23 @@
 #define SUNNYCHESS_MAINMENU_H
 
 #include <graphics.h>
+#include "Menu.h"
 
 // 主菜单
-class MainMenu {
+class MainMenu : public Menu {
 private:
     // 线条样式
     LINESTYLE lineStyle;
     
 public:
     MainMenu();
-    
-    // 初始化主菜单
-    void init();
-    
-    // 绘制按钮
-    void drawButtons();
-    // 绘制选择按钮
-    void drawSelectingButton(int x, int y);
-    
+
+    void onInit() override;
+    void onEnable() override;
+
+    // 设置按钮
+    void setButtons();
+
     LINESTYLE& getLineStyle();
     
     

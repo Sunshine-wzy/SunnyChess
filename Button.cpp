@@ -21,3 +21,5 @@ int Button::getWidth() const {
 int Button::getHeight() const {
     return height;
 }
+
+Button::~Button() = default;

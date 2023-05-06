@@ -14,8 +14,12 @@ private:
     
 public:
     Button(int x, int y, int width = BUTTON_WIDTH, int height = BUTTON_HEIGHT);
+    virtual ~Button();
     
+    // 绘制按钮
     virtual void draw() = 0;
+    // 判断(x, y)是否在按钮区域内
+    virtual bool isInside(int x, int y) = 0;
 
     int getX() const;
     int getY() const;
