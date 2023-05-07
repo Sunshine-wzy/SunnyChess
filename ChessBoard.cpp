@@ -14,8 +14,17 @@ void ChessBoard::draw() {
 
 void ChessBoard::drawBoard() {
     SetWorkingImage(&boardImage);
+    setlinestyle(PS_SOLID | PS_ENDCAP_SQUARE,2);
     
+    for(int x1=startX;x1<width;x1+=(width+startX)/18)
+    { line(x1,startY,x1,startY + height);
+    }
+    for(int y1=startY;y1<startY;y1+=(height+startY)/18)
+    { 
+        line(startX,y1,startX + width,y1);
+
     
+    }
 }
 
 void ChessBoard::drawPieces() {
