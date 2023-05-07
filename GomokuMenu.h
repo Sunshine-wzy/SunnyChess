@@ -2,10 +2,12 @@
 #define SUNNYCHESS_GOMOKUMENU_H
 
 #include "Menu.h"
+#include "ChessBoard.h"
 
 
 class GomokuMenu : public Menu {
-    
+private:
+    ChessBoard board;
     
 public:
     GomokuMenu();
