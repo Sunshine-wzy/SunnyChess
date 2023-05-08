@@ -28,6 +28,16 @@ void ChessBoard::drawBoard() {
     for (int y1 = startY, j = 0; j < 19; j++, y1 = startY + height * j / 18) {
         line(startX, y1, startX + width, y1);
     }
+    setfillcolor(BLACK);
+solidcircle(startX+width*3/18,startY+height*3/18,POINT_SIZE);
+solidcircle(startX+width*9/18,startY+height*3/18,POINT_SIZE);
+solidcircle(startX+width*15/18,startY+height*3/18,POINT_SIZE);
+solidcircle(startX+width*3/18,startY+height*9/18,POINT_SIZE);
+solidcircle(startX+width*9/18,startY+height*9/18,POINT_SIZE);
+solidcircle(startX+width*15/18,startY+height*9/18,POINT_SIZE);
+solidcircle(startX+width*3/18,startY+height*15/18,POINT_SIZE);
+solidcircle(startX+width*9/18,startY+height*15/18,POINT_SIZE);
+solidcircle(startX+width*15/18,startY+height*15/18,POINT_SIZE);
 }
 
 void ChessBoard::drawPieces() {
