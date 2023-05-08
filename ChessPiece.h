@@ -10,6 +10,10 @@ private:
 public:
     ChessPiece(COLORREF color);
     
+    // 绘制棋子
+    void draw(int x, int y, int radius);
+    
+    
     static ChessPiece none;
     static ChessPiece black;
     static ChessPiece white;
