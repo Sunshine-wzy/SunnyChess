@@ -31,7 +31,10 @@ public:
     
     // 根据给定的x和y获取格子坐标
     // 若(x, y)不在任何一个格子内，则令position = nullptr并返回false
-    bool getPosition(Position *position, int x, int y);
+    bool getPosition(Position *position, int x, int y);\
+    
+
+    static const int POINT_SIZE = 7;
 };
 
 

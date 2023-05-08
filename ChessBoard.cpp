@@ -1,7 +1,8 @@
 #include "ChessBoard.h"
 
 ChessBoard::ChessBoard(int x, int y, int width, int height) : startX(x), startY(y), width(width), height(height),
-                                                              boardImage(IMAGE(height - 200, height -200)), drawingImage(IMAGE()) {
+                                                              boardImage(IMAGE(height + 20, height + 20)),
+                                                              drawingImage(IMAGE()) {
     drawBoard();
 }
 
@@ -9,34 +10,46 @@ void ChessBoard::draw() {
     drawPieces();
 
     SetWorkingImage();
-    putimage(startX, startY, &drawingImage, SRCAND);
+    putimage(startX, startY, &drawingImage, SRCPAINT);
 }
 
 void ChessBoard::drawBoard() {
     SetWorkingImage(&boardImage);
-    setlinestyle(PS_SOLID | PS_ENDCAP_SQUARE,2);
-    
-    for(int x1=startX;x1<width;x1+=(width+startX)/18)
-    { line(x1,startY,x1,startY + height);
-    }
-    for(int y1=startY;y1<startY;y1+=(height+startY)/18)
-    { 
-        line(startX,y1,startX + width,y1);
 
+    loadimage(&boardImage, _T("../resources/chessboard.jpg"), 1600, 1600);
+
+    setlinestyle(PS_SOLID | PS_ENDCAP_SQUARE, 2);
+    setlinecolor(BLACK);
     
+    for (int x1 = startX, i = 0; i < 19; i++, x1 = startX + width * i / 18) {
+        line(x1, startY, x1, startY + height);
     }
+    
+    for (int y1 = startY, j = 0; j < 19; j++, y1 = startY + height * j / 18) {
+        line(startX, y1, startX + width, y1);
+    }
+    setfillcolor(BLACK);
+solidcircle(startX+width*3/18,startY+height*3/18,POINT_SIZE);
+solidcircle(startX+width*9/18,startY+height*3/18,POINT_SIZE);
+solidcircle(startX+width*15/18,startY+height*3/18,POINT_SIZE);
+solidcircle(startX+width*3/18,startY+height*9/18,POINT_SIZE);
+solidcircle(startX+width*9/18,startY+height*9/18,POINT_SIZE);
+solidcircle(startX+width*15/18,startY+height*9/18,POINT_SIZE);
+solidcircle(startX+width*3/18,startY+height*15/18,POINT_SIZE);
+solidcircle(startX+width*9/18,startY+height*15/18,POINT_SIZE);
+solidcircle(startX+width*15/18,startY+height*15/18,POINT_SIZE);
 }
 
 void ChessBoard::drawPieces() {
     SetWorkingImage(&drawingImage);
     drawingImage = boardImage;
-    
-    
+
+
 }
 
 bool ChessBoard::getPosition(Position *position, int x, int y) {
-    
-    
+
+
     position = nullptr;
     return false;
 }

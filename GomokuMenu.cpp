@@ -3,10 +3,14 @@
 #include "RoundRectangleButton.h"
 #include <iostream>
 
-GomokuMenu::GomokuMenu() = default;
+GomokuMenu::GomokuMenu() : board(ChessBoard(10, 10, 700, 700)) {
+    
+}
 
 void GomokuMenu::onInit() {
-    addButton(new RoundRectangleButton(MainMenu::WIDTH / 2, MainMenu::HEIGHT / 2), [] {
+    board.draw();
+    
+    addButton(new RoundRectangleButton(MainMenu::WIDTH, MainMenu::HEIGHT / 2), [] {
         std::cout << "b3" << std::endl;
         MenuManager::main.open();
     });
