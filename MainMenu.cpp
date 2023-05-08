@@ -12,6 +12,9 @@ void MainMenu::onInit() {
     // 设置线条样式
     setlinestyle(&getLineStyle());
 
+    // 绘制背景
+	loadimage(nullptr, "../resources/chesspan.png", 100, 100);
+ 
     // 设置按钮
     setButtons();
 }
@@ -39,6 +42,8 @@ void MainMenu::setButtons() {
     addButton(new RoundRectangleButton(WIDTH / 4 * 3, HEIGHT / 4 * 3), [] {
         std::cout << "b2" << std::endl;
     });
+
+    
 }
 
 LINESTYLE &MainMenu::getLineStyle() {
