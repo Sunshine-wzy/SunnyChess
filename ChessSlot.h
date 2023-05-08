@@ -10,7 +10,8 @@ private:
 public:
     ChessSlot();
     
-    ChessPiece getPiece() const;
+    ChessPiece& getPiece();
+    void setPiece(ChessPiece &thePiece);
 };
 
 

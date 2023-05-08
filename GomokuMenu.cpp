@@ -3,7 +3,7 @@
 #include "RoundRectangleButton.h"
 #include <iostream>
 
-GomokuMenu::GomokuMenu() : board(ChessBoard(10, 10, 700, 700)) {
+GomokuMenu::GomokuMenu() : board(GomokuChessBoard(10, 10, 700, 700)) {
     
 }
 
@@ -28,4 +28,12 @@ void GomokuMenu::onEnable() {
                 break;
         }
     }
+}
+
+void GomokuMenu::startGame() {
+    
+}
+
+void GomokuMenu::runGame() {
+
 }
