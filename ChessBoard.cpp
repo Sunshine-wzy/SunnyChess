@@ -1,8 +1,11 @@
 #include "ChessBoard.h"
 
-ChessBoard::ChessBoard(int x, int y, int width, int height) : startX(x), startY(y), width(width), height(height),
-                                                              boardImage(IMAGE(height + 20, height + 20)),
-                                                              drawingImage(IMAGE()) {
+
+ChessBoard::ChessBoard(int x, int y, int width, int height, int size) 
+    : startX(x), startY(y), width(width), height(height), size(size),
+      slots(size + 1, std::vector<ChessSlot>(size + 1)),
+      boardImage(IMAGE(height + 20, height + 20)),
+      drawingImage(IMAGE()) {
     drawBoard();
 }
 
@@ -18,27 +21,32 @@ void ChessBoard::drawBoard() {
 
     loadimage(&boardImage, _T("../resources/chessboard.jpg"), 1600, 1600);
 
-    setlinestyle(PS_SOLID | PS_ENDCAP_SQUARE, 2);
     setlinecolor(BLACK);
+    
+    setlinestyle(PS_SOLID | PS_ENDCAP_SQUARE, 2);
+    line(startX, startY, startX, startY + height);
+    line(startX + width, startY, startX + width, startY + height);
+    line(startX, startY, startX + width, startY);
+    line(startX, startY + height, startX + width, startY + height);
 
-    for (int x1 = startX, i = 0; i < 19; i++, x1 = startX + width * i / 18) {
+    setlinestyle(PS_SOLID | PS_ENDCAP_SQUARE, 1);
+    for (int x1 = startX, i = 0; i < size - 1; i++, x1 = startX + width * i / (size - 1)) {
         line(x1, startY, x1, startY + height);
     }
-
-    for (int y1 = startY, j = 0; j < 19; j++, y1 = startY + height * j / 18) {
+    for (int y1 = startY, j = 0; j < size - 1; j++, y1 = startY + height * j / (size - 1)) {
         line(startX, y1, startX + width, y1);
     }
     
     setfillcolor(BLACK);
-    solidcircle(startX + width * 3 / 18, startY + height * 3 / 18, POINT_SIZE);
-    solidcircle(startX + width * 9 / 18, startY + height * 3 / 18, POINT_SIZE);
-    solidcircle(startX + width * 15 / 18, startY + height * 3 / 18, POINT_SIZE);
-    solidcircle(startX + width * 3 / 18, startY + height * 9 / 18, POINT_SIZE);
-    solidcircle(startX + width * 9 / 18, startY + height * 9 / 18, POINT_SIZE);
-    solidcircle(startX + width * 15 / 18, startY + height * 9 / 18, POINT_SIZE);
-    solidcircle(startX + width * 3 / 18, startY + height * 15 / 18, POINT_SIZE);
-    solidcircle(startX + width * 9 / 18, startY + height * 15 / 18, POINT_SIZE);
-    solidcircle(startX + width * 15 / 18, startY + height * 15 / 18, POINT_SIZE);
+    solidcircle(startX + width * 3 / (size - 1), startY + height * 3 / (size - 1), POINT_SIZE);
+    solidcircle(startX + width * 9 / (size - 1), startY + height * 3 / (size - 1), POINT_SIZE);
+    solidcircle(startX + width * 15 / (size - 1), startY + height * 3 / (size - 1), POINT_SIZE);
+    solidcircle(startX + width * 3 / (size - 1), startY + height * 9 / (size - 1), POINT_SIZE);
+    solidcircle(startX + width * 9 / (size - 1), startY + height * 9 / (size - 1), POINT_SIZE);
+    solidcircle(startX + width * 15 / (size - 1), startY + height * 9 / (size - 1), POINT_SIZE);
+    solidcircle(startX + width * 3 / (size - 1), startY + height * 15 / (size - 1), POINT_SIZE);
+    solidcircle(startX + width * 9 / (size - 1), startY + height * 15 / (size - 1), POINT_SIZE);
+    solidcircle(startX + width * 15 / (size - 1), startY + height * 15 / (size - 1), POINT_SIZE);
 }
 
 void ChessBoard::drawPieces() {
@@ -66,6 +74,10 @@ bool ChessBoard::getPositionByOrder(Position *position, int x, int y) {
     return false;
 }
 
+bool ChessBoard::isInBoard(int x, int y) const {
+    return x >= 1 && x <= size && y >= 1 && y <= size;
+}
+
 bool ChessBoard::placePiece(ChessPiece &piece, int x, int y) {
     if (!isInBoard(x, y))
         return false;
@@ -81,6 +93,10 @@ bool ChessBoard::placePiece(ChessPiece &piece, Position &order) {
     return placePiece(piece, order.x, order.y);
 }
 
-bool ChessBoard::isInBoard(int x, int y) {
-    return x >= 1 && x <= 19 && y >= 1 && y <= 19;
+void ChessBoard::init() {
+    for (int i = 1; i <= size; i++) {
+        for (int j = 1; j <= size; j++) {
+            slots[i][j].setPiece(ChessPiece::none);
+        }
+    }
 }

@@ -3,25 +3,27 @@
 
 #include "ChessSlot.h"
 #include "Position.h"
-
-#define CHESSBOARD_SIZE 19
+#include <vector>
 
 
 class ChessBoard {
 protected:
-    ChessSlot slots[CHESSBOARD_SIZE + 1][CHESSBOARD_SIZE + 1];
+    // 格子
+    std::vector< std::vector<ChessSlot> > slots;
     
 private:
-    int startX;
-    int startY;
-    int width;
-    int height;
+    int startX;             // 左上角x坐标
+    int startY;             // 左上角y坐标
+    int width;              // 宽
+    int height;             // 高
     
-    IMAGE boardImage;
-    IMAGE drawingImage;
+    int size;               // 行列数
+    
+    IMAGE boardImage;       // 棋盘背景以及基础格子
+    IMAGE drawingImage;     // 包括棋子的棋盘
     
 public:
-    ChessBoard(int x, int y, int width, int height);
+    ChessBoard(int x, int y, int width, int height, int size);
 
     // 画出整个棋盘（基础格子+棋子）
     void draw();
@@ -38,6 +40,13 @@ public:
     // 根据序号(x, y)获取格子中心点坐标
     bool getPositionByOrder(Position *position, int x, int y);
     
+    // 序号(x, y)是否在棋盘内
+    bool isInBoard(int x, int y) const;
+
+    
+    // 初始化棋盘
+    virtual void init();
+    
     // 尝试向序号(x, y)放置棋子
     virtual bool placePiece(ChessPiece &piece, int x, int y);
     virtual bool placePiece(ChessPiece &piece, Position &order);
@@ -47,10 +56,7 @@ public:
     
     
     // 点大小
-    static const int POINT_SIZE = 7;
-    
-    // 序号(x, y)是否在棋盘内
-    static bool isInBoard(int x, int y);
+    static const int POINT_SIZE = 6;
 };
 
 

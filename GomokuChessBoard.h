@@ -8,7 +8,7 @@ class GomokuChessBoard : public ChessBoard {
     
     
 public:
-    GomokuChessBoard(int x, int y, int width, int height);
+    GomokuChessBoard(int x, int y, int width, int height, int size);
 
     bool judge(int x, int y) override;
 };
