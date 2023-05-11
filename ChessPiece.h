@@ -12,6 +12,8 @@ public:
     
     // 绘制棋子
     void draw(int x, int y, int radius);
+
+    COLORREF getColor() const;
     
     
     static ChessPiece none;

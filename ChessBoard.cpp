@@ -50,6 +50,8 @@ void ChessBoard::drawBoard() {
 }
 
 void ChessBoard::drawPieces() {
+    // slots[3][3].setPiece(ChessPiece::white);
+
     SetWorkingImage(&drawingImage);
     drawingImage = boardImage;
     for(int n=0;n<size;n++)
