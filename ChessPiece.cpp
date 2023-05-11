@@ -11,3 +11,7 @@ ChessPiece ChessPiece::white = ChessPiece(WHITE);
 void ChessPiece::draw(int x, int y, int radius) {
     
 }
+
+COLORREF ChessPiece::getColor() const {
+    return color;
+}

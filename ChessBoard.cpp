@@ -43,8 +43,20 @@ solidcircle(startX+width*15/18,startY+height*15/18,POINT_SIZE);
 void ChessBoard::drawPieces() {
     SetWorkingImage(&drawingImage);
     drawingImage = boardImage;
-
-
+    for(int n=0;n<CHESSBOARD_SIZE;n++)
+    {
+    for(int m=0;m<CHESSBOARD_SIZE;m++)
+       {
+        ChessPiece piece = slots[n][m].getPiece();
+        if(piece.getColor() != 0)
+          {
+             int x = startX + n * width / (CHESSBOARD_SIZE - 1);
+    int y = startY + m * height / (CHESSBOARD_SIZE - 1);
+    int radius = 8;
+    piece.draw(x,y,radius);
+          }
+       }
+    }
 }
 
 bool ChessBoard::getPosition(Position *position, int x, int y) {
