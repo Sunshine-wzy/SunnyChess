@@ -52,15 +52,15 @@ void ChessBoard::drawBoard() {
 void ChessBoard::drawPieces() {
     SetWorkingImage(&drawingImage);
     drawingImage = boardImage;
-    for(int n=0;n<CHESSBOARD_SIZE;n++)
+    for(int n=0;n<size;n++)
     {
-    for(int m=0;m<CHESSBOARD_SIZE;m++)
+    for(int m=0;m<size;m++)
        {
         ChessPiece piece = slots[n][m].getPiece();
         if(piece.getColor() != 0)
           {
-             int x = startX + n * width / (CHESSBOARD_SIZE - 1);
-    int y = startY + m * height / (CHESSBOARD_SIZE - 1);
+             int x = startX + n * width / (size - 1);
+    int y = startY + m * height / (size - 1);
     int radius = 8;
     piece.draw(x,y,radius);
           }
