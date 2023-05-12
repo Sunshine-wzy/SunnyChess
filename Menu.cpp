@@ -10,6 +10,24 @@ Menu::~Menu() {
 }
 
 void Menu::open() {
+    // 清屏
+    cleardevice();
+
+    // 初始化菜单
+    onInit();
+
+    // 初始化按钮
+    initButtons();
+    
+    // 绘制按钮
+    drawButtons();
+
+    // 启动菜单
+    onEnable();
+}
+
+void Menu::reopen() {
+    // 清屏
     cleardevice();
 
     // 初始化菜单

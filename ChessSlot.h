@@ -5,12 +5,13 @@
 
 class ChessSlot {
 private:
-    ChessPiece piece;
+    ChessPiece *piece;
     
 public:
     ChessSlot();
     
-    ChessPiece getPiece() const;
+    ChessPiece& getPiece();
+    void setPiece(ChessPiece &thePiece);
 };
 
 

@@ -11,12 +11,18 @@ public:
     ChessPiece(COLORREF color);
     
     // 绘制棋子
-    void draw(int x, int y, int radius);
+    void draw(int x, int y, int radius) const;
+
+    COLORREF getColor() const;
+    
+    bool isNone() const;
+    bool isNotNone() const;
     
     
     static ChessPiece none;
     static ChessPiece black;
     static ChessPiece white;
+    
 };
 
 

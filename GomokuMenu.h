@@ -2,18 +2,24 @@
 #define SUNNYCHESS_GOMOKUMENU_H
 
 #include "Menu.h"
-#include "ChessBoard.h"
+#include "GomokuChessBoard.h"
+#include "Game.h"
 
 
-class GomokuMenu : public Menu {
+class GomokuMenu : public Menu, public Game {
 private:
-    ChessBoard board;
+    GomokuChessBoard board;
     
 public:
     GomokuMenu();
 
     void onInit() override;
     void onEnable() override;
+
+    void startGame() override;
+    void runGame() override;
+
+    void initButtons() override;
 
 };
 

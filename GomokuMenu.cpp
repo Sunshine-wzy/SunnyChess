@@ -3,16 +3,17 @@
 #include "RoundRectangleButton.h"
 #include <iostream>
 
-GomokuMenu::GomokuMenu() : board(ChessBoard(10, 10, 700, 700)) {
+GomokuMenu::GomokuMenu() : board(GomokuChessBoard(10, 10, 700, 700, 19)) {
     
 }
 
 void GomokuMenu::onInit() {
     board.draw();
-    
-    addButton(new RoundRectangleButton(MainMenu::WIDTH, MainMenu::HEIGHT / 2), [] {
-        std::cout << "b3" << std::endl;
-        MenuManager::main.open();
+}
+
+void GomokuMenu::initButtons() {
+    addButton(new RoundRectangleButton(MainMenu::WIDTH, MainMenu::HEIGHT / 2, 100, 50), [] {
+        MenuManager::gomokuPreparation.open();
     });
 }
 
@@ -28,4 +29,12 @@ void GomokuMenu::onEnable() {
                 break;
         }
     }
+}
+
+void GomokuMenu::startGame() {
+    
+}
+
+void GomokuMenu::runGame() {
+
 }

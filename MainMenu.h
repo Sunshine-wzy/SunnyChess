@@ -14,14 +14,13 @@ public:
     MainMenu();
 
     void onInit() override;
+    void initButtons() override;
     void onEnable() override;
 
-    // 设置按钮
-    void setButtons();
 
     LINESTYLE& getLineStyle();
-    
-    
+
+
     // 窗口大小
     static const int WIDTH = 1000;
     static const int HEIGHT = 800;

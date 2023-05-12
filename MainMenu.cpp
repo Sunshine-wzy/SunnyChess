@@ -13,10 +13,18 @@ void MainMenu::onInit() {
     setlinestyle(&getLineStyle());
 
     // 绘制背景
-	loadimage(nullptr, "../resources/chesspan1.png", WIDTH, HEIGHT);
- 
-    // 设置按钮
-    setButtons();
+	loadimage(nullptr, "../resources/chesspan.png", WIDTH, HEIGHT);
+}
+
+void MainMenu::initButtons() {
+    addButton(new RoundRectangleButton(WIDTH / 4, HEIGHT / 4 * 3), [] {
+        std::cout << "b1" << std::endl;
+        MenuManager::gomokuPreparation.open();
+    });
+
+    addButton(new RoundRectangleButton(WIDTH / 4 * 3, HEIGHT / 4 * 3), [] {
+        std::cout << "b2" << std::endl;
+    });
 }
 
 void MainMenu::onEnable() {
@@ -33,18 +41,6 @@ void MainMenu::onEnable() {
     }
 }
 
-void MainMenu::setButtons() {
-    addButton(new RoundRectangleButton(WIDTH / 4, HEIGHT / 4 * 3), [] {
-        std::cout << "b1" << std::endl;
-        MenuManager::gomoku.open();
-    });
-
-    addButton(new RoundRectangleButton(WIDTH / 4 * 3, HEIGHT / 4 * 3), [] {
-        std::cout << "b2" << std::endl;
-    });
-
-    
-}
 
 LINESTYLE &MainMenu::getLineStyle() {
     return lineStyle;
