@@ -5,7 +5,7 @@
 
 class ChessSlot {
 private:
-    ChessPiece piece;
+    ChessPiece *piece;
     
 public:
     ChessSlot();

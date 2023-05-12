@@ -33,12 +33,12 @@ public:
     void drawPieces();
     
     // 根据坐标(x, y)获取格子中心点坐标
-    // 若(x, y)不在任何一个格子内，则令position = nullptr并返回false
-    bool getPositionByPosition(Position *position, int x, int y);
+    // 若(x, y)不在任何一个格子内，则返回false
+    bool getCenterPositionByPosition(Position &position, int x, int y);
     // 根据坐标(x, y)获取格子序号
-    bool getOrderByPosition(Position *order, int x, int y);
+    bool getOrderByPosition(Position &order, int x, int y);
     // 根据序号(x, y)获取格子中心点坐标
-    bool getPositionByOrder(Position *position, int x, int y);
+    bool getCenterPositionByOrder(Position &position, int x, int y) const;
     
     // 序号(x, y)是否在棋盘内
     bool isInBoard(int x, int y) const;

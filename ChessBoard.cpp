@@ -54,36 +54,38 @@ void ChessBoard::drawPieces() {
 
     SetWorkingImage(&drawingImage);
     drawingImage = boardImage;
-    for (int n = 0; n < size; n++) {
-        for (int m = 0; m < size; m++) {
-            ChessPiece piece = slots[n][m].getPiece();
-            if (piece.getColor() != 0) {
+
+    Position position {};
+    for (int n = 1; n <= size; n++) {
+        for (int m = 1; m <= size; m++) {
+            ChessPiece &piece = slots[n][m].getPiece();
+            if (piece.isNotNone()) {
                 setfillcolor(piece.getColor());
-                int x = startX + n * width / (size - 1);
-                int y = startY + m * height / (size - 1);
-                int radius = 8;
-                piece.draw(x, y, radius);
+                if (getCenterPositionByOrder(position, n, m))
+                    piece.draw(position.x, position.y, 12);
             }
         }
     }
 }
 
-bool ChessBoard::getPositionByPosition(Position *position, int x, int y) {
-
-    position = nullptr;
+bool ChessBoard::getCenterPositionByPosition(Position &position, int x, int y) {
+    
+    
     return false;
 }
 
-bool ChessBoard::getOrderByPosition(Position *order, int x, int y) {
+bool ChessBoard::getOrderByPosition(Position &order, int x, int y) {
 
-    order = nullptr;
     return false;
 }
 
-bool ChessBoard::getPositionByOrder(Position *position, int x, int y) {
-
-    position = nullptr;
-    return false;
+bool ChessBoard::getCenterPositionByOrder(Position &position, int x, int y) const {
+    if (!isInBoard(x, y))
+        return false;
+    
+    position.x = startX + (x - 1) * width / (size - 1);
+    position.y = startY + (y - 1) * height / (size - 1);
+    return true;
 }
 
 bool ChessBoard::isInBoard(int x, int y) const {

@@ -8,11 +8,21 @@ ChessPiece ChessPiece::black = ChessPiece(BLACK);
 
 ChessPiece ChessPiece::white = ChessPiece(WHITE);
 
-void ChessPiece::draw(int x, int y, int radius) {
-    solidcircle(x,y,radius);
+void ChessPiece::draw(int x, int y, int radius) const {
+    if (isNone()) return;
     
+    setcolor(color);
+    solidcircle(x, y, radius);
 }
 
 COLORREF ChessPiece::getColor() const {
     return color;
+}
+
+bool ChessPiece::isNone() const {
+    return this == &none;
+}
+
+bool ChessPiece::isNotNone() const {
+    return this != &none;
 }
