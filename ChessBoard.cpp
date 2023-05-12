@@ -58,6 +58,7 @@ void ChessBoard::drawPieces() {
         for (int m = 0; m < size; m++) {
             ChessPiece piece = slots[n][m].getPiece();
             if (piece.getColor() != 0) {
+                setfillcolor(piece.getColor());
                 int x = startX + n * width / (size - 1);
                 int y = startY + m * height / (size - 1);
                 int radius = 8;

@@ -9,6 +9,7 @@ ChessPiece ChessPiece::black = ChessPiece(BLACK);
 ChessPiece ChessPiece::white = ChessPiece(WHITE);
 
 void ChessPiece::draw(int x, int y, int radius) {
+    solidcircle(x,y,radius);
     
 }
 
