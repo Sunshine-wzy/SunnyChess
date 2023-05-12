@@ -5,7 +5,7 @@
 #include <utility>
 #include "Button.h"
 
-typedef void (*ButtonAction)();
+typedef void (*ButtonAction)(Button &button, int x, int y);
 
 // 菜单
 class Menu {

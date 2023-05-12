@@ -17,14 +17,19 @@ void MainMenu::onInit() {
 }
 
 void MainMenu::initButtons() {
-    addButton(new RoundRectangleButton(WIDTH / 4, HEIGHT / 4 * 3), [] {
-        std::cout << "b1" << std::endl;
-        MenuManager::gomokuPreparation.open();
-    });
+    addButton(
+        new RoundRectangleButton(WIDTH / 4, HEIGHT / 4 * 3),
+        [](Button &button, int x, int y) {
+            MenuManager::gomokuPreparation.open();
+        }
+    );
 
-    addButton(new RoundRectangleButton(WIDTH / 4 * 3, HEIGHT / 4 * 3), [] {
-        std::cout << "b2" << std::endl;
-    });
+    addButton(
+        new RoundRectangleButton(WIDTH / 4 * 3, HEIGHT / 4 * 3),
+        [](Button &button, int x, int y) {
+            
+        }
+    );
 }
 
 void MainMenu::onEnable() {

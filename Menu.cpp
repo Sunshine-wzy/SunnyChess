@@ -53,7 +53,7 @@ void Menu::drawButtons() const {
 void Menu::clickButton(int x, int y) const {
     for (std::pair<Button*, ButtonAction> pair : buttons) {
         if (pair.first->isInside(x, y)) {
-            pair.second();
+            pair.second(*pair.first, x, y);
             break;
         }
     }

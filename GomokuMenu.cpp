@@ -12,9 +12,12 @@ void GomokuMenu::onInit() {
 }
 
 void GomokuMenu::initButtons() {
-    addButton(new RoundRectangleButton(MainMenu::WIDTH, MainMenu::HEIGHT / 2, 100, 50), [] {
-        MenuManager::gomokuPreparation.open();
-    });
+    addButton(
+        new RoundRectangleButton(MainMenu::WIDTH, MainMenu::HEIGHT / 2, 100, 50),
+        [](Button &button, int x, int y) {
+            MenuManager::gomokuPreparation.open();
+        }
+    );
 }
 
 void GomokuMenu::onEnable() {
