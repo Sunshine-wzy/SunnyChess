@@ -7,16 +7,18 @@
 
 class GomokuPreparationMenu : public Menu {
 private:
-    
-    
-    
+
+
 public:
     GomokuPreparationMenu();
-    
-    
+
     void onInit() override;
 
     void onEnable() override;
+
+    void initButtons() override;
+
+
 };
 
 

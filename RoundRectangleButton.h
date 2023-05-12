@@ -10,10 +10,13 @@ private:
     int ellipseHeight;
     
 public:
-    RoundRectangleButton(int x, int y, int width = BUTTON_WIDTH, int height = BUTTON_HEIGHT, int ellipseWidth = ELLIPSE_WIDTH, int ellipseHeight = ELLIPSE_HEIGHT);
+    RoundRectangleButton(int x, int y, int width = BUTTON_WIDTH, int height = BUTTON_HEIGHT,
+                         int ellipseWidth = ELLIPSE_WIDTH, int ellipseHeight = ELLIPSE_HEIGHT);
+
     ~RoundRectangleButton() override;
 
     void draw() override;
+
     bool isInside(int x, int y) override;
 
 

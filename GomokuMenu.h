@@ -19,6 +19,8 @@ public:
     void startGame() override;
     void runGame() override;
 
+    void initButtons() override;
+
 };
 
 
