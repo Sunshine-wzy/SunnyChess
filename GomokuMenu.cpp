@@ -1,7 +1,6 @@
 #include "GomokuMenu.h"
 #include "MenuManager.h"
 #include "RoundRectangleButton.h"
-#include <iostream>
 
 GomokuMenu::GomokuMenu() : board(GomokuChessBoard(10, 10, 700, 700, 19)) {
     
