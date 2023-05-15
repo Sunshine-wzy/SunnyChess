@@ -1,7 +1,9 @@
 #include <graphics.h>
+#include <utility>
 #include "RoundRectangleButton.h"
 
-RoundRectangleButton::RoundRectangleButton(int x, int y, int width, int height, int ellipseWidth, int ellipseHeight) : Button(x, y, width, height), ellipseWidth(ellipseWidth), ellipseHeight(ellipseHeight) {}
+RoundRectangleButton::RoundRectangleButton(std::string name, int x, int y, int width, int height, int ellipseWidth, int ellipseHeight)
+        : Button(std::move(name), x, y, width, height), ellipseWidth(ellipseWidth), ellipseHeight(ellipseHeight) {}
 
 void RoundRectangleButton::draw() {
     setcolor(WHITE);

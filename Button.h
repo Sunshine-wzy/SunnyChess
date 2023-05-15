@@ -1,10 +1,15 @@
 #ifndef SUNNYCHESS_BUTTON_H
 #define SUNNYCHESS_BUTTON_H
 
+#include <string>
+
 
 // 按钮
 class Button {
 private:
+    // 按钮名
+    std::string name;
+    
     // 按钮中心坐标
     int x;
     int y;
@@ -14,7 +19,7 @@ private:
     int height;
 
 public:
-    Button(int x, int y, int width = BUTTON_WIDTH, int height = BUTTON_HEIGHT);
+    Button(std::string name, int x, int y, int width = BUTTON_WIDTH, int height = BUTTON_HEIGHT);
 
     virtual ~Button();
 
@@ -23,6 +28,8 @@ public:
 
     // 判断(x, y)是否在按钮区域内
     virtual bool isInside(int x, int y) = 0;
+
+    const std::string &getName() const;
 
     int getX() const;
 

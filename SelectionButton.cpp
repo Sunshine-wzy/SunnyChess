@@ -1,7 +1,8 @@
 #include "SelectionButton.h"
+#include <utility>
 
-SelectionButton::SelectionButton(int x, int y, int width, int height)
-        : Button(x, y, width, height), selected(false) {}
+SelectionButton::SelectionButton(std::string name, int x, int y, int width, int height)
+        : Button(std::move(name), x, y, width, height), selected(false) {}
 
 bool SelectionButton::isSelected() const {
     return selected;

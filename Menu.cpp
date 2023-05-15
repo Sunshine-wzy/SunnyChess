@@ -10,6 +10,9 @@ Menu::~Menu() {
 }
 
 void Menu::open() {
+    // 开始批量绘图
+    BeginBatchDraw();
+    
     // 清屏
     cleardevice();
 
@@ -23,11 +26,17 @@ void Menu::open() {
     // 绘制按钮
     drawButtons();
 
+    // 结束批量绘图
+    FlushBatchDraw();
+    
     // 启动菜单
     onEnable();
 }
 
 void Menu::reopen() {
+    // 开始批量绘图
+    BeginBatchDraw();
+    
     // 清屏
     cleardevice();
 
@@ -36,6 +45,9 @@ void Menu::reopen() {
 
     // 绘制按钮
     drawButtons();
+
+    // 结束批量绘图
+    FlushBatchDraw();
 
     // 启动菜单
     onEnable();

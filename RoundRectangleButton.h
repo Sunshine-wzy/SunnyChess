@@ -10,7 +10,7 @@ private:
     int ellipseHeight;
     
 public:
-    RoundRectangleButton(int x, int y, int width = BUTTON_WIDTH, int height = BUTTON_HEIGHT,
+    RoundRectangleButton(std::string name, int x, int y, int width = BUTTON_WIDTH, int height = BUTTON_HEIGHT,
                          int ellipseWidth = ELLIPSE_WIDTH, int ellipseHeight = ELLIPSE_HEIGHT);
 
     ~RoundRectangleButton() override;

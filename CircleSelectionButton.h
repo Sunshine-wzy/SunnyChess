@@ -9,7 +9,7 @@ private:
     int radius;
 
 public:
-    CircleSelectionButton(int x, int y, int radius);
+    CircleSelectionButton(std::string name, int x, int y, int radius);
 
 
     bool isInside(int x, int y) override;

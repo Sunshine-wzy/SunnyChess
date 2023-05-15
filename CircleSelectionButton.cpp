@@ -1,9 +1,10 @@
 #include "CircleSelectionButton.h"
 #include <graphics.h>
+#include <utility>
 
 
-CircleSelectionButton::CircleSelectionButton(int x, int y, int radius)
-        : SelectionButton(x, y, radius * 2, radius * 2), radius(radius) {}
+CircleSelectionButton::CircleSelectionButton(std::string name, int x, int y, int radius)
+        : SelectionButton(std::move(name), x, y, radius * 2, radius * 2), radius(radius) {}
 
 bool CircleSelectionButton::isInside(int x, int y) {
     return (x - getX()) * (x - getX()) + (y - getY()) * (y - getY()) <= radius * radius;

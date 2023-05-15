@@ -13,7 +13,7 @@ void GomokuMenu::onInit() {
 
 void GomokuMenu::initButtons() {
     addButton(
-        new RoundRectangleButton(MainMenu::WIDTH, MainMenu::HEIGHT / 2, 100, 50),
+        new RoundRectangleButton("gomoku_preparation", MainMenu::WIDTH, MainMenu::HEIGHT / 2, 100, 50),
         [](Menu &menu, Button &button, int x, int y) {
             MenuManager::gomokuPreparation.open();
         }

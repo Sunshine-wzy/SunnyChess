@@ -9,7 +9,7 @@ private:
     bool selected;
     
 public:
-    SelectionButton(int x, int y, int width = BUTTON_WIDTH, int height = BUTTON_HEIGHT);
+    SelectionButton(std::string name, int x, int y, int width = BUTTON_WIDTH, int height = BUTTON_HEIGHT);
 
     bool isSelected() const;
 

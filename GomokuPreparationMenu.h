@@ -1,13 +1,13 @@
 #ifndef SUNNYCHESS_GOMOKUPREPARATIONMENU_H
 #define SUNNYCHESS_GOMOKUPREPARATIONMENU_H
 
-#include "Menu.h"
 #include "GomokuMenu.h"
+#include "SelectionButtonGroup.h"
 
 
 class GomokuPreparationMenu : public Menu {
 private:
-
+    SelectionButtonGroup chessTypeSelectionGroup;
 
 public:
     GomokuPreparationMenu();

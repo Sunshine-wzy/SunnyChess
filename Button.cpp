@@ -1,6 +1,11 @@
 #include "Button.h"
+#include <utility>
 
-Button::Button(int x, int y, int width, int height) : x(x), y(y), width(width), height(height) {}
+Button::Button(std::string name, int x, int y, int width, int height) : name(std::move(name)), x(x), y(y), width(width), height(height) {}
+
+const std::string &Button::getName() const {
+    return name;
+}
 
 int Button::getX() const {
     return x;
