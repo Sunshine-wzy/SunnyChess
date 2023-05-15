@@ -2,11 +2,11 @@
 
 ChessPiece::ChessPiece(COLORREF color) : color(color) {}
 
-ChessPiece ChessPiece::none = ChessPiece(0);
+ChessPiece *ChessPiece::none = new ChessPiece(0);
 
-ChessPiece ChessPiece::black = ChessPiece(BLACK);
+ChessPiece *ChessPiece::black = new ChessPiece(BLACK);
 
-ChessPiece ChessPiece::white = ChessPiece(WHITE);
+ChessPiece *ChessPiece::white = new ChessPiece(WHITE);
 
 void ChessPiece::draw(int x, int y, int radius) const {
     if (isNone()) return;
@@ -20,9 +20,9 @@ COLORREF ChessPiece::getColor() const {
 }
 
 bool ChessPiece::isNone() const {
-    return this == &none;
+    return this == none;
 }
 
 bool ChessPiece::isNotNone() const {
-    return this != &none;
+    return this != none;
 }

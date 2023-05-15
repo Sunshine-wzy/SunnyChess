@@ -5,7 +5,7 @@ ChessBoard::ChessBoard(int x, int y, int width, int height, int size)
         : startX(x), startY(y), width(width), height(height), size(size),
           slots(size + 1, std::vector<ChessSlot>(size + 1)),
           boardImage(IMAGE(height + 20, height + 20)),
-          drawingImage(IMAGE()) {
+          drawingImage(IMAGE()), round(ChessPiece::none) {
     drawBoard();
 }
 
@@ -58,29 +58,35 @@ void ChessBoard::drawPieces() {
     Position position {};
     for (int n = 1; n <= size; n++) {
         for (int m = 1; m <= size; m++) {
-            ChessPiece &piece = slots[n][m].getPiece();
-            if (piece.isNotNone()) {
-                setfillcolor(piece.getColor());
-                if (getCenterPositionByOrder(position, n, m))
-                    piece.draw(position.x, position.y, 12);
+            ChessPiece *piece = slots[n][m].getPiece();
+            
+            if (piece != nullptr) {
+                if (piece->isNotNone()) {
+                    setfillcolor(piece->getColor());
+                    if (getCenterPositionByOrder(position, n, m))
+                        piece->draw(position.x, position.y, 12);
+                }
             }
         }
     }
 }
 
-bool ChessBoard::getCenterPositionByPosition(Position &position, int x, int y) {
+bool ChessBoard::getCenterPositionByPosition(Position &position, int x, int y) const {
+    if (!getOrderByPosition(position, x, y)) return false;
     
-    
-    return false;
+    return getCenterPositionByOrder(position, position.x, position.y);
 }
 
-bool ChessBoard::getOrderByPosition(Position &order, int x, int y) {
-
-    return false;
+bool ChessBoard::getOrderByPosition(Position &order, int x, int y) const {
+    if (!isPositionInBoard(x, y)) return false;
+    
+    order.x = (x - startX) / (width / (size - 1)) + 1;
+    order.y = (y - startY) / (height / (size - 1)) + 1;
+    return true;
 }
 
 bool ChessBoard::getCenterPositionByOrder(Position &position, int x, int y) const {
-    if (!isInBoard(x, y))
+    if (!isOrderInBoard(x, y))
         return false;
     
     position.x = startX + (x - 1) * width / (size - 1);
@@ -88,22 +94,26 @@ bool ChessBoard::getCenterPositionByOrder(Position &position, int x, int y) cons
     return true;
 }
 
-bool ChessBoard::isInBoard(int x, int y) const {
+bool ChessBoard::isOrderInBoard(int x, int y) const {
     return x >= 1 && x <= size && y >= 1 && y <= size;
 }
 
-bool ChessBoard::placePiece(ChessPiece &piece, int x, int y) {
-    if (!isInBoard(x, y))
+bool ChessBoard::isPositionInBoard(int x, int y) const {
+    return x >= startX && x <= startX + width && y >= startY && y <= startY + height;
+}
+
+bool ChessBoard::placePiece(ChessPiece *piece, int x, int y) {
+    if (!isOrderInBoard(x, y))
         return false;
 
-    if (&slots[x][y].getPiece() != &ChessPiece::none)
+    if (slots[x][y].getPiece() != ChessPiece::none)
         return false;
 
     slots[x][y].setPiece(piece);
     return true;
 }
 
-bool ChessBoard::placePiece(ChessPiece &piece, Position &order) {
+bool ChessBoard::placePiece(ChessPiece *piece, Position &order) {
     return placePiece(piece, order.x, order.y);
 }
 
@@ -113,4 +123,12 @@ void ChessBoard::init() {
             slots[i][j].setPiece(ChessPiece::none);
         }
     }
+}
+
+ChessPiece *ChessBoard::getRound() const {
+    return round;
+}
+
+void ChessBoard::setRound(ChessPiece *theRound) {
+    round = theRound;
 }

@@ -3,12 +3,13 @@
 
 #include <graphics.h>
 
+
 class ChessPiece {
 private:
     COLORREF color;
     
 public:
-    ChessPiece(COLORREF color);
+    explicit ChessPiece(COLORREF color);
     
     // 绘制棋子
     void draw(int x, int y, int radius) const;
@@ -19,9 +20,9 @@ public:
     bool isNotNone() const;
     
     
-    static ChessPiece none;
-    static ChessPiece black;
-    static ChessPiece white;
+    static ChessPiece *none;
+    static ChessPiece *black;
+    static ChessPiece *white;
     
 };
 

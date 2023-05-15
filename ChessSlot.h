@@ -3,15 +3,17 @@
 
 #include "ChessPiece.h"
 
+
 class ChessSlot {
 private:
     ChessPiece *piece;
-    
+
 public:
     ChessSlot();
-    
-    ChessPiece& getPiece();
-    void setPiece(ChessPiece &thePiece);
+
+    ChessPiece *getPiece();
+
+    void setPiece(ChessPiece *thePiece);
 };
 
 
