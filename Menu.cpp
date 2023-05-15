@@ -17,6 +17,7 @@ void Menu::open() {
     onInit();
 
     // 初始化按钮
+    buttons.clear();
     initButtons();
     
     // 绘制按钮
