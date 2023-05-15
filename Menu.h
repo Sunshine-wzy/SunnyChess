@@ -5,7 +5,10 @@
 #include <utility>
 #include "Button.h"
 
-typedef void (*ButtonAction)(Button &button, int x, int y);
+
+class Menu;
+
+typedef void (*ButtonAction)(Menu &menu, Button &button, int x, int y);
 
 // 菜单
 class Menu {
@@ -41,7 +44,7 @@ public:
     void drawButtons() const;
 
     // 点击(x, y) 若该坐标位于某个按钮的区域内，则触发其回调
-    void clickButton(int x, int y) const;
+    void clickButton(int x, int y);
 
 };
 

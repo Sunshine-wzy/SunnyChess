@@ -10,13 +10,13 @@ bool CircleSelectionButton::isInside(int x, int y) {
 }
 
 void CircleSelectionButton::drawNormal() {
-    setcolor(WHITE);
+    setfillcolor(WHITE);
     solidcircle(getX(), getY(), radius);
 }
 
 void CircleSelectionButton::drawSelected() {
-    setcolor(WHITE);
+    setfillcolor(WHITE);
     solidcircle(getX(), getY(), radius);
-    setcolor(GREEN);
-    solidcircle(getX(), getY(), radius * 3 / 4);
+    setfillcolor(GREEN);
+    solidcircle(getX(), getY(), radius * 3 / 5);
 }

@@ -19,14 +19,14 @@ void MainMenu::onInit() {
 void MainMenu::initButtons() {
     addButton(
         new RoundRectangleButton(WIDTH / 4, HEIGHT / 4 * 3),
-        [](Button &button, int x, int y) {
+        [](Menu &menu, Button &button, int x, int y) {
             MenuManager::gomokuPreparation.open();
         }
     );
 
     addButton(
         new RoundRectangleButton(WIDTH / 4 * 3, HEIGHT / 4 * 3),
-        [](Button &button, int x, int y) {
+        [](Menu &menu, Button &button, int x, int y) {
             
         }
     );

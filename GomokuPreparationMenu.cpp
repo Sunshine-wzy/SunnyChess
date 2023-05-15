@@ -12,23 +12,24 @@ void GomokuPreparationMenu::onInit() {
 
 void GomokuPreparationMenu::initButtons() {
     addButton(
-        new CircleSelectionButton(MainMenu::WIDTH / 2, MainMenu::HEIGHT / 2, 5),
-        [](Button &button, int x, int y) {
+        new CircleSelectionButton(MainMenu::WIDTH / 2, MainMenu::HEIGHT / 2, 10),
+        [](Menu &menu, Button &button, int x, int y) {
             auto &circleButton = dynamic_cast<CircleSelectionButton &>(button);
             circleButton.switchSelected();
+            menu.reopen();
         }
     );
 
     addButton(
         new RoundRectangleButton(MainMenu::WIDTH, MainMenu::HEIGHT * 1 / 3, 100, 50),
-        [](Button &button, int x, int y) {
+        [](Menu &menu, Button &button, int x, int y) {
             MenuManager::gomoku.open();
         }
     );
     
     addButton(
         new RoundRectangleButton(MainMenu::WIDTH, MainMenu::HEIGHT * 2 / 3, 100, 50),
-        [](Button &button, int x, int y) {
+        [](Menu &menu, Button &button, int x, int y) {
             MenuManager::main.open();
         }
     );
