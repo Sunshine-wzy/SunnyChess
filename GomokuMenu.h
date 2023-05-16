@@ -24,6 +24,8 @@ public:
     void endGame() override;
 
     void initButtons() override;
+    
+    void redraw();
 
 };
 

@@ -2,51 +2,55 @@
 
 
 ChessBoard::ChessBoard(int x, int y, int width, int height, int size)
-        : startX(x), startY(y), width(width), height(height), size(size),
+        : startX(x), startY(y), baseX(30), baseY(30),
+          width(width), height(height), extraHeight(60), extraWidth(60), size(size),
+          slotWidth((double) width / (size - 1)), slotHeight((double) height / (size - 1)),
+          totalWidth(width + extraWidth), totalHeight(height + extraHeight),
           slots(size + 1, std::vector<ChessSlot>(size + 1)),
-          boardImage(IMAGE(height + 20, height + 20)),
-          drawingImage(IMAGE()), round(ChessPiece::none) {
+          boardImage(IMAGE(totalWidth, totalHeight)),
+          drawingImage(IMAGE(totalWidth, totalHeight)), round(ChessPiece::none) {
     drawBoard();
 }
 
 void ChessBoard::draw() {
     drawPieces();
 
-    SetWorkingImage();
     putimage(startX, startY, &drawingImage, SRCPAINT);
 }
 
 void ChessBoard::drawBoard() {
     SetWorkingImage(&boardImage);
 
-    loadimage(&boardImage, _T("../resources/chessboard.jpg"), 1600, 1600);
+    loadimage(&boardImage, _T("../resources/chessboard.jpg"), totalWidth, totalHeight);
 
     setlinecolor(BLACK);
 
     setlinestyle(PS_SOLID | PS_ENDCAP_SQUARE, 2);
-    line(startX, startY, startX, startY + height);
-    line(startX + width, startY, startX + width, startY + height);
-    line(startX, startY, startX + width, startY);
-    line(startX, startY + height, startX + width, startY + height);
+    line(baseX, baseY, baseX, baseY + height);
+    line(baseX + width, baseY, baseX + width, baseY + height);
+    line(baseX, baseY, baseX + width, baseY);
+    line(baseX, baseY + height, baseX + width, baseY + height);
 
     setlinestyle(PS_SOLID | PS_ENDCAP_SQUARE, 1);
-    for (int x1 = startX, i = 0; i < size - 1; i++, x1 = startX + width * i / (size - 1)) {
-        line(x1, startY, x1, startY + height);
+    for (int x1 = baseX, i = 0; i < size - 1; i++, x1 = baseX + (int) (i * slotWidth)) {
+        line(x1, baseY, x1, baseY + height);
     }
-    for (int y1 = startY, j = 0; j < size - 1; j++, y1 = startY + height * j / (size - 1)) {
-        line(startX, y1, startX + width, y1);
+    for (int y1 = baseY, j = 0; j < size - 1; j++, y1 = baseY + (int) (j * slotHeight)) {
+        line(baseX, y1, baseX + width, y1);
     }
 
     setfillcolor(BLACK);
-    solidcircle(startX + width * 3 / (size - 1), startY + height * 3 / (size - 1), POINT_SIZE);
-    solidcircle(startX + width * 9 / (size - 1), startY + height * 3 / (size - 1), POINT_SIZE);
-    solidcircle(startX + width * 15 / (size - 1), startY + height * 3 / (size - 1), POINT_SIZE);
-    solidcircle(startX + width * 3 / (size - 1), startY + height * 9 / (size - 1), POINT_SIZE);
-    solidcircle(startX + width * 9 / (size - 1), startY + height * 9 / (size - 1), POINT_SIZE);
-    solidcircle(startX + width * 15 / (size - 1), startY + height * 9 / (size - 1), POINT_SIZE);
-    solidcircle(startX + width * 3 / (size - 1), startY + height * 15 / (size - 1), POINT_SIZE);
-    solidcircle(startX + width * 9 / (size - 1), startY + height * 15 / (size - 1), POINT_SIZE);
-    solidcircle(startX + width * 15 / (size - 1), startY + height * 15 / (size - 1), POINT_SIZE);
+    solidcircle(baseX + (int) (slotWidth * 3), baseY + (int) (slotHeight * 3), POINT_SIZE);
+    solidcircle(baseX + (int) (slotWidth * 9), baseY + (int) (slotHeight * 3), POINT_SIZE);
+    solidcircle(baseX + (int) (slotWidth * 15), baseY + (int) (slotHeight * 3), POINT_SIZE);
+    solidcircle(baseX + (int) (slotWidth * 3), baseY + (int) (slotHeight * 9), POINT_SIZE);
+    solidcircle(baseX + (int) (slotWidth * 9), baseY + (int) (slotHeight * 9), POINT_SIZE);
+    solidcircle(baseX + (int) (slotWidth * 15), baseY + (int) (slotHeight * 9), POINT_SIZE);
+    solidcircle(baseX + (int) (slotWidth * 3), baseY + (int) (slotHeight * 15), POINT_SIZE);
+    solidcircle(baseX + (int) (slotWidth * 9), baseY + (int) (slotHeight * 15), POINT_SIZE);
+    solidcircle(baseX + (int) (slotWidth * 15), baseY + (int) (slotHeight * 15), POINT_SIZE);
+
+    SetWorkingImage();
 }
 
 void ChessBoard::drawPieces() {
@@ -55,42 +59,46 @@ void ChessBoard::drawPieces() {
     SetWorkingImage(&drawingImage);
     drawingImage = boardImage;
 
-    Position position {};
+    Position position{};
     for (int n = 1; n <= size; n++) {
         for (int m = 1; m <= size; m++) {
             ChessPiece *piece = slots[n][m].getPiece();
-            
+
             if (piece != nullptr) {
                 if (piece->isNotNone()) {
                     setfillcolor(piece->getColor());
                     if (getCenterPositionByOrder(position, n, m))
-                        piece->draw(position.x, position.y, 12);
+                        piece->draw(position.x - startX, position.y - startY, 12);
                 }
             }
         }
     }
+
+    SetWorkingImage();
 }
 
 bool ChessBoard::getCenterPositionByPosition(Position &position, int x, int y) const {
     if (!getOrderByPosition(position, x, y)) return false;
-    
+
     return getCenterPositionByOrder(position, position.x, position.y);
 }
 
 bool ChessBoard::getOrderByPosition(Position &order, int x, int y) const {
     if (!isPositionInBoard(x, y)) return false;
+
+    order.x = (int) ((x - startX - baseX + slotWidth / 2) / slotWidth) + 1;
+    order.y = (int) ((y - startY - baseY + slotHeight / 2) / slotHeight) + 1;
+    if (!isOrderInBoard(order.x, order.y)) return false;
     
-    order.x = (x - startX) / (width / (size - 1)) + 1;
-    order.y = (y - startY) / (height / (size - 1)) + 1;
     return true;
 }
 
 bool ChessBoard::getCenterPositionByOrder(Position &position, int x, int y) const {
     if (!isOrderInBoard(x, y))
         return false;
-    
-    position.x = startX + (x - 1) * width / (size - 1);
-    position.y = startY + (y - 1) * height / (size - 1);
+
+    position.x = (int) (startX + baseX + (x - 1) * slotWidth);
+    position.y = (int) (startY + baseY + (y - 1) * slotHeight);
     return true;
 }
 
@@ -99,14 +107,14 @@ bool ChessBoard::isOrderInBoard(int x, int y) const {
 }
 
 bool ChessBoard::isPositionInBoard(int x, int y) const {
-    return x >= startX && x <= startX + width && y >= startY && y <= startY + height;
+    return x >= startX && x <= startX + totalWidth && y >= startY && y <= startY + totalHeight;
 }
 
 bool ChessBoard::placePiece(ChessPiece *piece, int x, int y) {
     if (!isOrderInBoard(x, y))
         return false;
 
-    if (slots[x][y].getPiece() != ChessPiece::none)
+    if (slots[x][y].getPiece() != nullptr && slots[x][y].getPiece() != ChessPiece::none)
         return false;
 
     slots[x][y].setPiece(piece);
@@ -131,4 +139,56 @@ ChessPiece *ChessBoard::getRound() const {
 
 void ChessBoard::setRound(ChessPiece *theRound) {
     round = theRound;
+}
+
+int ChessBoard::getStartX() const {
+    return startX;
+}
+
+int ChessBoard::getStartY() const {
+    return startY;
+}
+
+int ChessBoard::getBaseX() const {
+    return baseX;
+}
+
+int ChessBoard::getBaseY() const {
+    return baseY;
+}
+
+int ChessBoard::getWidth() const {
+    return width;
+}
+
+int ChessBoard::getHeight() const {
+    return height;
+}
+
+int ChessBoard::getExtraWidth() const {
+    return extraWidth;
+}
+
+int ChessBoard::getExtraHeight() const {
+    return extraHeight;
+}
+
+int ChessBoard::getSize() const {
+    return size;
+}
+
+double ChessBoard::getSlotWidth() const {
+    return slotWidth;
+}
+
+double ChessBoard::getSlotHeight() const {
+    return slotHeight;
+}
+
+int ChessBoard::getTotalWidth() const {
+    return totalWidth;
+}
+
+int ChessBoard::getTotalHeight() const {
+    return totalHeight;
 }
