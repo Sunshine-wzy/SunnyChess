@@ -4,6 +4,7 @@
 #include "ChessSlot.h"
 #include "Position.h"
 #include <vector>
+#include <string>
 
 
 class ChessBoard {
@@ -44,6 +45,8 @@ public:
 
     // 画出棋子
     void drawPieces();
+
+    std::string numberToString(int number);
 
     // 根据坐标(x, y)获取格子中心点坐标
     // 若(x, y)不在任何一个格子内，则返回false

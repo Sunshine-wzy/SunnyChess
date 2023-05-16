@@ -50,6 +50,18 @@ void ChessBoard::drawBoard() {
     solidcircle(baseX + (int) (slotWidth * 9), baseY + (int) (slotHeight * 15), POINT_SIZE);
     solidcircle(baseX + (int) (slotWidth * 15), baseY + (int) (slotHeight * 15), POINT_SIZE);
 
+    settextcolor(WHITE);
+    settextstyle(20,10,_T("Consolas"));
+    for(int i=0;i<19;i++)
+    {
+        RECT r={baseX-20, baseY+10+i*slotHeight, baseX, baseY-10+i*slotHeight};
+        drawtext(_T(numberToString(i+1).c_str()), &r, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+    }
+    for(int i=0;i<19;i++)
+    {
+        RECT r={baseX-10+i*slotWidth, baseY+18*slotHeight+5, baseX+10+i*slotWidth, baseY+18*slotHeight+25};
+        drawtext(_T(numberToString(i+100).c_str()), &r, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+    }
     SetWorkingImage();
 }
 
@@ -75,6 +87,25 @@ void ChessBoard::drawPieces() {
     }
 
     SetWorkingImage();
+}
+
+std::string ChessBoard::numberToString(int number) {
+    std::string str;
+
+    if(number<=9&&number>=0) {
+        str.push_back('0' + number);
+    } else if(number>9&&number<100) {
+        int a=number/10;
+        number=number%10;
+
+        str.push_back('0'+a);
+        str.push_back('0'+number);
+    }
+    else {
+         str.push_back('A'+number-100);
+    }
+
+    return str;
 }
 
 bool ChessBoard::getCenterPositionByPosition(Position &position, int x, int y) const {
