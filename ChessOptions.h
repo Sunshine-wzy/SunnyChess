@@ -12,6 +12,7 @@ enum class SelectChessType {
 class ChessOptions {
 public:
     SelectChessType type;
+    int size;
     
     
     ChessOptions();

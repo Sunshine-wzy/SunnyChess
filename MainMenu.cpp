@@ -13,7 +13,7 @@ void MainMenu::onInit() {
     setlinestyle(&getLineStyle());
 
     // 绘制背景
-	loadimage(nullptr, "../resources/chesspan.png", WIDTH, HEIGHT);
+	loadimage(nullptr, "../resources/modeselection.png", WIDTH, HEIGHT);
 }
 
 void MainMenu::initButtons() {

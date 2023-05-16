@@ -7,7 +7,7 @@
 GomokuPreparationMenu::GomokuPreparationMenu() = default;
 
 void GomokuPreparationMenu::onInit() {
-    
+    loadimage(nullptr, "../resources/orderselection.png", 80, 100);   //画三个选项的图片
 }
 
 void GomokuPreparationMenu::initButtons() {
