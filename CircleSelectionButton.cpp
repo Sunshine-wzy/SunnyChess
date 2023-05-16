@@ -1,4 +1,5 @@
 #include "CircleSelectionButton.h"
+#include "MenuManager.h"
 #include <graphics.h>
 #include <utility>
 
@@ -11,11 +12,13 @@ bool CircleSelectionButton::isInside(int x, int y) {
 }
 
 void CircleSelectionButton::drawNormal() {
+    setlinestyle(&MenuManager::main.getLineStyle());
     setfillcolor(WHITE);
     solidcircle(getX(), getY(), radius);
 }
 
 void CircleSelectionButton::drawSelected() {
+    setlinestyle(&MenuManager::main.getLineStyle());
     setfillcolor(WHITE);
     solidcircle(getX(), getY(), radius);
     setfillcolor(GREEN);

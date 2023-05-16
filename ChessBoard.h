@@ -14,10 +14,19 @@ protected:
 private:
     int startX;             // 左上角x坐标
     int startY;             // 左上角y坐标
+    int baseX;              // 格子左上角基础x坐标（相对于startX的偏移量）
+    int baseY;              // 格子左上角基础y坐标（相对于startY的偏移量）
     int width;              // 宽
     int height;             // 高
+    int extraWidth;         // 额外宽
+    int extraHeight;        // 额外高
 
     int size;               // 行列数
+    
+    double slotWidth;       // 格子宽
+    double slotHeight;      // 格子高
+    int totalWidth;         // 总共宽
+    int totalHeight;        // 总共高
 
     IMAGE boardImage;       // 棋盘背景以及基础格子
     IMAGE drawingImage;     // 包括棋子的棋盘
@@ -68,6 +77,32 @@ public:
     ChessPiece *getRound() const;
 
     void setRound(ChessPiece *round);
+
+    int getStartX() const;
+
+    int getStartY() const;
+
+    int getBaseX() const;
+
+    int getBaseY() const;
+
+    int getWidth() const;
+
+    int getHeight() const;
+
+    int getExtraWidth() const;
+
+    int getExtraHeight() const;
+
+    int getSize() const;
+
+    double getSlotWidth() const;
+
+    double getSlotHeight() const;
+
+    int getTotalWidth() const;
+
+    int getTotalHeight() const;
 
 
     // 点大小

@@ -23,7 +23,8 @@ void GomokuMenu::initButtons() {
 void GomokuMenu::onEnable() {
     startGame();
     Position pos {};
-    int radius = 5;
+    int selectBoxHalfWidth = (int) (board.getSlotWidth() / 2);
+    int selectBoxHalfHeight = (int) (board.getSlotHeight() / 2);
     
     flushmessage();
     while (true) {
@@ -36,20 +37,27 @@ void GomokuMenu::onEnable() {
                 
                 if (board.getOrderByPosition(pos, message.x, message.y)) {
                     std::printf("(%d, %d)\n", pos.x, pos.y);
+                    
+                    board.placePiece(ChessPiece::white, pos.x, pos.y);
+                    
+                    BeginBatchDraw();
+                    redraw();
+                    FlushBatchDraw();
                 }
                 break;
                 
             // 鼠标移动
             case WM_MOUSEMOVE:
                 if (isRunning()) {
-                    BeginBatchDraw();
-
                     if (board.getCenterPositionByPosition(pos, message.x, message.y)) {
-                        setcolor(GREEN);
-                        rectangle(pos.x - radius, pos.y - radius, pos.x + radius, pos.y + radius);
+                        BeginBatchDraw();
+                        redraw();
+                        
+                        setcolor(0x9FC57);
+                        setlinestyle(PS_DASH | PS_ENDCAP_SQUARE);
+                        rectangle(pos.x - selectBoxHalfWidth, pos.y - selectBoxHalfHeight, pos.x + selectBoxHalfWidth, pos.y + selectBoxHalfHeight);
+                        FlushBatchDraw();
                     }
-
-                    FlushBatchDraw();
                 }
                 break;
         }
@@ -68,4 +76,12 @@ void GomokuMenu::runGame() {
 
 void GomokuMenu::endGame() {
     setRunning(false);
+}
+
+void GomokuMenu::redraw() {
+    cleardevice();
+    
+    board.draw();
+    
+    drawButtons();
 }
