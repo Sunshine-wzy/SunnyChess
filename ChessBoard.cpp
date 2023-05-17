@@ -54,7 +54,7 @@ void ChessBoard::drawBoard() {
     settextstyle(20,10,_T("Consolas"));
     for(int i=0;i<19;i++)
     {
-        RECT r={baseX-20, baseY+10+i*slotHeight, baseX, baseY-10+i*slotHeight};
+        RECT r={baseX-20, baseY+10+(18-i)*slotHeight, baseX, baseY-10+(18-i)*slotHeight};
         drawtext(_T(numberToString(i+1).c_str()), &r, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
     }
     for(int i=0;i<19;i++)
