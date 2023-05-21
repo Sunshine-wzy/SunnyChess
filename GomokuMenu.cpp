@@ -37,8 +37,8 @@ void GomokuMenu::onEnable() {
                 
                 if (board.getOrderByPosition(pos, message.x, message.y)) {
                     std::printf("(%d, %d)\n", pos.x, pos.y);
-                    
-                    board.placePiece(ChessPiece::white, pos.x, pos.y);
+
+                    runGame(pos.x, pos.y);
                     
                     BeginBatchDraw();
                     redraw();
@@ -67,11 +67,26 @@ void GomokuMenu::onEnable() {
 void GomokuMenu::startGame() {
     setRunning(true);
     
+    // 初始化棋盘
+    board.init();
     
+    board.setRound(ChessPiece::black);
 }
 
-void GomokuMenu::runGame() {
+void GomokuMenu::runGame(int x, int y) {
+    // 尝试落子
+    if (!board.placePiece(x, y)) return;
+    
+    // 胜利判定
+    if (board.judge(x, y)) {
+        board.init();
+        redraw();
 
+        return;
+    }
+    
+    // 回合更替
+    board.turnRound();
 }
 
 void GomokuMenu::endGame() {
