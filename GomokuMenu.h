@@ -19,7 +19,7 @@ public:
 
     void startGame() override;
 
-    void runGame() override;
+    void runGame(int x, int y) override;
 
     void endGame() override;
 

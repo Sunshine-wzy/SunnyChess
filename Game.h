@@ -14,7 +14,7 @@ public:
     virtual void startGame() = 0;
     
     // 进行游戏
-    virtual void runGame() = 0;
+    virtual void runGame(int x, int y) = 0;
     
     // 结束游戏
     virtual void endGame() = 0;

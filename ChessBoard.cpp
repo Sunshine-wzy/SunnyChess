@@ -9,6 +9,12 @@ ChessBoard::ChessBoard(int x, int y, int width, int height, int size)
           slots(size + 1, std::vector<ChessSlot>(size + 1)),
           boardImage(IMAGE(totalWidth, totalHeight)),
           drawingImage(IMAGE(totalWidth, totalHeight)), round(ChessPiece::none) {
+    for (auto &v: slots) {
+        for (auto &slot: v) {
+            slot = ChessSlot();
+        }
+    }
+
     drawBoard();
 }
 
@@ -51,23 +57,27 @@ void ChessBoard::drawBoard() {
     solidcircle(baseX + (int) (slotWidth * 15), baseY + (int) (slotHeight * 15), POINT_SIZE);
 
     settextcolor(WHITE);
-    settextstyle(20,10,_T("Consolas"));
-    for(int i=0;i<19;i++)
-    {
-        RECT r={baseX-20, baseY+10+i*slotHeight, baseX, baseY-10+i*slotHeight};
-        drawtext(_T(numberToString(i+1).c_str()), &r, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+    settextstyle(20, 10, _T("Consolas"));
+
+    setbkmode(TRANSPARENT);
+    settextcolor(BLACK);
+    for (int i = 0; i < 19; i++) {
+        RECT r = {baseX - 25, static_cast<LONG>(baseY + 10 + (18 - i) * slotHeight), baseX - 5,
+                  static_cast<LONG>(baseY - 10 + (18 - i) * slotHeight)};
+        drawtext(_T(numberToString(i + 1).c_str()), &r, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
     }
-    for(int i=0;i<19;i++)
-    {
-        RECT r={baseX-10+i*slotWidth, baseY+18*slotHeight+5, baseX+10+i*slotWidth, baseY+18*slotHeight+25};
-        drawtext(_T(numberToString(i+100).c_str()), &r, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+
+    for (int i = 0; i < 19; i++) {
+        RECT r = {static_cast<LONG>(baseX - 10 + i * slotWidth), static_cast<LONG>(baseY + 18 * slotHeight + 5),
+                  static_cast<LONG>(baseX + 10 + i * slotWidth),
+                  static_cast<LONG>(baseY + 18 * slotHeight + 25)};
+        drawtext(_T('A' + i), &r, DT_CENTER | DT_VCENTER | DT_NOCLIP);
     }
+
     SetWorkingImage();
 }
 
 void ChessBoard::drawPieces() {
-    slots[3][3].setPiece(ChessPiece::white);
-
     SetWorkingImage(&drawingImage);
     drawingImage = boardImage;
 
@@ -89,24 +99,28 @@ void ChessBoard::drawPieces() {
     SetWorkingImage();
 }
 
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "cppcoreguidelines-narrowing-conversions"
+
 std::string ChessBoard::numberToString(int number) {
     std::string str;
 
-    if(number<=9&&number>=0) {
+    if (number <= 9 && number >= 0) {
         str.push_back('0' + number);
-    } else if(number>9&&number<100) {
-        int a=number/10;
-        number=number%10;
+    } else if (number > 9 && number < 100) {
+        int a = number / 10;
+        number = number % 10;
 
-        str.push_back('0'+a);
-        str.push_back('0'+number);
-    }
-    else {
-         str.push_back('A'+number-100);
+        str.push_back('0' + a);
+        str.push_back('0' + number);
+    } else {
+        str.push_back('A' + number - 100);
     }
 
     return str;
 }
+
+#pragma clang diagnostic pop
 
 bool ChessBoard::getCenterPositionByPosition(Position &position, int x, int y) const {
     if (!getOrderByPosition(position, x, y)) return false;
@@ -120,7 +134,7 @@ bool ChessBoard::getOrderByPosition(Position &order, int x, int y) const {
     order.x = (int) ((x - startX - baseX + slotWidth / 2) / slotWidth) + 1;
     order.y = (int) ((y - startY - baseY + slotHeight / 2) / slotHeight) + 1;
     if (!isOrderInBoard(order.x, order.y)) return false;
-    
+
     return true;
 }
 
@@ -142,6 +156,8 @@ bool ChessBoard::isPositionInBoard(int x, int y) const {
 }
 
 bool ChessBoard::placePiece(ChessPiece *piece, int x, int y) {
+    if (piece == nullptr) return false;
+    
     if (!isOrderInBoard(x, y))
         return false;
 
@@ -154,6 +170,15 @@ bool ChessBoard::placePiece(ChessPiece *piece, int x, int y) {
 
 bool ChessBoard::placePiece(ChessPiece *piece, Position &order) {
     return placePiece(piece, order.x, order.y);
+}
+
+bool ChessBoard::placePiece(int x, int y) {
+    if (round == nullptr || round == ChessPiece::none) return false;
+    return placePiece(round, x, y);
+}
+
+bool ChessBoard::placePiece(Position &order) {
+    return placePiece(round, order.x, order.y);
 }
 
 void ChessBoard::init() {

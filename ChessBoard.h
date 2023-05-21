@@ -10,7 +10,7 @@
 class ChessBoard {
 protected:
     // 格子
-    std::vector<std::vector<ChessSlot> > slots;
+    std::vector< std::vector<ChessSlot> > slots;
 
 private:
     int startX;             // 左上角x坐标
@@ -23,7 +23,7 @@ private:
     int extraHeight;        // 额外高
 
     int size;               // 行列数
-    
+
     double slotWidth;       // 格子宽
     double slotHeight;      // 格子高
     int totalWidth;         // 总共宽
@@ -33,7 +33,7 @@ private:
     IMAGE drawingImage;     // 包括棋子的棋盘
 
     ChessPiece *round;
-    
+
 public:
     ChessBoard(int x, int y, int width, int height, int size);
 
@@ -46,7 +46,7 @@ public:
     // 画出棋子
     void drawPieces();
 
-    std::string numberToString(int number);
+    static std::string numberToString(int number);
 
     // 根据坐标(x, y)获取格子中心点坐标
     // 若(x, y)不在任何一个格子内，则返回false
@@ -72,6 +72,11 @@ public:
     virtual bool placePiece(ChessPiece *piece, int x, int y);
 
     virtual bool placePiece(ChessPiece *piece, Position &order);
+    
+    // 尝试向序号(x, y)放置当前回合方的棋子
+    virtual bool placePiece(int x, int y);
+    
+    virtual bool placePiece(Position &order);
 
     // 胜利判定 落子时触发
     virtual bool judge(int x, int y) = 0;
@@ -80,6 +85,8 @@ public:
     ChessPiece *getRound() const;
 
     void setRound(ChessPiece *round);
+    
+    virtual void turnRound() = 0;
 
     int getStartX() const;
 
