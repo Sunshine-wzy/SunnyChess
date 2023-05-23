@@ -7,7 +7,11 @@
 GomokuPreparationMenu::GomokuPreparationMenu() = default;
 
 void GomokuPreparationMenu::onInit() {
-    loadimage(nullptr, "../resources/orderselection.png", 80, 100);   //画三个选项的图片
+    IMAGE imageChessTypeSelection;
+
+    loadimage(&imageChessTypeSelection, "../resources/orderselection.png", 640, 800);   //画三个选项的图片
+
+    putimage(80, 2, &imageChessTypeSelection);
 }
 
 void GomokuPreparationMenu::initButtons() {
@@ -28,11 +32,11 @@ void GomokuPreparationMenu::initButtons() {
             }
     );
     
-    int chessTypeSelectionBaseX = MainMenu::WIDTH / 10;
-    int chessTypeSelectionBaseY = MainMenu::HEIGHT / 8;
-    auto chessTypeSelectionButtonRandom = new CircleSelectionButton("random", chessTypeSelectionBaseX, chessTypeSelectionBaseY, 10);
-    auto chessTypeSelectionButtonBlack = new CircleSelectionButton("black", chessTypeSelectionBaseX * 2, chessTypeSelectionBaseY, 10);
-    auto chessTypeSelectionButtonWhite = new CircleSelectionButton("white", chessTypeSelectionBaseX * 3, chessTypeSelectionBaseY, 10);
+    int chessTypeSelectionBaseX = MainMenu::WIDTH / 5;
+    int chessTypeSelectionBaseY = MainMenu::HEIGHT / 2;
+    auto chessTypeSelectionButtonRandom = new CircleSelectionButton("random", chessTypeSelectionBaseX, chessTypeSelectionBaseY, 120);
+    auto chessTypeSelectionButtonBlack = new CircleSelectionButton("black", chessTypeSelectionBaseX * 2, chessTypeSelectionBaseY, 120);
+    auto chessTypeSelectionButtonWhite = new CircleSelectionButton("white", chessTypeSelectionBaseX * 3, chessTypeSelectionBaseY, 120);
     
     chessTypeSelectionGroup
             .addButton(chessTypeSelectionButtonRandom)
