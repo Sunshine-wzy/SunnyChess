@@ -3,6 +3,7 @@
 
 #include "ChessSlot.h"
 #include "Position.h"
+#include "ChessOptions.h"
 #include <vector>
 #include <string>
 
@@ -66,7 +67,7 @@ public:
 
 
     // 初始化棋盘
-    virtual void init();
+    virtual void init(ChessOptions &options);
 
     // 尝试向序号(x, y)放置棋子
     virtual bool placePiece(ChessPiece *piece, int x, int y);

@@ -23,6 +23,8 @@ public:
 
     void setJudgeCount(int judgeCount);
 
+    void init(ChessOptions &options) override;
+
 };
 
 

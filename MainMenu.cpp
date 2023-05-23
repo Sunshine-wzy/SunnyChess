@@ -17,17 +17,19 @@ void MainMenu::onInit() {
 }
 
 void MainMenu::initButtons() {
+    // 围棋
     addButton(
-        new RoundRectangleButton("gomoku_preparation", WIDTH / 4, HEIGHT / 4 * 3),
-        [](Menu &menu, Button &button, int x, int y) {
-            MenuManager::gomokuPreparation.open();
-        }
-    );
-
-    addButton(
-        new RoundRectangleButton("go_chess_preparation", WIDTH / 4 * 3, HEIGHT / 4 * 3),
+        new RoundRectangleButton("go_chess_preparation", WIDTH / 4, HEIGHT / 4 * 3),
         [](Menu &menu, Button &button, int x, int y) {
             
+        }
+    );
+    
+    // 五子棋
+    addButton(
+        new RoundRectangleButton("gomoku_preparation", WIDTH / 4 * 3, HEIGHT / 4 * 3),
+        [](Menu &menu, Button &button, int x, int y) {
+            MenuManager::gomokuPreparation.open();
         }
     );
 }

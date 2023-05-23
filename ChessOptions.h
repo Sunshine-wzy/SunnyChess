@@ -1,21 +1,18 @@
 #ifndef SUNNYCHESS_CHESSOPTIONS_H
 #define SUNNYCHESS_CHESSOPTIONS_H
 
-
-enum class SelectChessType {
-    random,
-    black,
-    white
-};
+#include "ChessPiece.h"
 
 
 class ChessOptions {
 public:
-    SelectChessType type;
+    ChessPiece *type;
     int size;
     
     
     ChessOptions();
+    
+    virtual ~ChessOptions();
     
 };
 

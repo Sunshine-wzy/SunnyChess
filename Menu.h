@@ -27,15 +27,18 @@ public:
 
     // 重新打开菜单（不初始化按钮）
     virtual void reopen();
+    
+    // 首次打开菜单初始化
+    virtual void onOpenInit();
 
     // 初始化菜单（在初始化、绘制按钮之前）
-    virtual void onInit() = 0;
+    virtual void onInit();
 
     // 初始化按钮（在绘制按钮之前，初始化菜单之后）
-    virtual void initButtons() = 0;
+    virtual void initButtons();
 
     // 启动菜单（在绘制按钮之后）
-    virtual void onEnable() = 0;
+    virtual void onEnable();
 
     // 添加按钮
     void addButton(Button *button, ButtonAction action);

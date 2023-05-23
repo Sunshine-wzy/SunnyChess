@@ -21,7 +21,7 @@ public:
 
     void initButtons() override;
 
-    const GomokuOptions &getOptions() const;
+    GomokuOptions &getOptions();
 
 };
 

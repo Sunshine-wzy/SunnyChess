@@ -46,7 +46,7 @@ void GomokuPreparationMenu::initButtons() {
                 auto &gomokuMenu = dynamic_cast<GomokuPreparationMenu &>(menu);
                 
                 gomokuMenu.chessTypeSelectionGroup.select(&circleButton);
-                gomokuMenu.options.type = SelectChessType::random;
+                gomokuMenu.options.type = ChessPiece::none;
                 menu.reopen();
             }
     );
@@ -58,7 +58,7 @@ void GomokuPreparationMenu::initButtons() {
                 auto &gomokuMenu = dynamic_cast<GomokuPreparationMenu &>(menu);
                 
                 gomokuMenu.chessTypeSelectionGroup.select(&circleButton);
-                gomokuMenu.options.type = SelectChessType::black;
+                gomokuMenu.options.type = ChessPiece::black;
                 menu.reopen();
             }
     );
@@ -70,7 +70,7 @@ void GomokuPreparationMenu::initButtons() {
                 auto &gomokuMenu = dynamic_cast<GomokuPreparationMenu &>(menu);
                 
                 gomokuMenu.chessTypeSelectionGroup.select(&circleButton);
-                gomokuMenu.options.type = SelectChessType::white;
+                gomokuMenu.options.type = ChessPiece::white;
                 menu.reopen();
             }
     );
@@ -91,6 +91,6 @@ void GomokuPreparationMenu::onEnable() {
     }
 }
 
-const GomokuOptions &GomokuPreparationMenu::getOptions() const {
+GomokuOptions &GomokuPreparationMenu::getOptions() {
     return options;
 }

@@ -6,15 +6,9 @@ ChessBoard::ChessBoard(int x, int y, int width, int height, int size)
           width(width), height(height), extraHeight(60), extraWidth(60), size(size),
           slotWidth((double) width / (size - 1)), slotHeight((double) height / (size - 1)),
           totalWidth(width + extraWidth), totalHeight(height + extraHeight),
-          slots(size + 1, std::vector<ChessSlot>(size + 1)),
+          slots(size + 1, std::vector<ChessSlot>(size + 1, ChessSlot())),
           boardImage(IMAGE(totalWidth, totalHeight)),
           drawingImage(IMAGE(totalWidth, totalHeight)), round(ChessPiece::none) {
-    for (auto &v: slots) {
-        for (auto &slot: v) {
-            slot = ChessSlot();
-        }
-    }
-
     drawBoard();
 }
 
@@ -181,11 +175,20 @@ bool ChessBoard::placePiece(Position &order) {
     return placePiece(round, order.x, order.y);
 }
 
-void ChessBoard::init() {
+void ChessBoard::init(ChessOptions &options) {
+    // 初始化格子
     for (int i = 1; i <= size; i++) {
         for (int j = 1; j <= size; j++) {
             slots[i][j].setPiece(ChessPiece::none);
         }
+    }
+    
+    // 初始化先手
+    if (options.type != ChessPiece::none) {
+        setRound(options.type);
+    } else {
+        // 随机先手
+        setRound(ChessPiece::black);
     }
 }
 

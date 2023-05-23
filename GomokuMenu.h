@@ -8,11 +8,13 @@
 
 class GomokuMenu : public Menu, public Game {
 private:
-    GomokuChessBoard board;
+    GomokuChessBoard *board;
 
 public:
     GomokuMenu();
 
+    void onOpenInit() override;
+    
     void onInit() override;
 
     void onEnable() override;

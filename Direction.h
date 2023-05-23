@@ -19,10 +19,10 @@ public:
     static Direction left;
     static Direction up;
     static Direction down;
-    static Direction up_right;
-    static Direction down_left;
-    static Direction up_left;
-    static Direction down_right;
+    static Direction upRight;
+    static Direction downLeft;
+    static Direction upLeft;
+    static Direction downRight;
 };
 
 

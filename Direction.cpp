@@ -18,10 +18,10 @@ Direction Direction::up = Direction(0, 1);
 
 Direction Direction::down = Direction(0, -1);
 
-Direction Direction::up_right = Direction(1, 1);
+Direction Direction::upRight = Direction(1, 1);
 
-Direction Direction::down_left = Direction(-1, -1);
+Direction Direction::downLeft = Direction(-1, -1);
 
-Direction Direction::up_left = Direction(-1, 1);
+Direction Direction::upLeft = Direction(-1, 1);
 
-Direction Direction::down_right = Direction(1, -1);
+Direction Direction::downRight = Direction(1, -1);

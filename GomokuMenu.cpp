@@ -3,12 +3,19 @@
 #include "RoundRectangleButton.h"
 #include <cstdio>
 
-GomokuMenu::GomokuMenu() : board(GomokuChessBoard(10, 10, 700, 700, 19)) {
-    
+GomokuMenu::GomokuMenu() : board(nullptr) {}
+
+void GomokuMenu::onOpenInit() {
+    // 析构之前的棋盘对象
+    delete board;
+
+    // 构造新的棋盘对象
+    GomokuOptions &options = MenuManager::gomokuPreparation.getOptions();
+    board = new GomokuChessBoard(10, 10, 700, 700, options.size);
 }
 
 void GomokuMenu::onInit() {
-    board.draw();
+    board->draw();
 }
 
 void GomokuMenu::initButtons() {
@@ -23,8 +30,8 @@ void GomokuMenu::initButtons() {
 void GomokuMenu::onEnable() {
     startGame();
     Position pos {};
-    int selectBoxHalfWidth = (int) (board.getSlotWidth() / 2);
-    int selectBoxHalfHeight = (int) (board.getSlotHeight() / 2);
+    int selectBoxHalfWidth = (int) (board->getSlotWidth() / 2);
+    int selectBoxHalfHeight = (int) (board->getSlotHeight() / 2);
     
     flushmessage();
     while (true) {
@@ -35,21 +42,23 @@ void GomokuMenu::onEnable() {
             case WM_LBUTTONUP:
                 clickButton(message.x, message.y);
                 
-                if (board.getOrderByPosition(pos, message.x, message.y)) {
-                    std::printf("(%d, %d)\n", pos.x, pos.y);
+                if (isRunning()) {
+                    if (board->getOrderByPosition(pos, message.x, message.y)) {
+                        std::printf("(%d, %d)\n", pos.x, pos.y);
 
-                    runGame(pos.x, pos.y);
-                    
-                    BeginBatchDraw();
-                    redraw();
-                    FlushBatchDraw();
+                        runGame(pos.x, pos.y);
+
+                        BeginBatchDraw();
+                        redraw();
+                        FlushBatchDraw();
+                    }
                 }
                 break;
                 
             // 鼠标移动
             case WM_MOUSEMOVE:
                 if (isRunning()) {
-                    if (board.getCenterPositionByPosition(pos, message.x, message.y)) {
+                    if (board->getCenterPositionByPosition(pos, message.x, message.y)) {
                         BeginBatchDraw();
                         redraw();
                         
@@ -68,25 +77,25 @@ void GomokuMenu::startGame() {
     setRunning(true);
     
     // 初始化棋盘
-    board.init();
+    GomokuOptions &options = MenuManager::gomokuPreparation.getOptions();
+    board->init(options);
     
-    board.setRound(ChessPiece::black);
 }
 
 void GomokuMenu::runGame(int x, int y) {
     // 尝试落子
-    if (!board.placePiece(x, y)) return;
+    if (!board->placePiece(x, y)) return;
     
     // 胜利判定
-    if (board.judge(x, y)) {
-        board.init();
-        redraw();
+    if (board->judge(x, y)) {
+        // 游戏结束
+        endGame();
 
         return;
     }
     
     // 回合更替
-    board.turnRound();
+    board->turnRound();
 }
 
 void GomokuMenu::endGame() {
@@ -96,7 +105,7 @@ void GomokuMenu::endGame() {
 void GomokuMenu::redraw() {
     cleardevice();
     
-    board.draw();
+    board->draw();
     
     drawButtons();
 }
