@@ -4,6 +4,7 @@
 #include "ChessSlot.h"
 #include "Position.h"
 #include "ChessOptions.h"
+#include "Player.h"
 #include <vector>
 #include <string>
 
@@ -33,10 +34,13 @@ private:
     IMAGE boardImage;       // 棋盘背景以及基础格子
     IMAGE drawingImage;     // 包括棋子的棋盘
 
+    std::vector<Player *> players;
     ChessPiece *round;
 
 public:
-    ChessBoard(int x, int y, int width, int height, int size);
+    ChessBoard(int x, int y, int width, int height, ChessOptions &options);
+    
+    virtual ~ChessBoard();
 
     // 画出整个棋盘（基础格子+棋子）
     void draw();

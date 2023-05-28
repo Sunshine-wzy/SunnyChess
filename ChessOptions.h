@@ -8,6 +8,7 @@ class ChessOptions {
 public:
     ChessPiece *type;
     int size;
+    int number;
     
     
     ChessOptions();

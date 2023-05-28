@@ -11,7 +11,7 @@ void GomokuMenu::onOpenInit() {
 
     // 构造新的棋盘对象
     GomokuOptions &options = MenuManager::gomokuPreparation.getOptions();
-    board = new GomokuChessBoard(10, 10, 700, 700, options.size);
+    board = new GomokuChessBoard(10, 10, 700, 700, options);
 }
 
 void GomokuMenu::onInit() {
@@ -62,9 +62,7 @@ void GomokuMenu::onEnable() {
                         BeginBatchDraw();
                         redraw();
                         
-                        setcolor(0x9FC57);
-                        setlinestyle(PS_DASH | PS_ENDCAP_SQUARE);
-                        rectangle(pos.x - selectBoxHalfWidth, pos.y - selectBoxHalfHeight, pos.x + selectBoxHalfWidth, pos.y + selectBoxHalfHeight);
+                        
                         FlushBatchDraw();
                     }
                 }

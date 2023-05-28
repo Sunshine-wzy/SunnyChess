@@ -1,10 +1,7 @@
 #include "GomokuChessBoard.h"
 
-GomokuChessBoard::GomokuChessBoard(int x, int y, int width, int height, int size) : ChessBoard(x, y, width, height,
-                                                                                               size),
-                                                                                    judgeCount(5 - 1) {
-
-}
+GomokuChessBoard::GomokuChessBoard(int x, int y, int width, int height, GomokuOptions &options)
+            : ChessBoard(x, y, width, height, options), judgeCount(5 - 1) {}
 
 bool GomokuChessBoard::judge(int x, int y) {
     if (judgeByDirection(x, y, Direction::right) + judgeByDirection(x, y, Direction::left) >= judgeCount)

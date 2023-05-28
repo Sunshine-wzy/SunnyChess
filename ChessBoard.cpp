@@ -1,15 +1,29 @@
 #include "ChessBoard.h"
+#include <set>
 
 
-ChessBoard::ChessBoard(int x, int y, int width, int height, int size)
+ChessBoard::ChessBoard(int x, int y, int width, int height, ChessOptions &options)
         : startX(x), startY(y), baseX(30), baseY(30),
-          width(width), height(height), extraHeight(60), extraWidth(60), size(size),
+          width(width), height(height), extraHeight(60), extraWidth(60), size(options.size),
           slotWidth((double) width / (size - 1)), slotHeight((double) height / (size - 1)),
           totalWidth(width + extraWidth), totalHeight(height + extraHeight),
-          slots(size + 1, std::vector<ChessSlot>(size + 1, ChessSlot())),
+          slots(options.size + 1, std::vector<ChessSlot>(options.size + 1, ChessSlot())),
           boardImage(IMAGE(totalWidth, totalHeight)),
-          drawingImage(IMAGE(totalWidth, totalHeight)), round(ChessPiece::none) {
+          drawingImage(IMAGE(totalWidth, totalHeight)),
+          players(std::vector<Player *>(2, nullptr)), round(ChessPiece::none) {
+    std::set<ChessPiece> usedPieces;
+    
+    for (int i = 0; i < options.number; i++) {
+//        players.push_back(new Player());
+    }
+    
     drawBoard();
+}
+
+ChessBoard::~ChessBoard() {
+    for (Player *player : players) {
+        delete player;
+    }
 }
 
 void ChessBoard::draw() {

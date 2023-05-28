@@ -11,7 +11,7 @@ private:
     
     
 public:
-    GomokuChessBoard(int x, int y, int width, int height, int size);
+    GomokuChessBoard(int x, int y, int width, int height, GomokuOptions &options);
 
     bool judge(int x, int y) override;
 
