@@ -82,14 +82,14 @@ void ChessBoard::drawBoard() {
     for (int i = 0; i < 19; i++) {
         RECT r = {baseX - 25, static_cast<LONG>(baseY + 10 + (18 - i) * slotHeight), baseX - 5,
                   static_cast<LONG>(baseY - 10 + (18 - i) * slotHeight)};
-        drawtext(_T(numberToString(i + 1).c_str()), &r, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+        drawtext(_T(numberToString(i + 1).c_str()), &r, DT_CENTER | DT_VCENTER | DT_SINGLELINE | DT_NOCLIP);
     }
 
     for (int i = 0; i < 19; i++) {
         RECT r = {static_cast<LONG>(baseX - 10 + i * slotWidth), static_cast<LONG>(baseY + 18 * slotHeight + 5),
                   static_cast<LONG>(baseX + 10 + i * slotWidth),
                   static_cast<LONG>(baseY + 18 * slotHeight + 25)};
-        drawtext(_T('A' + i), &r, DT_CENTER | DT_VCENTER | DT_NOCLIP);
+        drawtext(_T('A' + i), &r, DT_CENTER | DT_VCENTER | DT_SINGLELINE | DT_NOCLIP);
     }
 
     SetWorkingImage();

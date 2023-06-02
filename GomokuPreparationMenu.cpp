@@ -32,14 +32,19 @@ void GomokuPreparationMenu::initButtons() {
     );
 
     int radius = 10;
-    RECT relativeRect = {radius * 2, -radius * 2, radius * 10, radius * 2};
+    RECT relativeRect = {radius * 2, -radius * 4, radius * 16, radius * 4};
+
+    int rectWidth = relativeRect.right - relativeRect.left;
+    int rectHeight = relativeRect.bottom - relativeRect.top;
+    IMAGE *imageChessTypeSelection = new IMAGE(rectWidth, rectHeight); // NOLINT(modernize-use-auto)
+    loadimage(imageChessTypeSelection, "../resources/order_selection.png", rectWidth, rectHeight);   //画三个选项的图片
     
     int modeSelectionBaseX = MainMenu::WIDTH / 5;
     int modeSelectionBaseY = MainMenu::HEIGHT / 10;
     // 好友对局
-    auto modeSelectionButtonFriend = new CircleSelectionButton("friend", modeSelectionBaseX, modeSelectionBaseY, radius, relativeRect, "friend");
+    auto modeSelectionButtonFriend = new CircleSelectionButton("friend", modeSelectionBaseX, modeSelectionBaseY, radius, relativeRect, imageChessTypeSelection, "friend");
     // 人机对战
-    auto modeSelectionButtonBot = new CircleSelectionButton("bot", modeSelectionBaseX * 2, modeSelectionBaseY, radius, relativeRect, "bot");
+    auto modeSelectionButtonBot = new CircleSelectionButton("bot", modeSelectionBaseX * 2, modeSelectionBaseY, radius, relativeRect, nullptr, "bot");
     modeSelectionGroup
             .addButton(modeSelectionButtonFriend)
             .addButton(modeSelectionButtonBot);
@@ -69,9 +74,12 @@ void GomokuPreparationMenu::initButtons() {
     int chessTypeSelectionBaseX = MainMenu::WIDTH / 5;
     int chessTypeSelectionBaseY = MainMenu::HEIGHT / 2;
     
-    auto chessTypeSelectionButtonRandom = new CircleSelectionButton("random", chessTypeSelectionBaseX, chessTypeSelectionBaseY, radius);
-    auto chessTypeSelectionButtonBlack = new CircleSelectionButton("black", chessTypeSelectionBaseX * 2, chessTypeSelectionBaseY, radius);
-    auto chessTypeSelectionButtonWhite = new CircleSelectionButton("white", chessTypeSelectionBaseX * 3, chessTypeSelectionBaseY, radius);
+    auto chessTypeSelectionButtonRandom = new CircleSelectionButton("random", chessTypeSelectionBaseX,
+                                                                    chessTypeSelectionBaseY, radius);
+    auto chessTypeSelectionButtonBlack = new CircleSelectionButton("black", chessTypeSelectionBaseX * 2,
+                                                                   chessTypeSelectionBaseY, radius);
+    auto chessTypeSelectionButtonWhite = new CircleSelectionButton("white", chessTypeSelectionBaseX * 3,
+                                                                   chessTypeSelectionBaseY, radius);
     
     chessTypeSelectionGroup
             .addButton(chessTypeSelectionButtonRandom)
