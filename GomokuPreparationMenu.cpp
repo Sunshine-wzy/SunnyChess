@@ -7,15 +7,14 @@
 GomokuPreparationMenu::GomokuPreparationMenu() = default;
 
 void GomokuPreparationMenu::onInit() {
-    IMAGE imageChessTypeSelection;
-
-    loadimage(&imageChessTypeSelection, "../resources/orderselection.png", 640, 800);   //画三个选项的图片
-
-    putimage(80, 2, &imageChessTypeSelection);
+//    IMAGE imageChessTypeSelection;
+//    loadimage(&imageChessTypeSelection, "../resources/order_selection.png", 640, 800);   //画三个选项的图片
+//    putimage(80, 2, &imageChessTypeSelection);
 }
 
 void GomokuPreparationMenu::initButtons() {
     options = GomokuOptions();
+    modeSelectionGroup.clear();
     chessTypeSelectionGroup.clear();
 
     addButton(
@@ -31,12 +30,48 @@ void GomokuPreparationMenu::initButtons() {
                 MenuManager::main.open();
             }
     );
+
+    int radius = 10;
+    RECT relativeRect = {radius * 2, -radius * 2, radius * 10, radius * 2};
+    
+    int modeSelectionBaseX = MainMenu::WIDTH / 5;
+    int modeSelectionBaseY = MainMenu::HEIGHT / 10;
+    // 好友对局
+    auto modeSelectionButtonFriend = new CircleSelectionButton("friend", modeSelectionBaseX, modeSelectionBaseY, radius, relativeRect, "friend");
+    // 人机对战
+    auto modeSelectionButtonBot = new CircleSelectionButton("bot", modeSelectionBaseX * 2, modeSelectionBaseY, radius, relativeRect, "bot");
+    modeSelectionGroup
+            .addButton(modeSelectionButtonFriend)
+            .addButton(modeSelectionButtonBot);
+    addButton(
+            modeSelectionButtonFriend,
+            [](Menu &menu, Button &button, int x, int y) {
+                auto &circleButton = dynamic_cast<CircleSelectionButton &>(button);
+                auto &gomokuMenu = dynamic_cast<GomokuPreparationMenu &>(menu);
+
+                gomokuMenu.modeSelectionGroup.select(&circleButton);
+                gomokuMenu.options.mode = GomokuOptions::Mode::FRIEND;
+                menu.reopen();
+            }
+    );
+    addButton(
+            modeSelectionButtonBot,
+            [](Menu &menu, Button &button, int x, int y) {
+                auto &circleButton = dynamic_cast<CircleSelectionButton &>(button);
+                auto &gomokuMenu = dynamic_cast<GomokuPreparationMenu &>(menu);
+
+                gomokuMenu.modeSelectionGroup.select(&circleButton);
+                gomokuMenu.options.mode = GomokuOptions::Mode::BOT;
+                menu.reopen();
+            }
+    );
     
     int chessTypeSelectionBaseX = MainMenu::WIDTH / 5;
     int chessTypeSelectionBaseY = MainMenu::HEIGHT / 2;
-    auto chessTypeSelectionButtonRandom = new CircleSelectionButton("random", chessTypeSelectionBaseX, chessTypeSelectionBaseY, 120);
-    auto chessTypeSelectionButtonBlack = new CircleSelectionButton("black", chessTypeSelectionBaseX * 2, chessTypeSelectionBaseY, 120);
-    auto chessTypeSelectionButtonWhite = new CircleSelectionButton("white", chessTypeSelectionBaseX * 3, chessTypeSelectionBaseY, 120);
+    
+    auto chessTypeSelectionButtonRandom = new CircleSelectionButton("random", chessTypeSelectionBaseX, chessTypeSelectionBaseY, radius);
+    auto chessTypeSelectionButtonBlack = new CircleSelectionButton("black", chessTypeSelectionBaseX * 2, chessTypeSelectionBaseY, radius);
+    auto chessTypeSelectionButtonWhite = new CircleSelectionButton("white", chessTypeSelectionBaseX * 3, chessTypeSelectionBaseY, radius);
     
     chessTypeSelectionGroup
             .addButton(chessTypeSelectionButtonRandom)

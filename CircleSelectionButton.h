@@ -2,14 +2,19 @@
 #define SUNNYCHESS_CIRCLESELECTIONBUTTON_H
 
 #include "SelectionButton.h"
+#include <graphics.h>
+#include <string>
 
 
 class CircleSelectionButton : public SelectionButton {
 private:
     int radius;
+    RECT relativeRect;
+    RECT realRect;
+    std::string text;
 
 public:
-    CircleSelectionButton(std::string name, int x, int y, int radius);
+    CircleSelectionButton(std::string name, int x, int y, int radius, RECT relativeRect = {0, 0, 0, 0}, std::string text = "");
 
 
     bool isInside(int x, int y) override;

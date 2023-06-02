@@ -72,12 +72,12 @@ void GomokuMenu::onEnable() {
             // 鼠标移动
             case WM_MOUSEMOVE:
                 if (isRunning()) {
-                    if (board->getCenterPositionByPosition(pos, message.x, message.y)) {
+                    if (player && board->getCenterPositionByPosition(pos, message.x, message.y)) {
                         BeginBatchDraw();
                         redraw();
 
                         // 画出选择框
-                        if (player && board->getOrderByPosition(order, message.x, message.y)) {
+                        if (board->getOrderByPosition(order, message.x, message.y)) {
                             player->onSelectionBoxDraw(pos, order);
                         }
 

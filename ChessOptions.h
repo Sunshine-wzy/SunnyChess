@@ -22,10 +22,13 @@ public:
 
 
 class GomokuOptions : public ChessOptions {
-private:
-    
-    
 public:
+    enum class Mode {
+        FRIEND, BOT
+    };
+    
+    Mode mode;
+    
     GomokuOptions();
     
 };

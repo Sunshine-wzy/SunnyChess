@@ -10,6 +10,7 @@ class GomokuPreparationMenu : public Menu {
 private:
     GomokuOptions options;
     
+    SelectionButtonGroup modeSelectionGroup;
     SelectionButtonGroup chessTypeSelectionGroup;
 
 public:

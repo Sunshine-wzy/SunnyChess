@@ -76,9 +76,7 @@ void ChessBoard::drawBoard() {
     solidcircle(baseX + (int) (slotWidth * 9), baseY + (int) (slotHeight * 15), POINT_SIZE);
     solidcircle(baseX + (int) (slotWidth * 15), baseY + (int) (slotHeight * 15), POINT_SIZE);
 
-    settextcolor(WHITE);
     settextstyle(20, 10, _T("Consolas"));
-
     setbkmode(TRANSPARENT);
     settextcolor(BLACK);
     for (int i = 0; i < 19; i++) {
