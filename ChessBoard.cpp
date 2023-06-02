@@ -1,5 +1,7 @@
 #include "ChessBoard.h"
 #include <set>
+#include <cstdlib>
+#include <ctime>
 
 
 ChessBoard::ChessBoard(int x, int y, int width, int height, ChessOptions &options)
@@ -10,12 +12,22 @@ ChessBoard::ChessBoard(int x, int y, int width, int height, ChessOptions &option
           slots(options.size + 1, std::vector<ChessSlot>(options.size + 1, ChessSlot())),
           boardImage(IMAGE(totalWidth, totalHeight)),
           drawingImage(IMAGE(totalWidth, totalHeight)),
-          players(std::vector<Player *>(2, nullptr)), round(ChessPiece::none) {
-    std::set<ChessPiece> usedPieces;
+          players(std::vector<Player *>()),
+          round(players.begin()), number(options.number) {
+    // 初始化随机数种子
+    std::srand((unsigned int) time(nullptr)); // NOLINT(cert-msc51-cpp)
     
-    for (int i = 0; i < options.number; i++) {
+    std::set<ChessPiece> usedPieces;
+
+    int selectionBoxHalfWidth = (int) (slotWidth / 2);
+    int selectionBoxHalfHeight = (int) (slotHeight / 2);
+
+    // TODO: 多玩家与人机模式选择
+//    for (int i = 0; i < options.number; i++) {
 //        players.push_back(new Player());
-    }
+//    }
+    players.push_back(new User(ChessPiece::black, selectionBoxHalfWidth, selectionBoxHalfHeight, KeySettings {0x57, 0x53, 0x41, 0x44, 0x52}));
+    players.push_back(new User(ChessPiece::white, selectionBoxHalfWidth, selectionBoxHalfHeight, KeySettings {VK_UP, VK_DOWN, VK_LEFT, VK_RIGHT, 0x4D}));
     
     drawBoard();
 }
@@ -181,12 +193,12 @@ bool ChessBoard::placePiece(ChessPiece *piece, Position &order) {
 }
 
 bool ChessBoard::placePiece(int x, int y) {
-    if (round == nullptr || round == ChessPiece::none) return false;
-    return placePiece(round, x, y);
+    if (round == players.end()) return false;
+    return placePiece(getRoundPlayer()->getPiece(), x, y);
 }
 
 bool ChessBoard::placePiece(Position &order) {
-    return placePiece(round, order.x, order.y);
+    return placePiece(getRoundPlayer()->getPiece(), order.x, order.y);
 }
 
 void ChessBoard::init(ChessOptions &options) {
@@ -198,20 +210,28 @@ void ChessBoard::init(ChessOptions &options) {
     }
     
     // 初始化先手
-    if (options.type != ChessPiece::none) {
-        setRound(options.type);
+    if (options.type == ChessPiece::black) {
+        // player1 先手
+        setRound(players.begin());
+    } else if (options.type == ChessPiece::white) {
+        // player2 先手
+        setRound(players.begin() + 1);
     } else {
         // 随机先手
-        setRound(ChessPiece::black);
+        setRound(players.begin() + (std::rand() % (int) players.size())); // NOLINT(cert-msc50-cpp)
     }
 }
 
-ChessPiece *ChessBoard::getRound() const {
+typename std::vector<Player *>::iterator &ChessBoard::getRound() {
     return round;
 }
 
-void ChessBoard::setRound(ChessPiece *theRound) {
+void ChessBoard::setRound(typename std::vector<Player *>::iterator theRound) {
     round = theRound;
+}
+
+Player *ChessBoard::getRoundPlayer() {
+    return *getRound();
 }
 
 int ChessBoard::getStartX() const {
@@ -264,4 +284,8 @@ int ChessBoard::getTotalWidth() const {
 
 int ChessBoard::getTotalHeight() const {
     return totalHeight;
+}
+
+int ChessBoard::getNumber() const {
+    return number;
 }

@@ -82,3 +82,5 @@ void Menu::onInit() {}
 void Menu::initButtons() {}
 
 void Menu::onEnable() {}
+
+void Menu::redraw() {}

@@ -13,7 +13,9 @@ class ChessBoard {
 protected:
     // 格子
     std::vector< std::vector<ChessSlot> > slots;
-
+    // 所有玩家
+    std::vector<Player *> players;
+    
 private:
     int startX;             // 左上角x坐标
     int startY;             // 左上角y坐标
@@ -34,8 +36,9 @@ private:
     IMAGE boardImage;       // 棋盘背景以及基础格子
     IMAGE drawingImage;     // 包括棋子的棋盘
 
-    std::vector<Player *> players;
-    ChessPiece *round;
+    std::vector<Player *>::iterator round;
+    // 玩家数量
+    int number;
 
 public:
     ChessBoard(int x, int y, int width, int height, ChessOptions &options);
@@ -87,9 +90,11 @@ public:
     virtual bool judge(int x, int y) = 0;
 
 
-    ChessPiece *getRound() const;
+    typename std::vector<Player *>::iterator &getRound();
 
-    void setRound(ChessPiece *round);
+    void setRound(typename std::vector<Player *>::iterator theRound);
+    
+    Player *getRoundPlayer();
     
     virtual void turnRound() = 0;
 
@@ -118,6 +123,8 @@ public:
     int getTotalWidth() const;
 
     int getTotalHeight() const;
+
+    int getNumber() const;
 
 
     // 点大小

@@ -30,39 +30,33 @@ void GomokuMenu::initButtons() {
 void GomokuMenu::onEnable() {
     startGame();
     Position pos {};
-    int selectBoxHalfWidth = (int) (board->getSlotWidth() / 2);
-    int selectBoxHalfHeight = (int) (board->getSlotHeight() / 2);
     
     flushmessage();
     while (true) {
         // 消息处理
         ExMessage message = getmessage();
+        if (isRunning()) {
+            User *user = dynamic_cast<User *>(board->getRoundPlayer());
+            if (user != nullptr) {
+                user->onExMessage(message);
+            }
+        }
+        
         switch (message.message) {
             // 鼠标左键弹起
             case WM_LBUTTONUP:
+                // 点击按钮
                 clickButton(message.x, message.y);
                 
                 if (isRunning()) {
                     if (board->getOrderByPosition(pos, message.x, message.y)) {
                         std::printf("(%d, %d)\n", pos.x, pos.y);
 
+                        // 执行游戏逻辑
                         runGame(pos.x, pos.y);
 
                         BeginBatchDraw();
                         redraw();
-                        FlushBatchDraw();
-                    }
-                }
-                break;
-                
-            // 鼠标移动
-            case WM_MOUSEMOVE:
-                if (isRunning()) {
-                    if (board->getCenterPositionByPosition(pos, message.x, message.y)) {
-                        BeginBatchDraw();
-                        redraw();
-                        
-                        
                         FlushBatchDraw();
                     }
                 }

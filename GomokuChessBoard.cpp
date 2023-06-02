@@ -20,10 +20,10 @@ bool GomokuChessBoard::judge(int x, int y) {
 }
 
 void GomokuChessBoard::turnRound() {
-    if (getRound() == ChessPiece::black) {
-        setRound(ChessPiece::white);
-    } else if (getRound() == ChessPiece::white) {
-        setRound(ChessPiece::black);
+    ++getRound();
+    
+    if (getRound() == players.end()) {
+        setRound(players.begin());
     }
 }
 
@@ -34,7 +34,7 @@ int GomokuChessBoard::judgeByDirection(int x, int y, Direction &direction) {
     x += direction.getOffsetX();
     y += direction.getOffsetY();
 
-    if (isOrderInBoard(x, y) && slots[x][y].getPiece() == getRound()) {
+    if (isOrderInBoard(x, y) && slots[x][y].getPiece() == getRoundPlayer()->getPiece()) {
         return judgeByDirection(x, y, direction) + 1;
     }
 
