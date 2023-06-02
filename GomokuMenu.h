@@ -27,7 +27,7 @@ public:
 
     void initButtons() override;
     
-    void redraw() override;
+    void redraw();
 
 };
 

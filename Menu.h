@@ -39,8 +39,6 @@ public:
 
     // 启动菜单（在绘制按钮之后）
     virtual void onEnable();
-    
-    virtual void redraw();
 
     // 添加按钮
     void addButton(Button *button, ButtonAction action);

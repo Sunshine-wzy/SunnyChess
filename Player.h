@@ -1,8 +1,8 @@
 #ifndef SUNNYCHESS_PLAYER_H
 #define SUNNYCHESS_PLAYER_H
 
-#include "ChessBoard.h"
-#include "Menu.h"
+#include "ChessPiece.h"
+#include "Position.h"
 #include <graphics.h>
 
 
@@ -23,6 +23,8 @@ public:
 
     virtual void drawSelectionBox(int x, int y);
     
+    virtual void onSelectionBoxDraw(const Position &position, const Position &order);
+    
     ChessPiece *getPiece() const;
 
     int getSelectionBoxHalfWidth() const;
@@ -33,11 +35,11 @@ public:
 
 
 struct KeySettings {
-    BYTE up;
-    BYTE down;
-    BYTE left;
-    BYTE right;
-    BYTE drop;
+    BYTE up;            // 上
+    BYTE down;          // 下
+    BYTE left;          // 左
+    BYTE right;         // 右
+    BYTE drop;          // 落子
 };
 
 
@@ -48,8 +50,10 @@ private:
     
 public:
     User(ChessPiece *piece, int selectionBoxHalfWidth, int selectionBoxHalfHeight, KeySettings keySettings);
+
+
+    const KeySettings &getKeySettings() const;
     
-    void onExMessage(ExMessage &message, ChessBoard &board, Menu &menu);
 };
 
 

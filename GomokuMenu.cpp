@@ -29,17 +29,18 @@ void GomokuMenu::initButtons() {
 
 void GomokuMenu::onEnable() {
     startGame();
-    Position pos {};
+    
+    Position pos {}, order {};
+    Player *player = nullptr;
+    User *user = nullptr;
     
     flushmessage();
     while (true) {
         // 消息处理
         ExMessage message = getmessage();
         if (isRunning()) {
-            User *user = dynamic_cast<User *>(board->getRoundPlayer());
-            if (user != nullptr) {
-                user->onExMessage(message);
-            }
+            player = board->getRoundPlayer();
+            user = dynamic_cast<User *>(player);
         }
         
         switch (message.message) {
@@ -49,7 +50,7 @@ void GomokuMenu::onEnable() {
                 clickButton(message.x, message.y);
                 
                 if (isRunning()) {
-                    if (board->getOrderByPosition(pos, message.x, message.y)) {
+                    if (player && board->getOrderByPosition(pos, message.x, message.y)) {
                         std::printf("(%d, %d)\n", pos.x, pos.y);
 
                         // 执行游戏逻辑
@@ -57,7 +58,81 @@ void GomokuMenu::onEnable() {
 
                         BeginBatchDraw();
                         redraw();
+
+                        // 在落子位置画出新一轮玩家的选择框
+                        if (board->getCenterPositionByOrder(pos, player->selectionBoxOrder.x, player->selectionBoxOrder.y)) {
+                            board->getRoundPlayer()->onSelectionBoxDraw(pos, player->selectionBoxOrder);
+                        }
+                        
                         FlushBatchDraw();
+                    }
+                }
+                break;
+
+            // 鼠标移动
+            case WM_MOUSEMOVE:
+                if (isRunning()) {
+                    if (board->getCenterPositionByPosition(pos, message.x, message.y)) {
+                        BeginBatchDraw();
+                        redraw();
+
+                        // 画出选择框
+                        if (player && board->getOrderByPosition(order, message.x, message.y)) {
+                            player->onSelectionBoxDraw(pos, order);
+                        }
+
+                        FlushBatchDraw();
+                    }
+                }
+                break;
+
+            // 按键按下
+            case WM_KEYDOWN:
+                if (isRunning()) {
+                    if (user) {
+                        int x = 0, y = 0;
+
+                        if (message.vkcode == user->getKeySettings().up) {
+                            x = user->selectionBoxOrder.x;
+                            y = user->selectionBoxOrder.y - 1;
+                        } else if (message.vkcode == user->getKeySettings().down) {
+                            x = user->selectionBoxOrder.x;
+                            y = user->selectionBoxOrder.y + 1;
+                        } else if (message.vkcode == user->getKeySettings().left) {
+                            x = user->selectionBoxOrder.x - 1;
+                            y = user->selectionBoxOrder.y;
+                        } else if (message.vkcode == user->getKeySettings().right) {
+                            x = user->selectionBoxOrder.x + 1;
+                            y = user->selectionBoxOrder.y;
+                        } else if (message.vkcode == user->getKeySettings().drop) {
+                            // 落子
+                            std::printf("(%d, %d)\n", user->selectionBoxOrder.x, user->selectionBoxOrder.y);
+
+                            // 执行游戏逻辑
+                            runGame(user->selectionBoxOrder.x, user->selectionBoxOrder.y);
+
+                            BeginBatchDraw();
+                            redraw();
+                            
+                            // 在落子位置画出新一轮玩家的选择框
+                            if (board->getCenterPositionByOrder(pos, user->selectionBoxOrder.x, user->selectionBoxOrder.y)) {
+                                board->getRoundPlayer()->onSelectionBoxDraw(pos, user->selectionBoxOrder);
+                            }
+                            
+                            FlushBatchDraw();
+                            break;
+                        }
+
+                        if (board->isOrderInBoard(x, y) && board->getCenterPositionByOrder(pos, x, y)) {
+                            BeginBatchDraw();
+                            redraw();
+                            
+                            order.x = x;
+                            order.y = y;
+                            user->onSelectionBoxDraw(pos, order);
+                            
+                            FlushBatchDraw();
+                        }
                     }
                 }
                 break;
