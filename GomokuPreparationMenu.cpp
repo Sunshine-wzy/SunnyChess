@@ -17,10 +17,6 @@ void GomokuPreparationMenu::onInit() {
     } else {
         chessTypeSelectionGroup.setVisible(false);
     }
-    
-//    IMAGE imageChessTypeSelection;
-//    loadimage(&imageChessTypeSelection, "../resources/order_selection.png", 640, 800);   //画三个选项的图片
-//    putimage(80, 2, &imageChessTypeSelection);
 }
 
 void GomokuPreparationMenu::initButtons() {
@@ -48,22 +44,31 @@ void GomokuPreparationMenu::initButtons() {
     int radius = 10;
     RECT relativeRect = {radius * 2, -radius * 4, radius * 16, radius * 4};
     RECT smallRelativeRect = {radius * 2, -radius * 4, radius * 13, radius * 4};
+    RECT squareRect = {radius * 2, -radius * 6, radius * 14, radius * 6};
     
     int rectWidth = relativeRect.right - relativeRect.left;
     int rectHeight = relativeRect.bottom - relativeRect.top;
-    IMAGE *imageChessTypeSelection = new IMAGE(rectWidth, rectHeight); // NOLINT(modernize-use-auto)
-    loadimage(imageChessTypeSelection, "../resources/order_selection.png", rectWidth, rectHeight);   //画三个选项的图片
+    int smallRectWidth = smallRelativeRect.right - smallRelativeRect.left;
+    int smallRectHeight = smallRelativeRect.bottom - smallRelativeRect.top;
+    int squareRectWidth = squareRect.right - squareRect.left;
+    int squareRectHeight = squareRect.bottom - squareRect.top;
+
+    IMAGE *modeSelectionImageFriend = new IMAGE(rectWidth, rectHeight);
+    loadimage(modeSelectionImageFriend, "../resources/friend.png", rectWidth, rectHeight);
+
+    IMAGE *modeSelectionImageBot = new IMAGE(rectWidth, rectHeight); // NOLINT(modernize-use-auto)
+    loadimage(modeSelectionImageBot, "../resources/bot.png", rectWidth, rectHeight);
     
     int incrementX = MainMenu::WIDTH / 5;
-    int incrementY = MainMenu::HEIGHT / 8;
+    int incrementY = MainMenu::HEIGHT / 6;
     
     // 模式选择按钮
     int modeSelectionBaseX = MainMenu::WIDTH / 8;
     int modeSelectionBaseY = MainMenu::HEIGHT / 5;
     // 好友对局
-    auto modeSelectionButtonFriend = new CircleSelectionButton("friend", modeSelectionBaseX, modeSelectionBaseY, radius, relativeRect, imageChessTypeSelection, "friend");
+    auto modeSelectionButtonFriend = new CircleSelectionButton("friend", modeSelectionBaseX, modeSelectionBaseY, radius, relativeRect, modeSelectionImageFriend);
     // 人机对战
-    auto modeSelectionButtonBot = new CircleSelectionButton("bot", modeSelectionBaseX + incrementX, modeSelectionBaseY, radius, relativeRect, nullptr, "bot");
+    auto modeSelectionButtonBot = new CircleSelectionButton("bot", modeSelectionBaseX + incrementX, modeSelectionBaseY, radius, relativeRect, modeSelectionImageBot);
     modeSelectionGroup
             .addButton(modeSelectionButtonFriend)
             .addButton(modeSelectionButtonBot);
@@ -101,11 +106,19 @@ void GomokuPreparationMenu::initButtons() {
     addNumberSelectionButton<4>(numberSelectionButtons);
     
     // player1 执子类型选择按钮
+    // TODO: IMAGE
+    IMAGE *chessTypeSelectionImageRandom = new IMAGE(squareRectWidth, squareRectHeight);
+    loadimage(chessTypeSelectionImageRandom, "../resources/randomchess.png", squareRectWidth, squareRectHeight);
+    IMAGE *chessTypeSelectionImageBlack = new IMAGE(squareRectWidth, squareRectHeight);
+    loadimage(chessTypeSelectionImageBlack, "../resources/blackchess.png", squareRectWidth, squareRectHeight);
+    IMAGE *chessTypeSelectionImageWhite = new IMAGE(squareRectWidth, squareRectHeight);
+    loadimage(chessTypeSelectionImageWhite, "../resources/whitechess.png", squareRectWidth, squareRectHeight);
+
     int chessTypeSelectionBaseX = modeSelectionBaseX;
-    int chessTypeSelectionBaseY = modeSelectionBaseY + incrementY * 2;
-    auto chessTypeSelectionButtonRandom = new CircleSelectionButton("random", chessTypeSelectionBaseX, chessTypeSelectionBaseY, radius, relativeRect, nullptr, "random");
-    auto chessTypeSelectionButtonBlack = new CircleSelectionButton("black", chessTypeSelectionBaseX + incrementX, chessTypeSelectionBaseY, radius, relativeRect, nullptr, "black");
-    auto chessTypeSelectionButtonWhite = new CircleSelectionButton("white", chessTypeSelectionBaseX + incrementX * 2, chessTypeSelectionBaseY, radius, relativeRect, nullptr, "white");
+    int chessTypeSelectionBaseY = modeSelectionBaseY + incrementY * 2.15;
+    auto chessTypeSelectionButtonRandom = new CircleSelectionButton("random", chessTypeSelectionBaseX, chessTypeSelectionBaseY, radius, squareRect, chessTypeSelectionImageRandom);
+    auto chessTypeSelectionButtonBlack = new CircleSelectionButton("black", chessTypeSelectionBaseX + incrementX, chessTypeSelectionBaseY, radius, squareRect, chessTypeSelectionImageBlack);
+    auto chessTypeSelectionButtonWhite = new CircleSelectionButton("white", chessTypeSelectionBaseX + incrementX * 2, chessTypeSelectionBaseY, radius, squareRect, chessTypeSelectionImageWhite);
     chessTypeSelectionGroup
             .addButton(chessTypeSelectionButtonRandom)
             .addButton(chessTypeSelectionButtonBlack)
@@ -145,13 +158,25 @@ void GomokuPreparationMenu::initButtons() {
     );
 
     // 棋盘大小选择按钮
+    // TODO: IMAGE
+    IMAGE *sizeSelectionImage13 = new IMAGE(rectWidth, rectHeight);
+    loadimage(sizeSelectionImage13, "../resources/sizeofchesspan13.png", rectWidth, rectHeight);
+    IMAGE *sizeSelectionImage15 = new IMAGE(rectWidth, rectHeight);
+    loadimage(sizeSelectionImage15, "../resources/sizeofchesspan15.png", rectWidth, rectHeight);
+    IMAGE *sizeSelectionImage17 = new IMAGE(rectWidth, rectHeight);
+    loadimage(sizeSelectionImage17, "../resources/sizeofchesspan17.png", rectWidth, rectHeight);
+    IMAGE *sizeSelectionImage19 = new IMAGE(rectWidth, rectHeight);
+    loadimage(sizeSelectionImage19, "../resources/sizeofchesspan19.png", rectWidth, rectHeight);
+    IMAGE *sizeSelectionImage21 = new IMAGE(rectWidth, rectHeight);
+    loadimage(sizeSelectionImage21, "../resources/sizeofchesspan21.png", rectWidth, rectHeight);
+
     int sizeSelectionBaseX = modeSelectionBaseX;
-    int sizeSelectionBaseY = modeSelectionBaseY + incrementY * 3;
-    auto sizeSelectionButton13 = new CircleSelectionButton("size13", sizeSelectionBaseX, sizeSelectionBaseY, radius, smallRelativeRect, nullptr, "13");
-    auto sizeSelectionButton15 = new CircleSelectionButton("size15", sizeSelectionBaseX + radius * 16, sizeSelectionBaseY, radius, smallRelativeRect, nullptr, "15");
-    auto sizeSelectionButton17 = new CircleSelectionButton("size17", sizeSelectionBaseX + radius * 16 * 2, sizeSelectionBaseY, radius, smallRelativeRect, nullptr, "17");
-    auto sizeSelectionButton19 = new CircleSelectionButton("size19", sizeSelectionBaseX + radius * 16 * 3, sizeSelectionBaseY, radius, smallRelativeRect, nullptr, "19");
-    auto sizeSelectionButton21 = new CircleSelectionButton("size21", sizeSelectionBaseX + radius * 16 * 4, sizeSelectionBaseY, radius, smallRelativeRect, nullptr, "21");
+    int sizeSelectionBaseY = modeSelectionBaseY + incrementY * 3.3;
+    auto sizeSelectionButton13 = new CircleSelectionButton("size13", sizeSelectionBaseX, sizeSelectionBaseY, radius, smallRelativeRect, sizeSelectionImage13);
+    auto sizeSelectionButton15 = new CircleSelectionButton("size15", sizeSelectionBaseX + radius * 16, sizeSelectionBaseY, radius, smallRelativeRect, sizeSelectionImage15);
+    auto sizeSelectionButton17 = new CircleSelectionButton("size17", sizeSelectionBaseX + radius * 16 * 2, sizeSelectionBaseY, radius, smallRelativeRect, sizeSelectionImage17);
+    auto sizeSelectionButton19 = new CircleSelectionButton("size19", sizeSelectionBaseX + radius * 16 * 3, sizeSelectionBaseY, radius, smallRelativeRect, sizeSelectionImage19);
+    auto sizeSelectionButton21 = new CircleSelectionButton("size21", sizeSelectionBaseX + radius * 16 * 4, sizeSelectionBaseY, radius, smallRelativeRect, sizeSelectionImage21);
     sizeSelectionGroup
             .addButton(sizeSelectionButton13)
             .addButton(sizeSelectionButton15)
