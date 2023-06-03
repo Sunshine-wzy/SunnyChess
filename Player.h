@@ -40,6 +40,15 @@ struct KeySettings {
     BYTE left;          // 左
     BYTE right;         // 右
     BYTE drop;          // 落子
+
+    static KeySettings none;            // 无
+    static KeySettings wsadq;           // WSADQ
+    static KeySettings udlrm;           // 上下左右M
+    static KeySettings yhgjt;           // YHGJT
+    static KeySettings pslqo;           // P;L'O
+    static KeySettings n85467;          // 小键盘85467
+    
+    static KeySettings *defaultSettings[7];
 };
 
 

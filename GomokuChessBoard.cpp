@@ -1,5 +1,8 @@
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "cert-msc50-cpp"
+
 #include "GomokuChessBoard.h"
-#include <set>
+#include <list>
 #include <cstdlib>
 
 GomokuChessBoard::GomokuChessBoard(int x, int y, int width, int height, GomokuOptions &options)
@@ -48,7 +51,7 @@ GomokuChessBoard::GomokuChessBoard(int x, int y, int width, int height, GomokuOp
                 typePlayer2 = ChessPiece::black;
             } else {
                 // 随机先手
-                if (std::rand() % 2 == 0) { // NOLINT(cert-msc50-cpp)
+                if (std::rand() % 2 == 0) {
                     typePlayer1 = ChessPiece::black;
                     typePlayer2 = ChessPiece::white;
                 } else {
@@ -57,19 +60,44 @@ GomokuChessBoard::GomokuChessBoard(int x, int y, int width, int height, GomokuOp
                 }
             }
             
-            players.push_back(new User(typePlayer1, selectionBoxHalfWidth, selectionBoxHalfHeight, KeySettings {0x57, 0x53, 0x41, 0x44, 0x52}));
-            players.push_back(new User(typePlayer2, selectionBoxHalfWidth, selectionBoxHalfHeight, KeySettings {VK_UP, VK_DOWN, VK_LEFT, VK_RIGHT, 0x4D}));
+            players.push_back(new User(typePlayer1, selectionBoxHalfWidth, selectionBoxHalfHeight, KeySettings::wsadq));
+            players.push_back(new User(typePlayer2, selectionBoxHalfWidth, selectionBoxHalfHeight, KeySettings::udlrm));
         } else {
             // 多人对弈
+            players.resize(options.number, nullptr);
             
+            // 选择黑棋
+            int blackNumber = std::rand() % options.number;
+            players[blackNumber] = new User(ChessPiece::black, selectionBoxHalfWidth, selectionBoxHalfHeight, *KeySettings::defaultSettings[blackNumber + 1]);
+            
+            // 选择白棋
+            int whiteNumber = std::rand() % (options.number - 1);
+            if (whiteNumber >= blackNumber) whiteNumber++;
+            players[whiteNumber] = new User(ChessPiece::white, selectionBoxHalfWidth, selectionBoxHalfHeight, *KeySettings::defaultSettings[whiteNumber + 1]);
+            
+            // 选择其他颜色棋
+            std::list<ChessPiece *> unusedPieces = {ChessPiece::red, ChessPiece::yellow, ChessPiece::blue, ChessPiece::green};
+            int currentNumber = 0;
+            while (currentNumber < options.number) {
+                if (currentNumber == blackNumber || currentNumber == whiteNumber) {
+                    currentNumber++;
+                    continue;
+                }
+                
+                auto iter = unusedPieces.begin();
+                int randomNumber = std::rand() % (int) unusedPieces.size();
+                for (int i = 0; i < randomNumber; i++) {
+                    ++iter;
+                }
+                
+                ChessPiece *randomPiece = *iter;
+                unusedPieces.erase(iter);
+                players[currentNumber] = new User(randomPiece, selectionBoxHalfWidth, selectionBoxHalfHeight, *KeySettings::defaultSettings[currentNumber + 1]);
+                
+                currentNumber++;
+            }
         }
-        
-        std::set<ChessPiece> usedPieces;
     }
-
-//    for (int i = 0; i < options.number; i++) {
-//        players.push_back(new Player());
-//    }
     
 }
 
@@ -127,3 +155,5 @@ void GomokuChessBoard::init(ChessOptions &options) {
     auto gomokuOptions = dynamic_cast<GomokuOptions &>(options);
     
 }
+
+#pragma clang diagnostic pop

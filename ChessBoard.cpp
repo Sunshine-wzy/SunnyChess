@@ -31,6 +31,8 @@ void ChessBoard::draw() {
     putimage(startX, startY, &drawingImage, SRCPAINT);
 }
 
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "bugprone-integer-division"
 void ChessBoard::drawBoard() {
     SetWorkingImage(&boardImage);
 
@@ -52,35 +54,37 @@ void ChessBoard::drawBoard() {
         line(baseX, y1, baseX + width, y1);
     }
 
+    // 画出标志点
     setfillcolor(BLACK);
     solidcircle(baseX + (int) (slotWidth * 3), baseY + (int) (slotHeight * 3), POINT_SIZE);
-    solidcircle(baseX + (int) (slotWidth * 9), baseY + (int) (slotHeight * 3), POINT_SIZE);
-    solidcircle(baseX + (int) (slotWidth * 15), baseY + (int) (slotHeight * 3), POINT_SIZE);
-    solidcircle(baseX + (int) (slotWidth * 3), baseY + (int) (slotHeight * 9), POINT_SIZE);
-    solidcircle(baseX + (int) (slotWidth * 9), baseY + (int) (slotHeight * 9), POINT_SIZE);
-    solidcircle(baseX + (int) (slotWidth * 15), baseY + (int) (slotHeight * 9), POINT_SIZE);
-    solidcircle(baseX + (int) (slotWidth * 3), baseY + (int) (slotHeight * 15), POINT_SIZE);
-    solidcircle(baseX + (int) (slotWidth * 9), baseY + (int) (slotHeight * 15), POINT_SIZE);
-    solidcircle(baseX + (int) (slotWidth * 15), baseY + (int) (slotHeight * 15), POINT_SIZE);
+    solidcircle(baseX + (int) (slotWidth * ((size - 1) / 2)), baseY + (int) (slotHeight * 3), POINT_SIZE);
+    solidcircle(baseX + (int) (slotWidth * (size - 4)), baseY + (int) (slotHeight * 3), POINT_SIZE);
+    solidcircle(baseX + (int) (slotWidth * 3), baseY + (int) (slotHeight * ((size - 1) / 2)), POINT_SIZE);
+    solidcircle(baseX + (int) (slotWidth * ((size - 1) / 2)), baseY + (int) (slotHeight * ((size - 1) / 2)), POINT_SIZE);
+    solidcircle(baseX + (int) (slotWidth * (size - 4)), baseY + (int) (slotHeight * ((size - 1) / 2)), POINT_SIZE);
+    solidcircle(baseX + (int) (slotWidth * 3), baseY + (int) (slotHeight * (size - 4)), POINT_SIZE);
+    solidcircle(baseX + (int) (slotWidth * ((size - 1) / 2)), baseY + (int) (slotHeight * (size - 4)), POINT_SIZE);
+    solidcircle(baseX + (int) (slotWidth * (size - 4)), baseY + (int) (slotHeight * (size - 4)), POINT_SIZE);
 
     settextstyle(20, 10, _T("Consolas"));
     setbkmode(TRANSPARENT);
     settextcolor(BLACK);
-    for (int i = 0; i < 19; i++) {
-        RECT r = {baseX - 25, static_cast<LONG>(baseY + 10 + (18 - i) * slotHeight), baseX - 5,
-                  static_cast<LONG>(baseY - 10 + (18 - i) * slotHeight)};
+    for (int i = 0; i < size; i++) {
+        RECT r = {baseX - 25, static_cast<LONG>(baseY + 10 + (size - 1 - i) * slotHeight), baseX - 5,
+                  static_cast<LONG>(baseY - 10 + (size - 1 - i) * slotHeight)};
         drawtext(_T(numberToString(i + 1).c_str()), &r, DT_CENTER | DT_VCENTER | DT_SINGLELINE | DT_NOCLIP);
     }
 
-    for (int i = 0; i < 19; i++) {
-        RECT r = {static_cast<LONG>(baseX - 10 + i * slotWidth), static_cast<LONG>(baseY + 18 * slotHeight + 5),
+    for (int i = 0; i < size; i++) {
+        RECT r = {static_cast<LONG>(baseX - 10 + i * slotWidth), static_cast<LONG>(baseY + (size - 1) * slotHeight + 5),
                   static_cast<LONG>(baseX + 10 + i * slotWidth),
-                  static_cast<LONG>(baseY + 18 * slotHeight + 25)};
+                  static_cast<LONG>(baseY + (size - 1) * slotHeight + 25)};
         drawtext(_T('A' + i), &r, DT_CENTER | DT_VCENTER | DT_SINGLELINE | DT_NOCLIP);
     }
 
     SetWorkingImage();
 }
+#pragma clang diagnostic pop
 
 void ChessBoard::drawPieces() {
     SetWorkingImage(&drawingImage);

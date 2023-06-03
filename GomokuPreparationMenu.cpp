@@ -25,6 +25,8 @@ void GomokuPreparationMenu::onInit() {
 
 void GomokuPreparationMenu::initButtons() {
     options = GomokuOptions();
+    options.size = 15;
+    
     modeSelectionGroup.clear();
     numberSelectionGroup.clear();
     sizeSelectionGroup.clear();
@@ -152,7 +154,8 @@ void GomokuPreparationMenu::initButtons() {
             .addButton(sizeSelectionButton15)
             .addButton(sizeSelectionButton17)
             .addButton(sizeSelectionButton19)
-            .addButton(sizeSelectionButton21);
+            .addButton(sizeSelectionButton21)
+            .select(sizeSelectionButton15);
     addButton(
             sizeSelectionButton13,
             [](Menu &menu, Button &button, int x, int y) {

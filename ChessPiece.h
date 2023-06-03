@@ -23,6 +23,10 @@ public:
     static ChessPiece *none;
     static ChessPiece *black;
     static ChessPiece *white;
+    static ChessPiece *red;
+    static ChessPiece *yellow;
+    static ChessPiece *blue;
+    static ChessPiece *green;
     
 };
 

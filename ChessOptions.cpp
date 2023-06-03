@@ -1,6 +1,6 @@
 #include "ChessOptions.h"
 
-ChessOptions::ChessOptions() : type(ChessPiece::none), size(19), number(2) {}
+ChessOptions::ChessOptions() : number(2), type(ChessPiece::none), size(19) {}
 
 ChessOptions::~ChessOptions() = default;
 
