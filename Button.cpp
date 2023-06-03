@@ -33,4 +33,8 @@ void Button::setVisible(bool isVisible) {
     visible = isVisible;
 }
 
+bool Button::isInside(int x, int y) {
+    return visible;
+}
+
 Button::~Button() = default;

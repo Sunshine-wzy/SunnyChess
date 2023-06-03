@@ -1,5 +1,4 @@
 #include "ChessBoard.h"
-#include <set>
 #include <cstdlib>
 #include <ctime>
 
@@ -16,18 +15,6 @@ ChessBoard::ChessBoard(int x, int y, int width, int height, ChessOptions &option
           round(players.begin()), number(options.number) {
     // 初始化随机数种子
     std::srand((unsigned int) time(nullptr)); // NOLINT(cert-msc51-cpp)
-    
-    std::set<ChessPiece> usedPieces;
-
-    int selectionBoxHalfWidth = (int) (slotWidth / 2);
-    int selectionBoxHalfHeight = (int) (slotHeight / 2);
-
-    // TODO: 多玩家与人机模式选择
-//    for (int i = 0; i < options.number; i++) {
-//        players.push_back(new Player());
-//    }
-    players.push_back(new User(ChessPiece::black, selectionBoxHalfWidth, selectionBoxHalfHeight, KeySettings {0x57, 0x53, 0x41, 0x44, 0x52}));
-    players.push_back(new User(ChessPiece::white, selectionBoxHalfWidth, selectionBoxHalfHeight, KeySettings {VK_UP, VK_DOWN, VK_LEFT, VK_RIGHT, 0x4D}));
     
     drawBoard();
 }
@@ -206,18 +193,13 @@ void ChessBoard::init(ChessOptions &options) {
             slots[i][j].setPiece(ChessPiece::none);
         }
     }
-    
+
     // 初始化先手
-    if (options.type == ChessPiece::black) {
-        // player1 先手
-        setRound(players.begin());
-    } else if (options.type == ChessPiece::white) {
-        // player2 先手
-        setRound(players.begin() + 1);
-    } else {
-        // 随机先手
-        setRound(players.begin() + (std::rand() % (int) players.size())); // NOLINT(cert-msc50-cpp)
+    auto iter = players.begin();
+    while (iter != players.end() && (*iter)->getPiece() != ChessPiece::black) {
+        ++iter;
     }
+    setRound(iter);
 }
 
 typename std::vector<Player *>::iterator &ChessBoard::getRound() {

@@ -39,3 +39,6 @@ User::User(ChessPiece *piece, int selectionBoxHalfWidth, int selectionBoxHalfHei
 const KeySettings &User::getKeySettings() const {
     return keySettings;
 }
+
+Bot::Bot(ChessPiece *piece, int selectionBoxHalfWidth, int selectionBoxHalfHeight)
+            : Player(piece, selectionBoxHalfWidth, selectionBoxHalfHeight) {}

@@ -30,7 +30,7 @@ public:
     virtual void draw() = 0;
 
     // 判断(x, y)是否在按钮区域内
-    virtual bool isInside(int x, int y) = 0;
+    virtual bool isInside(int x, int y);
 
     const std::string &getName() const;
 

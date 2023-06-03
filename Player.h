@@ -59,6 +59,8 @@ public:
 
 // 机器人 (表示电脑玩家)
 class Bot : public Player {
+public:
+    Bot(ChessPiece *piece, int selectionBoxHalfWidth, int selectionBoxHalfHeight);
     
 };
 

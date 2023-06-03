@@ -12,6 +12,12 @@ void GomokuPreparationMenu::onInit() {
         numberSelectionGroup.setVisible(false);
     }
     
+    if (modeSelectionGroup.isKeySelected("bot") || numberSelectionGroup.isKeySelected("number2")) {
+        chessTypeSelectionGroup.setVisible(true);
+    } else {
+        chessTypeSelectionGroup.setVisible(false);
+    }
+    
 //    IMAGE imageChessTypeSelection;
 //    loadimage(&imageChessTypeSelection, "../resources/order_selection.png", 640, 800);   //画三个选项的图片
 //    putimage(80, 2, &imageChessTypeSelection);
@@ -90,18 +96,15 @@ void GomokuPreparationMenu::initButtons() {
     addNumberSelectionButton<4>(numberSelectionButtons);
     
     // player1 执子类型选择按钮
-    int chessTypeSelectionBaseX = MainMenu::WIDTH / 5;
-    int chessTypeSelectionBaseY = MainMenu::HEIGHT / 2;
-    
-    auto chessTypeSelectionButtonRandom = new CircleSelectionButton("random", chessTypeSelectionBaseX, chessTypeSelectionBaseY, radius);
-    auto chessTypeSelectionButtonBlack = new CircleSelectionButton("black", chessTypeSelectionBaseX * 2, chessTypeSelectionBaseY, radius);
-    auto chessTypeSelectionButtonWhite = new CircleSelectionButton("white", chessTypeSelectionBaseX * 3, chessTypeSelectionBaseY, radius);
-    
+    int chessTypeSelectionBaseX = modeSelectionBaseX;
+    int chessTypeSelectionBaseY = modeSelectionBaseY * 3;
+    auto chessTypeSelectionButtonRandom = new CircleSelectionButton("random", chessTypeSelectionBaseX, chessTypeSelectionBaseY, radius, relativeRect, nullptr, "random");
+    auto chessTypeSelectionButtonBlack = new CircleSelectionButton("black", chessTypeSelectionBaseX * 2, chessTypeSelectionBaseY, radius, relativeRect, nullptr, "black");
+    auto chessTypeSelectionButtonWhite = new CircleSelectionButton("white", chessTypeSelectionBaseX * 3, chessTypeSelectionBaseY, radius, relativeRect, nullptr, "white");
     chessTypeSelectionGroup
             .addButton(chessTypeSelectionButtonRandom)
             .addButton(chessTypeSelectionButtonBlack)
             .addButton(chessTypeSelectionButtonWhite);
-    
     addButton(
             chessTypeSelectionButtonRandom,
             [](Menu &menu, Button &button, int x, int y) {
@@ -113,7 +116,6 @@ void GomokuPreparationMenu::initButtons() {
                 menu.reopen();
             }
     );
-
     addButton(
             chessTypeSelectionButtonBlack,
             [](Menu &menu, Button &button, int x, int y) {
@@ -125,7 +127,6 @@ void GomokuPreparationMenu::initButtons() {
                 menu.reopen();
             }
     );
-
     addButton(
             chessTypeSelectionButtonWhite,
             [](Menu &menu, Button &button, int x, int y) {
@@ -138,6 +139,75 @@ void GomokuPreparationMenu::initButtons() {
             }
     );
 
+    // 棋盘大小选择按钮
+    int sizeSelectionBaseX = modeSelectionBaseX;
+    int sizeSelectionBaseY = modeSelectionBaseY * 4;
+    auto sizeSelectionButton13 = new CircleSelectionButton("size13", sizeSelectionBaseX, sizeSelectionBaseY, radius, smallRelativeRect, nullptr, "13");
+    auto sizeSelectionButton15 = new CircleSelectionButton("size15", sizeSelectionBaseX + radius * 16, sizeSelectionBaseY, radius, smallRelativeRect, nullptr, "15");
+    auto sizeSelectionButton17 = new CircleSelectionButton("size17", sizeSelectionBaseX + radius * 16 * 2, sizeSelectionBaseY, radius, smallRelativeRect, nullptr, "17");
+    auto sizeSelectionButton19 = new CircleSelectionButton("size19", sizeSelectionBaseX + radius * 16 * 3, sizeSelectionBaseY, radius, smallRelativeRect, nullptr, "19");
+    auto sizeSelectionButton21 = new CircleSelectionButton("size21", sizeSelectionBaseX + radius * 16 * 4, sizeSelectionBaseY, radius, smallRelativeRect, nullptr, "21");
+    sizeSelectionGroup
+            .addButton(sizeSelectionButton13)
+            .addButton(sizeSelectionButton15)
+            .addButton(sizeSelectionButton17)
+            .addButton(sizeSelectionButton19)
+            .addButton(sizeSelectionButton21);
+    addButton(
+            sizeSelectionButton13,
+            [](Menu &menu, Button &button, int x, int y) {
+                auto &circleButton = dynamic_cast<CircleSelectionButton &>(button);
+                auto &gomokuMenu = dynamic_cast<GomokuPreparationMenu &>(menu);
+
+                gomokuMenu.sizeSelectionGroup.select(&circleButton);
+                gomokuMenu.options.size = 13;
+                menu.reopen();
+            }
+    );
+    addButton(
+            sizeSelectionButton15,
+            [](Menu &menu, Button &button, int x, int y) {
+                auto &circleButton = dynamic_cast<CircleSelectionButton &>(button);
+                auto &gomokuMenu = dynamic_cast<GomokuPreparationMenu &>(menu);
+
+                gomokuMenu.sizeSelectionGroup.select(&circleButton);
+                gomokuMenu.options.size = 15;
+                menu.reopen();
+            }
+    );
+    addButton(
+            sizeSelectionButton17,
+            [](Menu &menu, Button &button, int x, int y) {
+                auto &circleButton = dynamic_cast<CircleSelectionButton &>(button);
+                auto &gomokuMenu = dynamic_cast<GomokuPreparationMenu &>(menu);
+
+                gomokuMenu.sizeSelectionGroup.select(&circleButton);
+                gomokuMenu.options.size = 17;
+                menu.reopen();
+            }
+    );
+    addButton(
+            sizeSelectionButton19,
+            [](Menu &menu, Button &button, int x, int y) {
+                auto &circleButton = dynamic_cast<CircleSelectionButton &>(button);
+                auto &gomokuMenu = dynamic_cast<GomokuPreparationMenu &>(menu);
+
+                gomokuMenu.sizeSelectionGroup.select(&circleButton);
+                gomokuMenu.options.size = 19;
+                menu.reopen();
+            }
+    );
+    addButton(
+            sizeSelectionButton21,
+            [](Menu &menu, Button &button, int x, int y) {
+                auto &circleButton = dynamic_cast<CircleSelectionButton &>(button);
+                auto &gomokuMenu = dynamic_cast<GomokuPreparationMenu &>(menu);
+
+                gomokuMenu.sizeSelectionGroup.select(&circleButton);
+                gomokuMenu.options.size = 21;
+                menu.reopen();
+            }
+    );
 }
 
 void GomokuPreparationMenu::onEnable() {

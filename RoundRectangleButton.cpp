@@ -15,6 +15,8 @@ void RoundRectangleButton::draw() {
 }
 
 bool RoundRectangleButton::isInside(int x, int y) {
+    if (!Button::isInside(x, y)) return false;
+    
     return x >= getX() - getWidth() / 2 && x <= getX() + getWidth() / 2
         && y >= getY() - getHeight() / 2 && y <= getY() + getHeight() / 2;
 }

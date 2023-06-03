@@ -13,6 +13,8 @@ CircleSelectionButton::~CircleSelectionButton() {
 }
 
 bool CircleSelectionButton::isInside(int x, int y) {
+    if (!Button::isInside(x, y)) return false;
+    
     return (x >= realRect.left && x <= realRect.right && y >= realRect.top && y <= realRect.bottom) || ((x - getX()) * (x - getX()) + (y - getY()) * (y - getY()) <= radius * radius);
 }
 
@@ -25,7 +27,7 @@ void CircleSelectionButton::drawNormal() {
         settextstyle(30, 15, _T("Consolas"));
         setbkmode(TRANSPARENT);
         settextcolor(WHITE);
-        drawtext(_T(text.c_str()), &realRect, DT_LEFT | DT_VCENTER | DT_SINGLELINE | DT_NOCLIP);
+        drawtext(_T(text.c_str()), &realRect, DT_CENTER | DT_VCENTER | DT_SINGLELINE | DT_NOCLIP);
 
         rectangle(realRect.left, realRect.top, realRect.right, realRect.bottom);
     }
