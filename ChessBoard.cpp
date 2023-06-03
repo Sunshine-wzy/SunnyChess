@@ -33,6 +33,7 @@ void ChessBoard::draw() {
 
 #pragma clang diagnostic push
 #pragma ide diagnostic ignored "bugprone-integer-division"
+
 void ChessBoard::drawBoard() {
     SetWorkingImage(&boardImage);
 
@@ -40,12 +41,14 @@ void ChessBoard::drawBoard() {
 
     setlinecolor(BLACK);
 
+    // 画出边界线
     setlinestyle(PS_SOLID | PS_ENDCAP_SQUARE, 2);
     line(baseX, baseY, baseX, baseY + height);
     line(baseX + width, baseY, baseX + width, baseY + height);
     line(baseX, baseY, baseX + width, baseY);
     line(baseX, baseY + height, baseX + width, baseY + height);
 
+    // 画出格子线
     setlinestyle(PS_SOLID | PS_ENDCAP_SQUARE, 1);
     for (int x1 = baseX, i = 0; i < size - 1; i++, x1 = baseX + (int) (i * slotWidth)) {
         line(x1, baseY, x1, baseY + height);
@@ -66,6 +69,7 @@ void ChessBoard::drawBoard() {
     solidcircle(baseX + (int) (slotWidth * ((size - 1) / 2)), baseY + (int) (slotHeight * (size - 4)), POINT_SIZE);
     solidcircle(baseX + (int) (slotWidth * (size - 4)), baseY + (int) (slotHeight * (size - 4)), POINT_SIZE);
 
+    // 画出行号
     settextstyle(20, 10, _T("Consolas"));
     setbkmode(TRANSPARENT);
     settextcolor(BLACK);
@@ -84,13 +88,14 @@ void ChessBoard::drawBoard() {
 
     SetWorkingImage();
 }
+
 #pragma clang diagnostic pop
 
 void ChessBoard::drawPieces() {
     SetWorkingImage(&drawingImage);
     drawingImage = boardImage;
 
-    Position position{};
+    Position position {};
     for (int n = 1; n <= size; n++) {
         for (int m = 1; m <= size; m++) {
             ChessPiece *piece = slots[n][m].getPiece();
