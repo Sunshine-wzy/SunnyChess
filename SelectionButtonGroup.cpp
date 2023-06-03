@@ -40,3 +40,13 @@ SelectionButton *SelectionButtonGroup::getSelectedButton() {
 SelectionButton *SelectionButtonGroup::getButton(const std::string &key) {
     return buttons[key];
 }
+
+bool SelectionButtonGroup::isKeySelected(const std::string &key) const {
+    return selectedKey == key;
+}
+
+void SelectionButtonGroup::setVisible(bool isVisible) {
+    for (auto &pair : buttons) {
+        pair.second->setVisible(isVisible);
+    }
+}

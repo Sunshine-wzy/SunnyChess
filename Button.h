@@ -17,6 +17,9 @@ private:
     // 按钮大小
     int width;
     int height;
+    
+    // 是否可见
+    bool visible;
 
 public:
     Button(std::string name, int x, int y, int width = BUTTON_WIDTH, int height = BUTTON_HEIGHT);
@@ -38,6 +41,10 @@ public:
     int getWidth() const;
 
     int getHeight() const;
+
+    bool isVisible() const;
+
+    void setVisible(bool isVisible);
 
 
     // 按钮默认大小

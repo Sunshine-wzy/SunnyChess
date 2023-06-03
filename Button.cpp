@@ -1,7 +1,9 @@
 #include "Button.h"
 #include <utility>
 
-Button::Button(std::string name, int x, int y, int width, int height) : name(std::move(name)), x(x), y(y), width(width), height(height) {}
+Button::Button(std::string name, int x, int y, int width, int height)
+            : name(std::move(name)), x(x), y(y),
+              width(width), height(height), visible(true) {}
 
 const std::string &Button::getName() const {
     return name;
@@ -21,6 +23,14 @@ int Button::getWidth() const {
 
 int Button::getHeight() const {
     return height;
+}
+
+bool Button::isVisible() const {
+    return visible;
+}
+
+void Button::setVisible(bool isVisible) {
+    visible = isVisible;
 }
 
 Button::~Button() = default;

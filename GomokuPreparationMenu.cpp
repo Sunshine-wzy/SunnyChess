@@ -1,12 +1,17 @@
 #include "GomokuPreparationMenu.h"
 #include "MenuManager.h"
 #include "RoundRectangleButton.h"
-#include "CircleSelectionButton.h"
 
 
 GomokuPreparationMenu::GomokuPreparationMenu() = default;
 
 void GomokuPreparationMenu::onInit() {
+    if (modeSelectionGroup.isKeySelected("friend")) {
+        numberSelectionGroup.setVisible(true);
+    } else {
+        numberSelectionGroup.setVisible(false);
+    }
+    
 //    IMAGE imageChessTypeSelection;
 //    loadimage(&imageChessTypeSelection, "../resources/order_selection.png", 640, 800);   //画三个选项的图片
 //    putimage(80, 2, &imageChessTypeSelection);
@@ -15,6 +20,8 @@ void GomokuPreparationMenu::onInit() {
 void GomokuPreparationMenu::initButtons() {
     options = GomokuOptions();
     modeSelectionGroup.clear();
+    numberSelectionGroup.clear();
+    sizeSelectionGroup.clear();
     chessTypeSelectionGroup.clear();
 
     addButton(
@@ -23,7 +30,6 @@ void GomokuPreparationMenu::initButtons() {
                 MenuManager::gomoku.open();
             }
     );
-
     addButton(
             new RoundRectangleButton("main", MainMenu::WIDTH, MainMenu::HEIGHT * 2 / 3, 100, 50),
             [](Menu &menu, Button &button, int x, int y) {
@@ -33,12 +39,14 @@ void GomokuPreparationMenu::initButtons() {
 
     int radius = 10;
     RECT relativeRect = {radius * 2, -radius * 4, radius * 16, radius * 4};
-
+    RECT smallRelativeRect = {radius * 2, -radius * 4, radius * 13, radius * 4};
+    
     int rectWidth = relativeRect.right - relativeRect.left;
     int rectHeight = relativeRect.bottom - relativeRect.top;
     IMAGE *imageChessTypeSelection = new IMAGE(rectWidth, rectHeight); // NOLINT(modernize-use-auto)
     loadimage(imageChessTypeSelection, "../resources/order_selection.png", rectWidth, rectHeight);   //画三个选项的图片
     
+    // 模式选择按钮
     int modeSelectionBaseX = MainMenu::WIDTH / 5;
     int modeSelectionBaseY = MainMenu::HEIGHT / 10;
     // 好友对局
@@ -71,15 +79,23 @@ void GomokuPreparationMenu::initButtons() {
             }
     );
     
+    // 玩家数量选择按钮
+    int numberSelectionBaseX = modeSelectionBaseX;
+    int numberSelectionBaseY = modeSelectionBaseY * 2;
+    CircleSelectionButton *numberSelectionButtons[5];
+    for (int i = 0; i < 5; i++) {
+        numberSelectionButtons[i] = new CircleSelectionButton(std::string("number") + std::to_string(i + 2), numberSelectionBaseX + radius * 16 * i, numberSelectionBaseY, radius, smallRelativeRect, nullptr, std::to_string(i + 2));
+        numberSelectionGroup.addButton(numberSelectionButtons[i]);
+    }
+    addNumberSelectionButton<4>(numberSelectionButtons);
+    
+    // player1 执子类型选择按钮
     int chessTypeSelectionBaseX = MainMenu::WIDTH / 5;
     int chessTypeSelectionBaseY = MainMenu::HEIGHT / 2;
     
-    auto chessTypeSelectionButtonRandom = new CircleSelectionButton("random", chessTypeSelectionBaseX,
-                                                                    chessTypeSelectionBaseY, radius);
-    auto chessTypeSelectionButtonBlack = new CircleSelectionButton("black", chessTypeSelectionBaseX * 2,
-                                                                   chessTypeSelectionBaseY, radius);
-    auto chessTypeSelectionButtonWhite = new CircleSelectionButton("white", chessTypeSelectionBaseX * 3,
-                                                                   chessTypeSelectionBaseY, radius);
+    auto chessTypeSelectionButtonRandom = new CircleSelectionButton("random", chessTypeSelectionBaseX, chessTypeSelectionBaseY, radius);
+    auto chessTypeSelectionButtonBlack = new CircleSelectionButton("black", chessTypeSelectionBaseX * 2, chessTypeSelectionBaseY, radius);
+    auto chessTypeSelectionButtonWhite = new CircleSelectionButton("white", chessTypeSelectionBaseX * 3, chessTypeSelectionBaseY, radius);
     
     chessTypeSelectionGroup
             .addButton(chessTypeSelectionButtonRandom)
@@ -141,3 +157,7 @@ void GomokuPreparationMenu::onEnable() {
 GomokuOptions &GomokuPreparationMenu::getOptions() {
     return options;
 }
+
+template <>
+void GomokuPreparationMenu::addNumberSelectionButton<-1>(CircleSelectionButton *buttons[]) {}
+
