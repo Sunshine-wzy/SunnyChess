@@ -11,10 +11,13 @@ private:
     int radius;
     RECT relativeRect;
     RECT realRect;
+    IMAGE *image;
     std::string text;
 
 public:
-    CircleSelectionButton(std::string name, int x, int y, int radius, RECT relativeRect = {0, 0, 0, 0}, std::string text = "");
+    CircleSelectionButton(std::string name, int x, int y, int radius, RECT relativeRect = {0, 0, 0, 0}, IMAGE *image = nullptr, std::string text = "");
+
+    ~CircleSelectionButton() override;
 
 
     bool isInside(int x, int y) override;

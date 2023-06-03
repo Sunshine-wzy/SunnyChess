@@ -1,5 +1,4 @@
 #include "ChessBoard.h"
-#include <set>
 #include <cstdlib>
 #include <ctime>
 
@@ -17,18 +16,6 @@ ChessBoard::ChessBoard(int x, int y, int width, int height, ChessOptions &option
     // 初始化随机数种子
     std::srand((unsigned int) time(nullptr)); // NOLINT(cert-msc51-cpp)
     
-    std::set<ChessPiece> usedPieces;
-
-    int selectionBoxHalfWidth = (int) (slotWidth / 2);
-    int selectionBoxHalfHeight = (int) (slotHeight / 2);
-
-    // TODO: 多玩家与人机模式选择
-//    for (int i = 0; i < options.number; i++) {
-//        players.push_back(new Player());
-//    }
-    players.push_back(new User(ChessPiece::black, selectionBoxHalfWidth, selectionBoxHalfHeight, KeySettings {0x57, 0x53, 0x41, 0x44, 0x52}));
-    players.push_back(new User(ChessPiece::white, selectionBoxHalfWidth, selectionBoxHalfHeight, KeySettings {VK_UP, VK_DOWN, VK_LEFT, VK_RIGHT, 0x4D}));
-    
     drawBoard();
 }
 
@@ -44,6 +31,9 @@ void ChessBoard::draw() {
     putimage(startX, startY, &drawingImage, SRCPAINT);
 }
 
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "bugprone-integer-division"
+
 void ChessBoard::drawBoard() {
     SetWorkingImage(&boardImage);
 
@@ -51,12 +41,14 @@ void ChessBoard::drawBoard() {
 
     setlinecolor(BLACK);
 
+    // 画出边界线
     setlinestyle(PS_SOLID | PS_ENDCAP_SQUARE, 2);
     line(baseX, baseY, baseX, baseY + height);
     line(baseX + width, baseY, baseX + width, baseY + height);
     line(baseX, baseY, baseX + width, baseY);
     line(baseX, baseY + height, baseX + width, baseY + height);
 
+    // 画出格子线
     setlinestyle(PS_SOLID | PS_ENDCAP_SQUARE, 1);
     for (int x1 = baseX, i = 0; i < size - 1; i++, x1 = baseX + (int) (i * slotWidth)) {
         line(x1, baseY, x1, baseY + height);
@@ -65,41 +57,45 @@ void ChessBoard::drawBoard() {
         line(baseX, y1, baseX + width, y1);
     }
 
+    // 画出标志点
     setfillcolor(BLACK);
     solidcircle(baseX + (int) (slotWidth * 3), baseY + (int) (slotHeight * 3), POINT_SIZE);
-    solidcircle(baseX + (int) (slotWidth * 9), baseY + (int) (slotHeight * 3), POINT_SIZE);
-    solidcircle(baseX + (int) (slotWidth * 15), baseY + (int) (slotHeight * 3), POINT_SIZE);
-    solidcircle(baseX + (int) (slotWidth * 3), baseY + (int) (slotHeight * 9), POINT_SIZE);
-    solidcircle(baseX + (int) (slotWidth * 9), baseY + (int) (slotHeight * 9), POINT_SIZE);
-    solidcircle(baseX + (int) (slotWidth * 15), baseY + (int) (slotHeight * 9), POINT_SIZE);
-    solidcircle(baseX + (int) (slotWidth * 3), baseY + (int) (slotHeight * 15), POINT_SIZE);
-    solidcircle(baseX + (int) (slotWidth * 9), baseY + (int) (slotHeight * 15), POINT_SIZE);
-    solidcircle(baseX + (int) (slotWidth * 15), baseY + (int) (slotHeight * 15), POINT_SIZE);
+    solidcircle(baseX + (int) (slotWidth * ((size - 1) / 2)), baseY + (int) (slotHeight * 3), POINT_SIZE);
+    solidcircle(baseX + (int) (slotWidth * (size - 4)), baseY + (int) (slotHeight * 3), POINT_SIZE);
+    solidcircle(baseX + (int) (slotWidth * 3), baseY + (int) (slotHeight * ((size - 1) / 2)), POINT_SIZE);
+    solidcircle(baseX + (int) (slotWidth * ((size - 1) / 2)), baseY + (int) (slotHeight * ((size - 1) / 2)), POINT_SIZE);
+    solidcircle(baseX + (int) (slotWidth * (size - 4)), baseY + (int) (slotHeight * ((size - 1) / 2)), POINT_SIZE);
+    solidcircle(baseX + (int) (slotWidth * 3), baseY + (int) (slotHeight * (size - 4)), POINT_SIZE);
+    solidcircle(baseX + (int) (slotWidth * ((size - 1) / 2)), baseY + (int) (slotHeight * (size - 4)), POINT_SIZE);
+    solidcircle(baseX + (int) (slotWidth * (size - 4)), baseY + (int) (slotHeight * (size - 4)), POINT_SIZE);
 
+    // 画出行号
     settextstyle(20, 10, _T("Consolas"));
     setbkmode(TRANSPARENT);
     settextcolor(BLACK);
-    for (int i = 0; i < 19; i++) {
-        RECT r = {baseX - 25, static_cast<LONG>(baseY + 10 + (18 - i) * slotHeight), baseX - 5,
-                  static_cast<LONG>(baseY - 10 + (18 - i) * slotHeight)};
-        drawtext(_T(numberToString(i + 1).c_str()), &r, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+    for (int i = 0; i < size; i++) {
+        RECT r = {baseX - 25, static_cast<LONG>(baseY + 10 + (size - 1 - i) * slotHeight), baseX - 5,
+                  static_cast<LONG>(baseY - 10 + (size - 1 - i) * slotHeight)};
+        drawtext(_T(numberToString(i + 1).c_str()), &r, DT_CENTER | DT_VCENTER | DT_SINGLELINE | DT_NOCLIP);
     }
 
-    for (int i = 0; i < 19; i++) {
-        RECT r = {static_cast<LONG>(baseX - 10 + i * slotWidth), static_cast<LONG>(baseY + 18 * slotHeight + 5),
+    for (int i = 0; i < size; i++) {
+        RECT r = {static_cast<LONG>(baseX - 10 + i * slotWidth), static_cast<LONG>(baseY + (size - 1) * slotHeight + 5),
                   static_cast<LONG>(baseX + 10 + i * slotWidth),
-                  static_cast<LONG>(baseY + 18 * slotHeight + 25)};
-        drawtext(_T('A' + i), &r, DT_CENTER | DT_VCENTER | DT_NOCLIP);
+                  static_cast<LONG>(baseY + (size - 1) * slotHeight + 25)};
+        drawtext(_T('A' + i), &r, DT_CENTER | DT_VCENTER | DT_SINGLELINE | DT_NOCLIP);
     }
 
     SetWorkingImage();
 }
 
+#pragma clang diagnostic pop
+
 void ChessBoard::drawPieces() {
     SetWorkingImage(&drawingImage);
     drawingImage = boardImage;
 
-    Position position{};
+    Position position {};
     for (int n = 1; n <= size; n++) {
         for (int m = 1; m <= size; m++) {
             ChessPiece *piece = slots[n][m].getPiece();
@@ -206,18 +202,13 @@ void ChessBoard::init(ChessOptions &options) {
             slots[i][j].setPiece(ChessPiece::none);
         }
     }
-    
+
     // 初始化先手
-    if (options.type == ChessPiece::black) {
-        // player1 先手
-        setRound(players.begin());
-    } else if (options.type == ChessPiece::white) {
-        // player2 先手
-        setRound(players.begin() + 1);
-    } else {
-        // 随机先手
-        setRound(players.begin() + (std::rand() % (int) players.size())); // NOLINT(cert-msc50-cpp)
+    auto iter = players.begin();
+    while (iter != players.end() && (*iter)->getPiece() != ChessPiece::black) {
+        ++iter;
     }
+    setRound(iter);
 }
 
 typename std::vector<Player *>::iterator &ChessBoard::getRound() {

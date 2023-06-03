@@ -4,6 +4,7 @@
 #include "GomokuMenu.h"
 #include "ChessOptions.h"
 #include "SelectionButtonGroup.h"
+#include "CircleSelectionButton.h"
 
 
 class GomokuPreparationMenu : public Menu {
@@ -11,8 +12,14 @@ private:
     GomokuOptions options;
     
     SelectionButtonGroup modeSelectionGroup;
+    SelectionButtonGroup numberSelectionGroup;
+    SelectionButtonGroup sizeSelectionGroup;
     SelectionButtonGroup chessTypeSelectionGroup;
-
+    
+    
+    template <int Number>
+    void addNumberSelectionButton(CircleSelectionButton *buttons[]);
+    
 public:
     GomokuPreparationMenu();
 
@@ -25,6 +32,24 @@ public:
     GomokuOptions &getOptions();
 
 };
+
+
+template <int Number>
+void GomokuPreparationMenu::addNumberSelectionButton(CircleSelectionButton *buttons[]) {
+    addButton(
+            buttons[Number],
+            [](Menu &menu, Button &button, int x, int y) {
+                auto &circleButton = dynamic_cast<CircleSelectionButton &>(button);
+                auto &gomokuMenu = dynamic_cast<GomokuPreparationMenu &>(menu);
+
+                gomokuMenu.numberSelectionGroup.select(&circleButton);
+                gomokuMenu.options.number = Number + 2;
+                menu.reopen();
+            }
+    );
+
+    addNumberSelectionButton<Number - 1>(buttons);
+}
 
 
 #endif //SUNNYCHESS_GOMOKUPREPARATIONMENU_H

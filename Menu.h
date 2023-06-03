@@ -20,7 +20,9 @@ private:
 public:
     Menu();
 
-    ~Menu();
+    virtual ~Menu();
+    
+    void deleteButtons();
 
     // 打开菜单
     virtual void open();

@@ -28,7 +28,11 @@ public:
     SelectionButton *getSelectedButton();
     
     SelectionButton *getButton(const std::string &key);
-
+    
+    bool isKeySelected(const std::string &key) const;
+    
+    void setVisible(bool isVisible);
+    
 };
 
 

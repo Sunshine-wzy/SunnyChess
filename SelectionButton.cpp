@@ -18,6 +18,8 @@ bool SelectionButton::switchSelected() {
 }
 
 void SelectionButton::draw() {
+    if (!isVisible()) return;
+    
     if (selected) drawSelected();
     else drawNormal();
 }

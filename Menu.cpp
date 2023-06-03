@@ -4,9 +4,14 @@
 Menu::Menu() = default;
 
 Menu::~Menu() {
+    deleteButtons();
+}
+
+void Menu::deleteButtons() {
     for (std::pair<Button *, ButtonAction> pair: buttons) {
         delete pair.first;
     }
+    buttons.clear();
 }
 
 void Menu::open() {
@@ -23,7 +28,7 @@ void Menu::open() {
     onInit();
 
     // 初始化按钮
-    buttons.clear();
+    deleteButtons();
     initButtons();
 
     // 绘制按钮

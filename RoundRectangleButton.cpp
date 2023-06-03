@@ -7,12 +7,16 @@ RoundRectangleButton::RoundRectangleButton(std::string name, int x, int y, int w
         : Button(std::move(name), x, y, width, height), ellipseWidth(ellipseWidth), ellipseHeight(ellipseHeight) {}
 
 void RoundRectangleButton::draw() {
+    if (!isVisible()) return;
+    
     setcolor(WHITE);
     setlinestyle(&MenuManager::main.getLineStyle());
     roundrect(getX() - getWidth() / 2, getY() - getHeight() / 2, getX() + getWidth() / 2, getY() + getHeight() / 2, ellipseWidth, ellipseHeight);
 }
 
 bool RoundRectangleButton::isInside(int x, int y) {
+    if (!Button::isInside(x, y)) return false;
+    
     return x >= getX() - getWidth() / 2 && x <= getX() + getWidth() / 2
         && y >= getY() - getHeight() / 2 && y <= getY() + getHeight() / 2;
 }

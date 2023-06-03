@@ -8,6 +8,14 @@ ChessPiece *ChessPiece::black = new ChessPiece(BLACK);
 
 ChessPiece *ChessPiece::white = new ChessPiece(WHITE);
 
+ChessPiece *ChessPiece::red = new ChessPiece(RED);
+
+ChessPiece *ChessPiece::yellow = new ChessPiece(YELLOW);
+
+ChessPiece *ChessPiece::blue = new ChessPiece(BLUE);
+
+ChessPiece *ChessPiece::green = new ChessPiece(GREEN);
+
 void ChessPiece::draw(int x, int y, int radius) const {
     if (isNone()) return;
     
