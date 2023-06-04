@@ -19,7 +19,7 @@ ChessPiece *ChessPiece::green = new ChessPiece(GREEN);
 void ChessPiece::draw(int x, int y, int radius) const {
     if (isNone()) return;
     
-    setcolor(color);
+    setfillcolor(color);
     solidcircle(x, y, radius);
 }
 

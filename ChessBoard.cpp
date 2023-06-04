@@ -286,3 +286,14 @@ int ChessBoard::getNumber() const {
 const IMAGE &ChessBoard::getImageForbidden() const {
     return imageForbidden;
 }
+
+void ChessBoard::record(ChessPiece *piece, int x, int y) {
+    records.emplace_back(piece, Position {x, y});
+    if (records.front().first == piece) {
+        records.pop_front();
+    }
+}
+
+void ChessBoard::record(int x, int y) {
+    record(getRoundPlayer()->getPiece(), x, y);
+}

@@ -1,9 +1,15 @@
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "modernize-use-auto"
 #include "GomokuMenu.h"
 #include "MenuManager.h"
 #include "RoundRectangleButton.h"
 #include <cstdio>
+#include <thread>
 
-GomokuMenu::GomokuMenu() : board(nullptr) {}
+GomokuMenu::GomokuMenu()
+            : board(nullptr), timerArea(RECT {}),
+              sidebarBaseX(0), sidebarCenterX(0),
+              buttonRetract(nullptr) {}
 
 void GomokuMenu::onOpenInit() {
     // 析构之前的棋盘对象
@@ -12,18 +18,65 @@ void GomokuMenu::onOpenInit() {
     // 构造新的棋盘对象
     GomokuOptions &options = MenuManager::gomokuPreparation.getOptions();
     board = new GomokuChessBoard(10, 10, 700, 700, options);
+    
+    sidebarBaseX = board->getStartX() + board->getTotalWidth() + 20;
+    sidebarCenterX = (MainMenu::WIDTH - 20 + sidebarBaseX) / 2;
+    
+    timerArea = {
+        sidebarBaseX,
+        board->getStartY(),
+        sidebarBaseX + (sidebarCenterX - sidebarBaseX) * 2,
+        board->getStartY() + 30
+    };
 }
 
 void GomokuMenu::onInit() {
+    // 绘制棋盘
     board->draw();
+
+    // 绘制计时器
+    if (isRunning()) {
+        drawTime(getTimer().getTm(), &timerArea);
+    } else {
+        drawTime(getTimer().getLastTm(), &timerArea);
+    }
+    
+    // 绘制当前回合玩家
+    if (isRunning()) {
+        board->getRoundPlayer()->getPiece()->draw((timerArea.left + timerArea.right) / 2, timerArea.bottom + 50, 20);
+    }
 }
 
 void GomokuMenu::initButtons() {
     addButton(
         new RoundRectangleButton("gomoku_preparation", MainMenu::WIDTH, MainMenu::HEIGHT / 2, 100, 50),
         [](Menu &menu, Button &button, int x, int y) {
+            auto &gomokuMenu = dynamic_cast<GomokuMenu &>(menu);
+            gomokuMenu.setRunning(false);
+            
             MenuManager::gomokuPreparation.open();
         }
+    );
+    
+    int radius = 10;
+    RECT squareRect = {radius * 2, -radius * 6, radius * 14, radius * 6};
+    int squareRectLength = squareRect.right - squareRect.left;
+
+    // 悔棋
+    IMAGE *imageRetract = new IMAGE(squareRectLength, squareRectLength);
+    loadimage(imageRetract, "../resources/retract.png", squareRectLength, squareRectLength);
+    buttonRetract = new CircleSelectionButton("retract", sidebarBaseX + 10, MainMenu::HEIGHT / 4, radius, squareRect, imageRetract);
+    addButton(
+            buttonRetract,
+            [](Menu &menu, Button &button, int x, int y) {
+                auto &circleButton = dynamic_cast<CircleSelectionButton &>(button);
+                auto &gomokuMenu = dynamic_cast<GomokuMenu &>(menu);
+                
+                circleButton.setSelected(true);
+                BeginBatchDraw();
+                gomokuMenu.redraw();
+                FlushBatchDraw();
+            }
     );
 }
 
@@ -33,6 +86,18 @@ void GomokuMenu::onEnable() {
     Position pos {}, order {};
     Player *player = nullptr;
     User *user = nullptr;
+    
+    // 计时器线程（每秒更新一次计时器）
+    std::thread timerThread([this]() {
+        while (isRunning()) {
+            BeginBatchDraw();
+            drawTime(getTimer().getTm(), &timerArea);
+            FlushBatchDraw();
+            
+            Sleep(1000);
+        }
+    });
+    timerThread.detach();
     
     flushmessage();
     while (true) {
@@ -142,6 +207,7 @@ void GomokuMenu::onEnable() {
 
 void GomokuMenu::startGame() {
     setRunning(true);
+    getTimer().reset();
     
     // 初始化棋盘
     GomokuOptions &options = MenuManager::gomokuPreparation.getOptions();
@@ -158,6 +224,10 @@ void GomokuMenu::runGame(int x, int y) {
         putimage(pos.x, pos.y, &board->getImageForbidden(), SRCPAINT);
         return;
     }
+    
+    // 记录落子
+    board->record(x, y);
+    buttonRetract->setSelected(false);
     
     // 胜利判定
     if (board->judge(x, y)) {
@@ -178,7 +248,21 @@ void GomokuMenu::endGame() {
 void GomokuMenu::redraw() {
     cleardevice();
     
-    board->draw();
+    onInit();
     
     drawButtons();
 }
+
+void GomokuMenu::drawTime(tm *time, RECT *rect) {
+    clearrectangle(rect->left, rect->top, rect->right, rect->bottom);
+    
+    settextstyle(30, 15, _T("Consolas"));
+    setbkmode(TRANSPARENT);
+    settextcolor(WHITE);
+
+    char textTime[15];
+    strftime(textTime, sizeof(textTime), "%H:%M:%S", time);
+    drawtext(textTime, rect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+}
+
+#pragma clang diagnostic pop

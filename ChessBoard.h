@@ -6,6 +6,7 @@
 #include "ChessOptions.h"
 #include "Player.h"
 #include <vector>
+#include <deque>
 #include <string>
 
 
@@ -15,6 +16,8 @@ protected:
     std::vector< std::vector<ChessSlot> > slots;
     // 所有玩家
     std::vector<Player *> players;
+    // 一轮落子记录（用于悔棋）
+    std::deque< std::pair<ChessPiece *, Position> > records;
     
 private:
     int startX;             // 左上角x坐标
@@ -90,8 +93,13 @@ public:
 
     // 胜利判定 落子时触发
     virtual bool judge(int x, int y) = 0;
-
-
+    
+    // 记录一次落子
+    void record(ChessPiece *piece, int x, int y);
+    
+    void record(int x, int y);
+    
+    
     typename std::vector<Player *>::iterator &getRound();
 
     void setRound(typename std::vector<Player *>::iterator theRound);
