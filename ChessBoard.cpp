@@ -12,9 +12,13 @@ ChessBoard::ChessBoard(int x, int y, int width, int height, ChessOptions &option
           boardImage(IMAGE(totalWidth, totalHeight)),
           drawingImage(IMAGE(totalWidth, totalHeight)),
           players(std::vector<Player *>()),
-          round(players.begin()), number(options.number) {
+          round(players.begin()), number(options.number),
+          imageForbidden(IMAGE((int) slotWidth, (int) slotHeight)) {
     // 初始化随机数种子
     std::srand((unsigned int) time(nullptr)); // NOLINT(cert-msc51-cpp)
+    
+    // 加载图片
+    loadimage(&imageForbidden, "../resources/forbidden.png", (int) slotWidth, (int) slotHeight);
     
     drawBoard();
 }
@@ -277,4 +281,8 @@ int ChessBoard::getTotalHeight() const {
 
 int ChessBoard::getNumber() const {
     return number;
+}
+
+const IMAGE &ChessBoard::getImageForbidden() const {
+    return imageForbidden;
 }

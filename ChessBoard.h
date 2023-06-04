@@ -39,6 +39,8 @@ private:
     std::vector<Player *>::iterator round;
     // 玩家数量
     int number;
+    
+    IMAGE imageForbidden;
 
 public:
     ChessBoard(int x, int y, int width, int height, ChessOptions &options);
@@ -125,6 +127,8 @@ public:
     int getTotalHeight() const;
 
     int getNumber() const;
+
+    const IMAGE &getImageForbidden() const;
 
 
     // 点大小

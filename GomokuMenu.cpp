@@ -151,7 +151,13 @@ void GomokuMenu::startGame() {
 
 void GomokuMenu::runGame(int x, int y) {
     // 尝试落子
-    if (!board->placePiece(x, y)) return;
+    if (!board->placePiece(x, y)) {
+        Position pos {};
+        board->getCenterPositionByOrder(pos, x, y);
+        // 绘制禁止落子图标
+        putimage(pos.x, pos.y, &board->getImageForbidden(), SRCPAINT);
+        return;
+    }
     
     // 胜利判定
     if (board->judge(x, y)) {
