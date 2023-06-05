@@ -3,6 +3,7 @@
 #include "GomokuMenu.h"
 #include "MenuManager.h"
 #include "RoundRectangleButton.h"
+#include "DisplayButton.h"
 #include <cstdio>
 #include <thread>
 
@@ -96,6 +97,9 @@ void GomokuMenu::initButtons() {
                 FlushBatchDraw();
             }
     );
+    
+    // 按键提示
+    addButton(new DisplayKeyButton(sidebarBaseX + 10, MainMenu::HEIGHT / 2));
 }
 
 void GomokuMenu::onEnable() {
