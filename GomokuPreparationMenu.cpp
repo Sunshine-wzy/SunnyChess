@@ -5,9 +5,17 @@
 #include "RoundRectangleButton.h"
 
 
-GomokuPreparationMenu::GomokuPreparationMenu() = default;
+GomokuPreparationMenu::GomokuPreparationMenu()
+            : options(GomokuOptions()),
+              modeSelectionGroup(SelectionButtonGroup()), numberSelectionGroup(SelectionButtonGroup()),
+              sizeSelectionGroup(SelectionButtonGroup()), chessTypeSelectionGroup(SelectionButtonGroup()),
+              imageBackground(IMAGE(MainMenu::WIDTH, MainMenu::HEIGHT)) {
+    loadimage(&imageBackground, "../resources/gomoku_preparation_background.png", MainMenu::WIDTH, MainMenu::HEIGHT);
+}
 
 void GomokuPreparationMenu::onInit() {
+    putimage(0, 0, &imageBackground);
+    
     if (modeSelectionGroup.isKeySelected("friend")) {
         numberSelectionGroup.setVisible(true);
     } else {
@@ -102,7 +110,9 @@ void GomokuPreparationMenu::initButtons() {
     int numberSelectionBaseY = modeSelectionBaseY + incrementY;
     CircleSelectionButton *numberSelectionButtons[5];
     for (int i = 0; i < 5; i++) {
-        numberSelectionButtons[i] = new CircleSelectionButton(std::string("number") + std::to_string(i + 2), numberSelectionBaseX + radius * 16 * i, numberSelectionBaseY, radius, smallRelativeRect, nullptr, std::to_string(i + 2));
+        IMAGE *imageNumber = new IMAGE(smallRectWidth, smallRectHeight);
+        loadimage(imageNumber, (std::string("../resources/number_selection_") + std::to_string(i + 2) + ".png").c_str(), smallRectWidth, smallRectHeight);
+        numberSelectionButtons[i] = new CircleSelectionButton(std::string("number") + std::to_string(i + 2), numberSelectionBaseX + radius * 16 * i, numberSelectionBaseY, radius, smallRelativeRect, imageNumber, std::to_string(i + 2));
         numberSelectionGroup.addButton(numberSelectionButtons[i]);
     }
     addNumberSelectionButton<4>(numberSelectionButtons);

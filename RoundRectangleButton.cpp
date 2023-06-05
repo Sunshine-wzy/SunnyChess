@@ -16,6 +16,10 @@ void RoundRectangleButton::draw() {
     setlinestyle(&MenuManager::main.getLineStyle());
     roundrect(rect.left, rect.top, rect.right, rect.bottom, ellipseWidth, ellipseHeight);
 
+    if (image) {
+        putimage(rect.left, rect.top, image);
+    }
+    
     if (!text.empty()) {
         settextstyle(30, 15, _T("Consolas"));
         setbkmode(TRANSPARENT);
@@ -23,10 +27,6 @@ void RoundRectangleButton::draw() {
         drawtext(_T(text.c_str()), &rect, DT_CENTER | DT_VCENTER | DT_SINGLELINE | DT_NOCLIP);
 
         rectangle(rect.left, rect.top, rect.right, rect.bottom);
-    }
-
-    if (image) {
-        putimage(rect.left, rect.top, image, SRCPAINT);
     }
 }
 

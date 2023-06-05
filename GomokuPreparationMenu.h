@@ -16,6 +16,8 @@ private:
     SelectionButtonGroup sizeSelectionGroup;
     SelectionButtonGroup chessTypeSelectionGroup;
     
+    IMAGE imageBackground;
+    
     
     template <int Number>
     void addNumberSelectionButton(CircleSelectionButton *buttons[]);
