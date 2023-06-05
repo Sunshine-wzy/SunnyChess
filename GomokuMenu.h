@@ -5,6 +5,7 @@
 #include "GomokuChessBoard.h"
 #include "Game.h"
 #include "CircleSelectionButton.h"
+#include "RoundRectangleButton.h"
 
 
 class GomokuMenu : public Menu, public Game {
@@ -15,9 +16,12 @@ private:
     int sidebarCenterX;
     
     CircleSelectionButton *buttonRetract;
+    RoundRectangleButton *buttonForbidden;
 
 public:
     GomokuMenu();
+
+    ~GomokuMenu() override;
 
     void onOpenInit() override;
     

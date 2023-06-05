@@ -20,6 +20,9 @@ private:
     
     // 是否可见
     bool visible;
+    
+    int visibleCount;
+    int currentVisibleCount;
 
 public:
     Button(std::string name, int x, int y, int width = BUTTON_WIDTH, int height = BUTTON_HEIGHT);
@@ -38,6 +41,10 @@ public:
 
     int getY() const;
 
+    virtual void setX(int x);
+
+    virtual void setY(int y);
+
     int getWidth() const;
 
     int getHeight() const;
@@ -45,6 +52,12 @@ public:
     bool isVisible() const;
 
     void setVisible(bool isVisible);
+
+    int getVisibleCount() const;
+
+    void setVisibleCount(int count);
+    
+    int visibleCountDown();
 
 
     // 按钮默认大小

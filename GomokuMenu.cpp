@@ -72,7 +72,25 @@ void GomokuMenu::initButtons() {
                 auto &circleButton = dynamic_cast<CircleSelectionButton &>(button);
                 auto &gomokuMenu = dynamic_cast<GomokuMenu &>(menu);
                 
+                gomokuMenu.board->retract();
                 circleButton.setSelected(true);
+                
+                BeginBatchDraw();
+                gomokuMenu.redraw();
+                FlushBatchDraw();
+            }
+    );
+    
+    // 禁止落子
+    buttonForbidden = new RoundRectangleButton("forbidden", 0,0, board->getImageForbidden().getwidth(), board->getImageForbidden().getheight(), &board->getImageForbidden());
+    buttonForbidden->setVisible(false);
+    buttonForbidden->setVisibleCount(1);
+    addButton(
+            buttonForbidden,
+            [](Menu &menu, Button &button, int x, int y) {
+                auto &gomokuMenu = dynamic_cast<GomokuMenu &>(menu);
+                
+                button.setVisible(false);
                 BeginBatchDraw();
                 gomokuMenu.redraw();
                 FlushBatchDraw();
@@ -90,6 +108,8 @@ void GomokuMenu::onEnable() {
     // 计时器线程（每秒更新一次计时器）
     std::thread timerThread([this]() {
         while (isRunning()) {
+            buttonForbidden->visibleCountDown();
+            
             BeginBatchDraw();
             drawTime(getTimer().getTm(), &timerArea);
             FlushBatchDraw();
@@ -220,8 +240,11 @@ void GomokuMenu::runGame(int x, int y) {
     if (!board->placePiece(x, y)) {
         Position pos {};
         board->getCenterPositionByOrder(pos, x, y);
-        // 绘制禁止落子图标
-        putimage(pos.x, pos.y, &board->getImageForbidden(), SRCPAINT);
+        
+        // 显示禁止落子按钮
+        buttonForbidden->setX(pos.x);
+        buttonForbidden->setY(pos.y);
+        buttonForbidden->setVisible(true);
         return;
     }
     
@@ -263,6 +286,10 @@ void GomokuMenu::drawTime(tm *time, RECT *rect) {
     char textTime[15];
     strftime(textTime, sizeof(textTime), "%H:%M:%S", time);
     drawtext(textTime, rect, DT_CENTER | DT_VCENTER | DT_SINGLELINE);
+}
+
+GomokuMenu::~GomokuMenu() {
+    delete board;
 }
 
 #pragma clang diagnostic pop

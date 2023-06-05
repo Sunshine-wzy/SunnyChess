@@ -13,7 +13,8 @@ ChessBoard::ChessBoard(int x, int y, int width, int height, ChessOptions &option
           drawingImage(IMAGE(totalWidth, totalHeight)),
           players(std::vector<Player *>()),
           round(players.begin()), number(options.number),
-          imageForbidden(IMAGE((int) slotWidth, (int) slotHeight)) {
+          imageForbidden(IMAGE((int) slotWidth, (int) slotHeight)),
+          records(std::list< std::pair<ChessPiece *, Position> >()) {
     // 初始化随机数种子
     std::srand((unsigned int) time(nullptr)); // NOLINT(cert-msc51-cpp)
     
@@ -283,17 +284,44 @@ int ChessBoard::getNumber() const {
     return number;
 }
 
-const IMAGE &ChessBoard::getImageForbidden() const {
+IMAGE &ChessBoard::getImageForbidden() {
     return imageForbidden;
 }
 
 void ChessBoard::record(ChessPiece *piece, int x, int y) {
     records.emplace_back(piece, Position {x, y});
-    if (records.front().first == piece) {
-        records.pop_front();
-    }
 }
 
 void ChessBoard::record(int x, int y) {
     record(getRoundPlayer()->getPiece(), x, y);
+}
+
+void ChessBoard::retract() {
+    ChessPiece *piece = getRoundPlayer()->getPiece();
+    auto iter = records.rbegin();
+    while (iter != records.rend()) {
+        if (iter->first == piece) {
+            for (auto it = records.rbegin(); it != iter; ++it) {
+                setPiece(ChessPiece::none, it->second);
+            }
+            setPiece(ChessPiece::none, iter->second);
+
+            ++iter;
+            records.erase(iter.base(), records.end());
+            break;
+        }
+        
+        ++iter;
+    }
+}
+
+void ChessBoard::setPiece(ChessPiece *piece, int x, int y) {
+    if (piece == nullptr) return;
+    if (!isOrderInBoard(x, y)) return;
+    
+    slots[x][y].setPiece(piece);
+}
+
+void ChessBoard::setPiece(ChessPiece *piece, const Position &position) {
+    setPiece(piece, position.x, position.y);
 }
