@@ -18,6 +18,8 @@ private:
     CircleSelectionButton *buttonRetract;
     RoundRectangleButton *buttonForbidden;
 
+    IMAGE imageBackground;
+
 public:
     GomokuMenu();
 

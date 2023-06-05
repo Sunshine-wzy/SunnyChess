@@ -10,7 +10,9 @@
 GomokuMenu::GomokuMenu()
             : board(nullptr), timerArea(RECT {}),
               sidebarBaseX(0), sidebarCenterX(0),
-              buttonRetract(nullptr) {}
+              buttonRetract(nullptr), imageBackground(IMAGE(MainMenu::WIDTH, MainMenu::HEIGHT)) {
+    loadimage(&imageBackground, "../resources/gomoku_background.jpg", MainMenu::WIDTH, MainMenu::HEIGHT);
+}
 
 void GomokuMenu::onOpenInit() {
     // 析构之前的棋盘对象
@@ -32,6 +34,9 @@ void GomokuMenu::onOpenInit() {
 }
 
 void GomokuMenu::onInit() {
+    // 绘制背景
+    putimage(0, 0, &imageBackground);
+
     // 绘制棋盘
     board->draw();
 

@@ -33,7 +33,7 @@ ChessBoard::~ChessBoard() {
 void ChessBoard::draw() {
     drawPieces();
 
-    putimage(startX, startY, &drawingImage, SRCPAINT);
+    putimage(startX, startY, &drawingImage);
 }
 
 #pragma clang diagnostic push
