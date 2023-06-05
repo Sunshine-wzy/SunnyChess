@@ -40,7 +40,10 @@ struct KeySettings {
     BYTE left;          // 左
     BYTE right;         // 右
     BYTE drop;          // 落子
+    
+    wchar_t keys[5];
 
+    
     static KeySettings none;            // 无
     static KeySettings wsadq;           // WSADQ
     static KeySettings udlrm;           // 上下左右M

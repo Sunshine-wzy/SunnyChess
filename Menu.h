@@ -43,7 +43,7 @@ public:
     virtual void onEnable();
 
     // 添加按钮
-    void addButton(Button *button, ButtonAction action);
+    void addButton(Button *button, ButtonAction action = {});
 
     // 绘制所有按钮
     void drawButtons() const;

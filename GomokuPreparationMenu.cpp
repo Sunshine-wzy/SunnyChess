@@ -1,3 +1,5 @@
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "modernize-use-auto"
 #include "GomokuPreparationMenu.h"
 #include "MenuManager.h"
 #include "RoundRectangleButton.h"
@@ -54,10 +56,10 @@ void GomokuPreparationMenu::initButtons() {
     int squareRectHeight = squareRect.bottom - squareRect.top;
 
     IMAGE *modeSelectionImageFriend = new IMAGE(rectWidth, rectHeight);
-    loadimage(modeSelectionImageFriend, "../resources/friend.png", rectWidth, rectHeight);
+    loadimage(modeSelectionImageFriend, "../resources/mode_selection_friend.png", rectWidth, rectHeight);
 
     IMAGE *modeSelectionImageBot = new IMAGE(rectWidth, rectHeight); // NOLINT(modernize-use-auto)
-    loadimage(modeSelectionImageBot, "../resources/bot.png", rectWidth, rectHeight);
+    loadimage(modeSelectionImageBot, "../resources/mode_selection_bot.png", rectWidth, rectHeight);
     
     int incrementX = MainMenu::WIDTH / 5;
     int incrementY = MainMenu::HEIGHT / 6;
@@ -106,16 +108,15 @@ void GomokuPreparationMenu::initButtons() {
     addNumberSelectionButton<4>(numberSelectionButtons);
     
     // player1 执子类型选择按钮
-    // TODO: IMAGE
     IMAGE *chessTypeSelectionImageRandom = new IMAGE(squareRectWidth, squareRectHeight);
-    loadimage(chessTypeSelectionImageRandom, "../resources/randomchess.png", squareRectWidth, squareRectHeight);
+    loadimage(chessTypeSelectionImageRandom, "../resources/chess_type_selection_random.png", squareRectWidth, squareRectHeight);
     IMAGE *chessTypeSelectionImageBlack = new IMAGE(squareRectWidth, squareRectHeight);
-    loadimage(chessTypeSelectionImageBlack, "../resources/blackchess.png", squareRectWidth, squareRectHeight);
+    loadimage(chessTypeSelectionImageBlack, "../resources/chess_type_selection_black.png", squareRectWidth, squareRectHeight);
     IMAGE *chessTypeSelectionImageWhite = new IMAGE(squareRectWidth, squareRectHeight);
-    loadimage(chessTypeSelectionImageWhite, "../resources/whitechess.png", squareRectWidth, squareRectHeight);
+    loadimage(chessTypeSelectionImageWhite, "../resources/chess_type_selection_white.png", squareRectWidth, squareRectHeight);
 
     int chessTypeSelectionBaseX = modeSelectionBaseX;
-    int chessTypeSelectionBaseY = modeSelectionBaseY + incrementY * 2.15;
+    int chessTypeSelectionBaseY = (int) (modeSelectionBaseY + incrementY * 2.15);
     auto chessTypeSelectionButtonRandom = new CircleSelectionButton("random", chessTypeSelectionBaseX, chessTypeSelectionBaseY, radius, squareRect, chessTypeSelectionImageRandom);
     auto chessTypeSelectionButtonBlack = new CircleSelectionButton("black", chessTypeSelectionBaseX + incrementX, chessTypeSelectionBaseY, radius, squareRect, chessTypeSelectionImageBlack);
     auto chessTypeSelectionButtonWhite = new CircleSelectionButton("white", chessTypeSelectionBaseX + incrementX * 2, chessTypeSelectionBaseY, radius, squareRect, chessTypeSelectionImageWhite);
@@ -158,20 +159,19 @@ void GomokuPreparationMenu::initButtons() {
     );
 
     // 棋盘大小选择按钮
-    // TODO: IMAGE
-    IMAGE *sizeSelectionImage13 = new IMAGE(rectWidth, rectHeight);
-    loadimage(sizeSelectionImage13, "../resources/sizeofchesspan13.png", rectWidth, rectHeight);
-    IMAGE *sizeSelectionImage15 = new IMAGE(rectWidth, rectHeight);
-    loadimage(sizeSelectionImage15, "../resources/sizeofchesspan15.png", rectWidth, rectHeight);
-    IMAGE *sizeSelectionImage17 = new IMAGE(rectWidth, rectHeight);
-    loadimage(sizeSelectionImage17, "../resources/sizeofchesspan17.png", rectWidth, rectHeight);
-    IMAGE *sizeSelectionImage19 = new IMAGE(rectWidth, rectHeight);
-    loadimage(sizeSelectionImage19, "../resources/sizeofchesspan19.png", rectWidth, rectHeight);
-    IMAGE *sizeSelectionImage21 = new IMAGE(rectWidth, rectHeight);
-    loadimage(sizeSelectionImage21, "../resources/sizeofchesspan21.png", rectWidth, rectHeight);
+    IMAGE *sizeSelectionImage13 = new IMAGE(smallRectWidth, smallRectHeight);
+    loadimage(sizeSelectionImage13, "../resources/size_selection_13.png", smallRectWidth, smallRectHeight);
+    IMAGE *sizeSelectionImage15 = new IMAGE(smallRectWidth, smallRectHeight);
+    loadimage(sizeSelectionImage15, "../resources/size_selection_15.png", smallRectWidth, smallRectHeight);
+    IMAGE *sizeSelectionImage17 = new IMAGE(smallRectWidth, smallRectHeight);
+    loadimage(sizeSelectionImage17, "../resources/size_selection_17.png", smallRectWidth, smallRectHeight);
+    IMAGE *sizeSelectionImage19 = new IMAGE(smallRectWidth, smallRectHeight);
+    loadimage(sizeSelectionImage19, "../resources/size_selection_19.png", smallRectWidth, smallRectHeight);
+    IMAGE *sizeSelectionImage21 = new IMAGE(smallRectWidth, smallRectHeight);
+    loadimage(sizeSelectionImage21, "../resources/size_selection_21.png", smallRectWidth, smallRectHeight);
 
     int sizeSelectionBaseX = modeSelectionBaseX;
-    int sizeSelectionBaseY = modeSelectionBaseY + incrementY * 3.3;
+    int sizeSelectionBaseY = (int) (modeSelectionBaseY + incrementY * 3.3);
     auto sizeSelectionButton13 = new CircleSelectionButton("size13", sizeSelectionBaseX, sizeSelectionBaseY, radius, smallRelativeRect, sizeSelectionImage13);
     auto sizeSelectionButton15 = new CircleSelectionButton("size15", sizeSelectionBaseX + radius * 16, sizeSelectionBaseY, radius, smallRelativeRect, sizeSelectionImage15);
     auto sizeSelectionButton17 = new CircleSelectionButton("size17", sizeSelectionBaseX + radius * 16 * 2, sizeSelectionBaseY, radius, smallRelativeRect, sizeSelectionImage17);
@@ -262,3 +262,5 @@ GomokuOptions &GomokuPreparationMenu::getOptions() {
 template <>
 void GomokuPreparationMenu::addNumberSelectionButton<-1>(CircleSelectionButton *buttons[]) {}
 
+
+#pragma clang diagnostic pop

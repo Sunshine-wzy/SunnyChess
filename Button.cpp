@@ -3,7 +3,8 @@
 
 Button::Button(std::string name, int x, int y, int width, int height)
             : name(std::move(name)), x(x), y(y),
-              width(width), height(height), visible(true) {}
+              width(width), height(height), visible(true),
+              visibleCount(0), currentVisibleCount(0) {}
 
 const std::string &Button::getName() const {
     return name;
@@ -15,6 +16,14 @@ int Button::getX() const {
 
 int Button::getY() const {
     return y;
+}
+
+void Button::setX(int x) {
+    Button::x = x;
+}
+
+void Button::setY(int y) {
+    Button::y = y;
 }
 
 int Button::getWidth() const {
@@ -31,10 +40,30 @@ bool Button::isVisible() const {
 
 void Button::setVisible(bool isVisible) {
     visible = isVisible;
+    if (isVisible) {
+        currentVisibleCount = visibleCount;
+    }
 }
 
 bool Button::isInside(int x, int y) {
     return visible;
+}
+
+int Button::getVisibleCount() const {
+    return visibleCount;
+}
+
+void Button::setVisibleCount(int count) {
+    visibleCount = count;
+}
+
+int Button::visibleCountDown() {
+    if (currentVisibleCount > 0) {
+        currentVisibleCount--;
+    } else {
+        setVisible(false);
+    }
+    return currentVisibleCount;
 }
 
 Button::~Button() = default;

@@ -4,14 +4,24 @@
 #include "Menu.h"
 #include "GomokuChessBoard.h"
 #include "Game.h"
+#include "CircleSelectionButton.h"
+#include "RoundRectangleButton.h"
 
 
 class GomokuMenu : public Menu, public Game {
 private:
     GomokuChessBoard *board;
+    RECT timerArea;
+    int sidebarBaseX;
+    int sidebarCenterX;
+    
+    CircleSelectionButton *buttonRetract;
+    RoundRectangleButton *buttonForbidden;
 
 public:
     GomokuMenu();
+
+    ~GomokuMenu() override;
 
     void onOpenInit() override;
     
@@ -28,6 +38,9 @@ public:
     void initButtons() override;
     
     void redraw();
+    
+    
+    static void drawTime(tm *time, RECT *rect);
 
 };
 
