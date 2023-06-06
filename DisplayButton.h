@@ -17,12 +17,14 @@ private:
 
 class DisplayKeyButton : public DisplayButton {
 private:
-    KeySettings *keySettings;
+    const KeySettings *keySettings;
     
 public:
     DisplayKeyButton(int x, int y);
 
     void draw() override;
+    
+    void setKeySettings(const KeySettings *settings);
 
 };
 

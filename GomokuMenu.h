@@ -6,6 +6,7 @@
 #include "Game.h"
 #include "CircleSelectionButton.h"
 #include "RoundRectangleButton.h"
+#include "DisplayButton.h"
 #include <mutex>
 
 
@@ -18,6 +19,7 @@ private:
     
     CircleSelectionButton *buttonRetract;
     RoundRectangleButton *buttonForbidden;
+    DisplayKeyButton *buttonDisplayKey;
 
     IMAGE imageBackground;
     

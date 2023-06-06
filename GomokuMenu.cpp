@@ -3,14 +3,13 @@
 #include "GomokuMenu.h"
 #include "MenuManager.h"
 #include "RoundRectangleButton.h"
-#include "DisplayButton.h"
 #include <cstdio>
 #include <thread>
 
 GomokuMenu::GomokuMenu()
             : board(nullptr), timerArea(RECT {}),
               sidebarBaseX(0), sidebarCenterX(0),
-              buttonRetract(nullptr), buttonForbidden(nullptr),
+              buttonRetract(nullptr), buttonForbidden(nullptr), buttonDisplayKey(nullptr),
               imageBackground(IMAGE(MainMenu::WIDTH, MainMenu::HEIGHT)) {
     loadimage(&imageBackground, "../resources/gomoku_background.jpg", MainMenu::WIDTH, MainMenu::HEIGHT);
 }
@@ -72,7 +71,7 @@ void GomokuMenu::initButtons() {
     // 悔棋
     IMAGE *imageRetract = new IMAGE(squareRectLength, squareRectLength);
     loadimage(imageRetract, "../resources/retract.png", squareRectLength, squareRectLength);
-    buttonRetract = new CircleSelectionButton("retract", sidebarBaseX + 10, MainMenu::HEIGHT / 4, radius, squareRect, imageRetract);
+    buttonRetract = new CircleSelectionButton("retract", sidebarBaseX + 10, MainMenu::HEIGHT / 2, radius, squareRect, imageRetract);
     addButton(
             buttonRetract,
             [](Menu &menu, Button &button, int x, int y) {
@@ -105,7 +104,8 @@ void GomokuMenu::initButtons() {
     );
     
     // 按键提示
-    addButton(new DisplayKeyButton(sidebarBaseX + 10, MainMenu::HEIGHT / 2));
+    buttonDisplayKey = new DisplayKeyButton(sidebarBaseX + 10, timerArea.bottom + 100);
+    addButton(buttonDisplayKey);
 }
 
 void GomokuMenu::onEnable() {
@@ -243,6 +243,16 @@ void GomokuMenu::startGame() {
     GomokuOptions &options = MenuManager::gomokuPreparation.getOptions();
     board->init(options);
     
+    // 初始化按键提示
+    User *user = dynamic_cast<User *>(board->getRoundPlayer());
+    if (user) {
+        buttonDisplayKey->setKeySettings(&user->getKeySettings());
+    }
+    
+    // 刷新界面
+    BeginBatchDraw();
+    redraw();
+    FlushBatchDraw();
 }
 
 void GomokuMenu::runGame(int x, int y) {
@@ -272,6 +282,10 @@ void GomokuMenu::runGame(int x, int y) {
     
     // 回合更替
     board->turnRound();
+    User *user = dynamic_cast<User *>(board->getRoundPlayer());
+    if (user) {
+        buttonDisplayKey->setKeySettings(&user->getKeySettings());
+    } else buttonDisplayKey->setKeySettings(nullptr);
 }
 
 void GomokuMenu::endGame() {

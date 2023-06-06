@@ -4,6 +4,7 @@
 #include "ChessPiece.h"
 #include "Position.h"
 #include <graphics.h>
+#include <string>
 
 
 // 玩家 (表示参与对局的一方)
@@ -41,7 +42,7 @@ struct KeySettings {
     BYTE right;         // 右
     BYTE drop;          // 落子
     
-    wchar_t keys[5];
+    std::string keys[5];
 
     
     static KeySettings none;            // 无
