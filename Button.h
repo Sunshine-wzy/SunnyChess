@@ -2,6 +2,8 @@
 #define SUNNYCHESS_BUTTON_H
 
 #include <string>
+#include <mutex>
+#include <atomic>
 
 
 // 按钮
@@ -19,10 +21,12 @@ private:
     int height;
     
     // 是否可见
-    bool visible;
+    std::atomic<bool> visible;
     
     int visibleCount;
     int currentVisibleCount;
+    
+    std::mutex mutexVisibleCountDown;
 
 public:
     Button(std::string name, int x, int y, int width = BUTTON_WIDTH, int height = BUTTON_HEIGHT);

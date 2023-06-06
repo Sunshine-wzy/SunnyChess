@@ -6,15 +6,34 @@
 
 
 GomokuPreparationMenu::GomokuPreparationMenu()
-            : options(GomokuOptions()),
-              modeSelectionGroup(SelectionButtonGroup()), numberSelectionGroup(SelectionButtonGroup()),
-              sizeSelectionGroup(SelectionButtonGroup()), chessTypeSelectionGroup(SelectionButtonGroup()),
-              imageBackground(IMAGE(MainMenu::WIDTH, MainMenu::HEIGHT)) {
+        : options(GomokuOptions()),
+          modeSelectionGroup(SelectionButtonGroup()), numberSelectionGroup(SelectionButtonGroup()),
+          sizeSelectionGroup(SelectionButtonGroup()), chessTypeSelectionGroup(SelectionButtonGroup()),
+          radius(10), incrementX(MainMenu::WIDTH / 5), incrementY(MainMenu::HEIGHT / 6),
+          relativeRect({radius * 2, -radius * 4, radius * 16, radius * 4}),
+          smallRelativeRect({radius * 2, -radius * 4, radius * 13, radius * 4}),
+          squareRect({radius * 2, -radius * 6, radius * 14, radius * 6}),
+          rectWidth(relativeRect.right - relativeRect.left), rectHeight(relativeRect.bottom - relativeRect.top),
+          smallRectWidth(smallRelativeRect.right - smallRelativeRect.left), smallRectHeight(smallRelativeRect.bottom - smallRelativeRect.top),
+          squareRectWidth(squareRect.right - squareRect.left), squareRectHeight(squareRect.bottom - squareRect.top),
+          promptWidth(rectWidth), promptHeight(rectHeight),
+          baseX(MainMenu::WIDTH / 30), baseY(MainMenu::HEIGHT / 6),
+          imageBackground(IMAGE(MainMenu::WIDTH, MainMenu::HEIGHT)) {
     loadimage(&imageBackground, "../resources/gomoku_preparation_background.png", MainMenu::WIDTH, MainMenu::HEIGHT);
+    
+    loadimage(&imageModeSelectionPrompt, "../resources/mode_selection_prompt.png", promptWidth, promptHeight);
+    loadimage(&imageNumberSelectionPrompt, "../resources/number_selection_prompt.png", promptWidth, promptHeight);
+    loadimage(&imageChessTypeSelectionPrompt, "../resources/chess_type_selection_prompt.png", promptWidth, promptHeight);
+    loadimage(&imageSizeSelectionPrompt, "../resources/size_selection_prompt.png", promptWidth, promptHeight);
 }
 
 void GomokuPreparationMenu::onInit() {
     putimage(0, 0, &imageBackground);
+    
+    putimage(baseX, baseY, &imageModeSelectionPrompt);
+    putimage(baseX, baseY + incrementY, &imageNumberSelectionPrompt);
+    putimage(baseX, (int) (baseY + incrementY * 2.15), &imageChessTypeSelectionPrompt);
+    putimage(baseX, (int) (baseY + incrementY * 3.3), &imageSizeSelectionPrompt);
     
     if (modeSelectionGroup.isKeySelected("friend")) {
         numberSelectionGroup.setVisible(true);
@@ -51,30 +70,15 @@ void GomokuPreparationMenu::initButtons() {
             }
     );
 
-    int radius = 10;
-    RECT relativeRect = {radius * 2, -radius * 4, radius * 16, radius * 4};
-    RECT smallRelativeRect = {radius * 2, -radius * 4, radius * 13, radius * 4};
-    RECT squareRect = {radius * 2, -radius * 6, radius * 14, radius * 6};
-    
-    int rectWidth = relativeRect.right - relativeRect.left;
-    int rectHeight = relativeRect.bottom - relativeRect.top;
-    int smallRectWidth = smallRelativeRect.right - smallRelativeRect.left;
-    int smallRectHeight = smallRelativeRect.bottom - smallRelativeRect.top;
-    int squareRectWidth = squareRect.right - squareRect.left;
-    int squareRectHeight = squareRect.bottom - squareRect.top;
-
     IMAGE *modeSelectionImageFriend = new IMAGE(rectWidth, rectHeight);
     loadimage(modeSelectionImageFriend, "../resources/mode_selection_friend.png", rectWidth, rectHeight);
 
-    IMAGE *modeSelectionImageBot = new IMAGE(rectWidth, rectHeight); // NOLINT(modernize-use-auto)
+    IMAGE *modeSelectionImageBot = new IMAGE(rectWidth, rectHeight);
     loadimage(modeSelectionImageBot, "../resources/mode_selection_bot.png", rectWidth, rectHeight);
     
-    int incrementX = MainMenu::WIDTH / 5;
-    int incrementY = MainMenu::HEIGHT / 6;
-    
     // 模式选择按钮
-    int modeSelectionBaseX = MainMenu::WIDTH / 8;
-    int modeSelectionBaseY = MainMenu::HEIGHT / 5;
+    int modeSelectionBaseX = baseX + promptWidth + 20;
+    int modeSelectionBaseY = baseY + promptHeight / 2;
     // 好友对局
     auto modeSelectionButtonFriend = new CircleSelectionButton("friend", modeSelectionBaseX, modeSelectionBaseY, radius, relativeRect, modeSelectionImageFriend);
     // 人机对战

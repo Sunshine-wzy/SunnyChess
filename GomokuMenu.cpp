@@ -10,7 +10,8 @@
 GomokuMenu::GomokuMenu()
             : board(nullptr), timerArea(RECT {}),
               sidebarBaseX(0), sidebarCenterX(0),
-              buttonRetract(nullptr), imageBackground(IMAGE(MainMenu::WIDTH, MainMenu::HEIGHT)) {
+              buttonRetract(nullptr), buttonForbidden(nullptr),
+              imageBackground(IMAGE(MainMenu::WIDTH, MainMenu::HEIGHT)) {
     loadimage(&imageBackground, "../resources/gomoku_background.jpg", MainMenu::WIDTH, MainMenu::HEIGHT);
 }
 
@@ -286,11 +287,16 @@ void GomokuMenu::redraw() {
 }
 
 void GomokuMenu::drawTime(tm *time, RECT *rect) {
+    // 保证线程安全
+    const std::lock_guard<std::mutex> lock(mutexDrawTime);
+    
     clearrectangle(rect->left, rect->top, rect->right, rect->bottom);
+    setfillcolor(WHITE);
+    solidrectangle(rect->left, rect->top, rect->right, rect->bottom);
     
     settextstyle(30, 15, _T("Consolas"));
     setbkmode(TRANSPARENT);
-    settextcolor(WHITE);
+    settextcolor(BLACK);
 
     char textTime[15];
     strftime(textTime, sizeof(textTime), "%H:%M:%S", time);

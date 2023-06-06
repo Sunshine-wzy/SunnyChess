@@ -41,6 +41,9 @@ bool Button::isVisible() const {
 void Button::setVisible(bool isVisible) {
     visible = isVisible;
     if (isVisible) {
+        // 保证线程安全
+        const std::lock_guard<std::mutex> lock(mutexVisibleCountDown);
+        
         currentVisibleCount = visibleCount;
     }
 }
@@ -58,6 +61,9 @@ void Button::setVisibleCount(int count) {
 }
 
 int Button::visibleCountDown() {
+    // 保证线程安全
+    const std::lock_guard<std::mutex> lock(mutexVisibleCountDown);
+    
     if (currentVisibleCount > 0) {
         currentVisibleCount--;
     } else {

@@ -6,6 +6,7 @@
 #include "Game.h"
 #include "CircleSelectionButton.h"
 #include "RoundRectangleButton.h"
+#include <mutex>
 
 
 class GomokuMenu : public Menu, public Game {
@@ -19,6 +20,8 @@ private:
     RoundRectangleButton *buttonForbidden;
 
     IMAGE imageBackground;
+    
+    std::mutex mutexDrawTime;
 
 public:
     GomokuMenu();
@@ -41,8 +44,7 @@ public:
     
     void redraw();
     
-    
-    static void drawTime(tm *time, RECT *rect);
+    void drawTime(tm *time, RECT *rect);
 
 };
 

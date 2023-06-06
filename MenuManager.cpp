@@ -1,7 +1,7 @@
 #include "MenuManager.h"
 
-MainMenu MenuManager::main = MainMenu();
+MainMenu MenuManager::main;
 
-GomokuPreparationMenu MenuManager::gomokuPreparation = GomokuPreparationMenu();
+GomokuPreparationMenu MenuManager::gomokuPreparation;
 
-GomokuMenu MenuManager::gomoku = GomokuMenu();
+GomokuMenu MenuManager::gomoku;
