@@ -144,6 +144,8 @@ public:
     void setPiece(ChessPiece *piece, int x, int y);
     
     void setPiece(ChessPiece *piece, const Position &position);
+    
+    ChessPiece *getPiece(int x, int y);
 
 
     // 点大小

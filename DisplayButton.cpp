@@ -13,24 +13,24 @@ bool DisplayButton::isInside(int x, int y) {
 DisplayKeyButton::DisplayKeyButton(int x, int y) : DisplayButton(x, y), keySettings(nullptr) {}
 
 void DisplayKeyButton::draw() {
-    setcolor(BLACK);
-    
-    int length = 50;
-    int offset = 10;
-    
-    RECT rectQ = {getX() - offset, getY() - offset, getX() + length - offset, getY() + length - offset};
-    RECT rectW = {getX() + length, getY(), getX() + length * 2, getY() + length};
-    RECT rectA = {getX(), getY() + length, getX() + length, getY() + length * 2};
-    RECT rectS = {getX() + length, getY() + length, getX() + length * 2, getY() + length * 2};
-    RECT rectD = {getX() + length * 2, getY() + length, getX() + length * 3, getY() + length * 2};
-    
-    rectangle(rectQ.left, rectQ.top, rectQ.right, rectQ.bottom);
-    rectangle(rectW.left, rectW.top, rectW.right, rectW.bottom);
-    rectangle(rectA.left, rectA.top, rectA.right, rectA.bottom);
-    rectangle(rectS.left, rectS.top, rectS.right, rectS.bottom);
-    rectangle(rectD.left, rectD.top, rectD.right, rectD.bottom);
-
     if (keySettings) {
+        setcolor(BLACK);
+
+        int length = 50;
+        int offset = 10;
+
+        RECT rectQ = {getX() - offset, getY() - offset, getX() + length - offset, getY() + length - offset};
+        RECT rectW = {getX() + length, getY(), getX() + length * 2, getY() + length};
+        RECT rectA = {getX(), getY() + length, getX() + length, getY() + length * 2};
+        RECT rectS = {getX() + length, getY() + length, getX() + length * 2, getY() + length * 2};
+        RECT rectD = {getX() + length * 2, getY() + length, getX() + length * 3, getY() + length * 2};
+
+        rectangle(rectQ.left, rectQ.top, rectQ.right, rectQ.bottom);
+        rectangle(rectW.left, rectW.top, rectW.right, rectW.bottom);
+        rectangle(rectA.left, rectA.top, rectA.right, rectA.bottom);
+        rectangle(rectS.left, rectS.top, rectS.right, rectS.bottom);
+        rectangle(rectD.left, rectD.top, rectD.right, rectD.bottom);
+        
         settextstyle(30, 20, _T("Consolas"));
         setbkmode(TRANSPARENT);
         settextcolor(BLACK);

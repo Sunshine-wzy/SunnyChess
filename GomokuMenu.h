@@ -47,6 +47,12 @@ public:
     void redraw();
     
     void drawTime(tm *time, RECT *rect);
+    
+    void runBot(Bot &bot);
+    
+    void calculateScore(Bot &bot);
+    
+    Position botThink(Bot &bot);
 
 };
 

@@ -325,3 +325,8 @@ void ChessBoard::setPiece(ChessPiece *piece, int x, int y) {
 void ChessBoard::setPiece(ChessPiece *piece, const Position &position) {
     setPiece(piece, position.x, position.y);
 }
+
+ChessPiece *ChessBoard::getPiece(int x, int y) {
+    if (!isOrderInBoard(x, y)) return nullptr;
+    return slots[x][y].getPiece();
+}
