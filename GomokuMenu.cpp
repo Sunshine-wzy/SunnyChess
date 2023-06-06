@@ -119,11 +119,11 @@ void GomokuMenu::onEnable() {
     std::thread timerThread([this]() {
         while (isRunning()) {
             buttonForbidden->visibleCountDown();
-            
+
             BeginBatchDraw();
             drawTime(getTimer().getTm(), &timerArea);
             FlushBatchDraw();
-            
+
             Sleep(1000);
         }
     });
@@ -136,6 +136,9 @@ void GomokuMenu::onEnable() {
         if (isRunning()) {
             player = board->getRoundPlayer();
             user = dynamic_cast<User *>(player);
+        } else {
+            player = nullptr;
+            user = nullptr;
         }
         
         switch (message.message) {
@@ -166,7 +169,7 @@ void GomokuMenu::onEnable() {
 
                         // 画出选择框
                         if (board->getOrderByPosition(order, message.x, message.y)) {
-                            player->onSelectionBoxDraw(pos, order);
+                            user->onSelectionBoxDraw(pos, order);
                         }
 
                         FlushBatchDraw();
@@ -251,12 +254,12 @@ void GomokuMenu::runGame(int x, int y) {
     // 尝试落子
     if (!board->placePiece(x, y)) {
         Position pos {};
-        board->getCenterPositionByOrder(pos, x, y);
-        
-        // 显示禁止落子按钮
-        buttonForbidden->setX(pos.x);
-        buttonForbidden->setY(pos.y);
-        buttonForbidden->setVisible(true);
+        if (board->getCenterPositionByOrder(pos, x, y)) {
+            // 显示禁止落子按钮
+            buttonForbidden->setX(pos.x);
+            buttonForbidden->setY(pos.y);
+            buttonForbidden->setVisible(true);
+        }
         return;
     }
     
@@ -268,8 +271,6 @@ void GomokuMenu::runGame(int x, int y) {
     if (board->judge(x, y)) {
         // 游戏结束
         endGame();
-
-        return;
     }
     
     Player *lastPlayer = board->getRoundPlayer();
@@ -278,23 +279,23 @@ void GomokuMenu::runGame(int x, int y) {
     board->turnRound();
     
     Player *nowPlayer = board->getRoundPlayer();
-    BeginBatchDraw();
-    redraw();
-
-    // 在落子位置画出新一轮玩家的选择框
-    Position pos {x, y};
-    if (board->getCenterPositionByOrder(pos, x, y)) {
-        nowPlayer->onSelectionBoxDraw(pos, lastPlayer->selectionBoxOrder);
-    }
-
-    FlushBatchDraw();
-    
     User *user = dynamic_cast<User *>(nowPlayer);
     if (user) {
         buttonDisplayKey->setKeySettings(&user->getKeySettings());
     } else {
         buttonDisplayKey->setKeySettings(nullptr);
     }
+
+    BeginBatchDraw();
+    redraw();
+
+    // 在落子位置画出新一轮玩家的选择框
+    Position pos {x, y};
+    if (board->getCenterPositionByOrder(pos, lastPlayer->selectionBoxOrder.x, lastPlayer->selectionBoxOrder.y)) {
+        nowPlayer->onSelectionBoxDraw(pos, lastPlayer->selectionBoxOrder);
+    }
+
+    FlushBatchDraw();
 }
 
 void GomokuMenu::endGame() {
@@ -312,6 +313,8 @@ void GomokuMenu::redraw() {
 void GomokuMenu::drawTime(tm *time, RECT *rect) {
     // 保证线程安全
     const std::lock_guard<std::mutex> lock(mutexDrawTime);
+
+    if (time == nullptr || rect == nullptr) return;
     
     clearrectangle(rect->left, rect->top, rect->right, rect->bottom);
     setfillcolor(WHITE);
@@ -332,7 +335,17 @@ GomokuMenu::~GomokuMenu() {
 
 void GomokuMenu::runBot(Bot &bot) {
     Position order = botThink(bot);
-    runGame(order.x, order.y);
+    
+    if (board->isOrderInBoard(order.x, order.y)) {
+        runGame(order.x, order.y);
+    } else {
+        // 回合更替
+        board->turnRound();
+
+        BeginBatchDraw();
+        redraw();
+        FlushBatchDraw();
+    }
 }
 
 void GomokuMenu::calculateScore(Bot &bot) {
@@ -518,7 +531,7 @@ Position GomokuMenu::botThink(Bot &bot) {
     }
 
     if (maxPoints.empty()) {
-        return {0, 0};
+        return {-1, -1};
     }
     
     int index = std::rand() % (int) maxPoints.size(); // NOLINT(cert-msc50-cpp)

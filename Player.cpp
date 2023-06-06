@@ -10,7 +10,7 @@ Player::Player(ChessPiece *piece, int selectionBoxHalfWidth, int selectionBoxHal
 
 void Player::drawSelectionBox(int x, int y) {
     setcolor(piece->getColor());
-    setlinestyle(PS_DASH | PS_ENDCAP_SQUARE);
+    setlinestyle(PS_DASH | PS_ENDCAP_SQUARE, 2);
     rectangle(x - selectionBoxHalfWidth, y - selectionBoxHalfHeight, x + selectionBoxHalfWidth, y + selectionBoxHalfHeight);
 }
 
