@@ -8,7 +8,7 @@
 GomokuMenu::GomokuMenu()
             : board(nullptr), timerArea(RECT {}),
               sidebarBaseX(0), sidebarCenterX(0),
-              buttonRetract(nullptr), buttonForbidden(nullptr), buttonDisplayKey(nullptr),
+              buttonRetract(nullptr), buttonForbidden(nullptr), buttonDisplayKey(nullptr), buttonVictory(nullptr),
               imageBackground(IMAGE(MainMenu::WIDTH, MainMenu::HEIGHT)) {
     loadimage(&imageBackground, "../resources/gomoku_background.jpg", MainMenu::WIDTH, MainMenu::HEIGHT);
     loadimage(&imageVictory, "../resources/victory.png", MainMenu::HEIGHT / 2, MainMenu::HEIGHT / 2);
@@ -102,6 +102,28 @@ void GomokuMenu::initButtons() {
     // 按键提示
     buttonDisplayKey = new DisplayKeyButton(sidebarBaseX + 10, timerArea.bottom + 100);
     addButton(buttonDisplayKey);
+    
+    // 胜利
+    buttonVictory = new RoundRectangleButton("victory", MainMenu::WIDTH / 2, MainMenu::HEIGHT / 2, imageVictory.getwidth(), imageVictory.getheight(), &imageVictory);
+    buttonVictory->setVisible(false);
+    addButton(
+            buttonVictory,
+            [](Menu &menu, Button &button, int x, int y) {
+                auto &gomokuMenu = dynamic_cast<GomokuMenu &>(menu);
+                
+                button.setVisible(false);
+
+                gomokuMenu.redraw([&] {
+                    // 在落子位置画出胜利玩家的选择框
+                    Position pos {};
+                    Player *player = gomokuMenu.board->getRoundPlayer();
+                    if (gomokuMenu.board->getCenterPositionByOrder(pos, player->selectionBoxOrder.x, player->selectionBoxOrder.y)) {
+                        gomokuMenu.board->getRoundPlayer()->onSelectionBoxDraw(pos, player->selectionBoxOrder);
+                    }
+                });
+            }
+    );
+    
 }
 
 void GomokuMenu::onEnable() {
@@ -262,15 +284,7 @@ void GomokuMenu::runGame(int x, int y) {
     // 胜利判定
     if (board->judge(x, y)) {
         // 游戏结束
-        redraw([&] {
-            // 在落子位置画出胜利玩家的选择框
-            Position pos {}, order {x, y};
-            if (board->getCenterPositionByOrder(pos, x, y)) {
-                board->getRoundPlayer()->onSelectionBoxDraw(pos, order);
-            }
-        });
-
-        endGame();
+        endGame(x, y);
         return;
     }
     
@@ -296,12 +310,21 @@ void GomokuMenu::runGame(int x, int y) {
     });
 }
 
-void GomokuMenu::endGame() {
+void GomokuMenu::endGame(int x, int y) {
     setRunning(false);
 
-    BeginBatchDraw();
-    putimage(MainMenu::HEIGHT / 2 - imageVictory.getheight() / 2, MainMenu::HEIGHT / 2 - imageVictory.getheight() / 2, &imageVictory);
-    FlushBatchDraw();
+    buttonVictory->setVisible(true);
+
+    redraw([&] {
+        // 在落子位置画出胜利玩家的选择框
+        Position pos {}, order {x, y};
+        if (board->getCenterPositionByOrder(pos, x, y)) {
+            board->getRoundPlayer()->onSelectionBoxDraw(pos, order);
+        }
+        
+        // 在胜利图片上画出胜方棋子
+        board->getRoundPlayer()->getPiece()->draw(MainMenu::WIDTH / 2, MainMenu::HEIGHT / 2, 15);
+    });
 }
 
 void GomokuMenu::drawTime(tm *time, RECT *rect) {

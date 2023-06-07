@@ -7,7 +7,7 @@ ChessBoard::ChessBoard(int x, int y, int width, int height, ChessOptions &option
         : startX(x), startY(y), baseX(30), baseY(30),
           width(width), height(height), extraHeight(60), extraWidth(60), size(options.size),
           slotWidth((double) width / (size - 1)), slotHeight((double) height / (size - 1)),
-          totalWidth(width + extraWidth), totalHeight(height + extraHeight),
+          totalWidth(width + extraWidth), totalHeight(height + extraHeight), pieceRadius((int) (slotHeight / 2.5)),
           slots(options.size + 1, std::vector<ChessSlot>(options.size + 1, ChessSlot())),
           boardImage(IMAGE(totalWidth, totalHeight)),
           drawingImage(IMAGE(totalWidth, totalHeight)),
@@ -109,7 +109,7 @@ void ChessBoard::drawPieces() {
                 if (piece->isNotNone()) {
                     setfillcolor(piece->getColor());
                     if (getCenterPositionByOrder(position, n, m))
-                        piece->draw(position.x - startX, position.y - startY, 12);
+                        piece->draw(position.x - startX, position.y - startY, pieceRadius);
                 }
             }
         }

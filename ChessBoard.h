@@ -35,6 +35,8 @@ private:
     double slotHeight;      // 格子高
     int totalWidth;         // 总共宽
     int totalHeight;        // 总共高
+    
+    int pieceRadius;        // 棋子半径
 
     IMAGE boardImage;       // 棋盘背景以及基础格子
     IMAGE drawingImage;     // 包括棋子的棋盘

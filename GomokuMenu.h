@@ -20,6 +20,7 @@ private:
     CircleSelectionButton *buttonRetract;
     RoundRectangleButton *buttonForbidden;
     DisplayKeyButton *buttonDisplayKey;
+    RoundRectangleButton *buttonVictory;
 
     IMAGE imageBackground;
     IMAGE imageVictory;
@@ -42,7 +43,7 @@ public:
 
     void runGame(int x, int y) override;
 
-    void endGame() override;
+    void endGame(int x, int y) override;
 
     void initButtons() override;
 

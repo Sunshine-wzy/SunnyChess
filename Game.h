@@ -20,7 +20,7 @@ public:
     virtual void runGame(int x, int y) = 0;
     
     // 结束游戏
-    virtual void endGame() = 0;
+    virtual void endGame(int x, int y) = 0;
 
 
     bool isRunning() const;
