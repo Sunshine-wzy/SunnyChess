@@ -23,6 +23,7 @@ private:
 
     IMAGE imageBackground;
     
+    std::mutex mutexRedraw;
     std::mutex mutexDrawTime;
 
 public:
@@ -43,6 +44,9 @@ public:
     void endGame() override;
 
     void initButtons() override;
+
+    template <class Callable>
+    void redraw(Callable &&callable, bool isRedraw = true);
     
     void redraw();
     
@@ -55,6 +59,24 @@ public:
     Position botThink(Bot &bot);
 
 };
+
+
+template <class Callable>
+void GomokuMenu::redraw(Callable &&callable, bool isRedraw) {
+    const std::lock_guard<std::mutex> lock(mutexRedraw);
+
+    BeginBatchDraw();
+
+    if (isRedraw) {
+        cleardevice();
+        onInit();
+        drawButtons();
+    }
+    
+    callable();
+
+    FlushBatchDraw();
+}
 
 
 #endif //SUNNYCHESS_GOMOKUMENU_H

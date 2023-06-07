@@ -3,7 +3,6 @@
 #include "GomokuMenu.h"
 #include "MenuManager.h"
 #include "RoundRectangleButton.h"
-#include <cstdio>
 #include <thread>
 
 GomokuMenu::GomokuMenu()
@@ -81,9 +80,7 @@ void GomokuMenu::initButtons() {
                 gomokuMenu.board->retract();
                 circleButton.setSelected(true);
                 
-                BeginBatchDraw();
                 gomokuMenu.redraw();
-                FlushBatchDraw();
             }
     );
     
@@ -97,9 +94,7 @@ void GomokuMenu::initButtons() {
                 auto &gomokuMenu = dynamic_cast<GomokuMenu &>(menu);
                 
                 button.setVisible(false);
-                BeginBatchDraw();
                 gomokuMenu.redraw();
-                FlushBatchDraw();
             }
     );
     
@@ -120,9 +115,9 @@ void GomokuMenu::onEnable() {
         while (isRunning()) {
             buttonForbidden->visibleCountDown();
 
-            BeginBatchDraw();
-            drawTime(getTimer().getTm(), &timerArea);
-            FlushBatchDraw();
+            redraw([&] {
+                drawTime(getTimer().getTm(), &timerArea);
+            }, false);
 
             Sleep(1000);
         }
@@ -152,9 +147,11 @@ void GomokuMenu::onEnable() {
                         // 执行游戏逻辑
                         runGame(pos.x, pos.y);
 
-                        Bot *bot = dynamic_cast<Bot *>(board->getRoundPlayer());
-                        if (bot) {
-                            runBot(*bot);
+                        if (isRunning()) {
+                            Bot *bot = dynamic_cast<Bot *>(board->getRoundPlayer());
+                            if (bot) {
+                                runBot(*bot);
+                            }
                         }
                     }
                 }
@@ -164,15 +161,12 @@ void GomokuMenu::onEnable() {
             case WM_MOUSEMOVE:
                 if (isRunning()) {
                     if (user && board->getCenterPositionByPosition(pos, message.x, message.y)) {
-                        BeginBatchDraw();
-                        redraw();
-
-                        // 画出选择框
-                        if (board->getOrderByPosition(order, message.x, message.y)) {
-                            user->onSelectionBoxDraw(pos, order);
-                        }
-
-                        FlushBatchDraw();
+                        redraw([&] {
+                            // 画出选择框
+                            if (board->getOrderByPosition(order, message.x, message.y)) {
+                                user->onSelectionBoxDraw(pos, order);
+                            }
+                        });
                     }
                 }
                 break;
@@ -200,22 +194,21 @@ void GomokuMenu::onEnable() {
                             // 执行游戏逻辑
                             runGame(user->selectionBoxOrder.x, user->selectionBoxOrder.y);
 
-                            Bot *bot = dynamic_cast<Bot *>(board->getRoundPlayer());
-                            if (bot) {
-                                runBot(*bot);
+                            if (isRunning()) {
+                                Bot *bot = dynamic_cast<Bot *>(board->getRoundPlayer());
+                                if (bot) {
+                                    runBot(*bot);
+                                }
                             }
                             break;
                         }
 
                         if (board->isOrderInBoard(x, y) && board->getCenterPositionByOrder(pos, x, y)) {
-                            BeginBatchDraw();
-                            redraw();
-                            
-                            order.x = x;
-                            order.y = y;
-                            user->onSelectionBoxDraw(pos, order);
-                            
-                            FlushBatchDraw();
+                            redraw([&] {
+                                order.x = x;
+                                order.y = y;
+                                user->onSelectionBoxDraw(pos, order);
+                            });
                         }
                     }
                 }
@@ -239,9 +232,7 @@ void GomokuMenu::startGame() {
     }
     
     // 刷新界面
-    BeginBatchDraw();
     redraw();
-    FlushBatchDraw();
     
     // 尝试运行bot
     Bot *bot = dynamic_cast<Bot *>(board->getRoundPlayer());
@@ -271,6 +262,15 @@ void GomokuMenu::runGame(int x, int y) {
     if (board->judge(x, y)) {
         // 游戏结束
         endGame();
+
+        redraw([&] {
+            // 在落子位置画出胜利玩家的选择框
+            Position pos {}, order {x, y};
+            if (board->getCenterPositionByOrder(pos, x, y)) {
+                board->getRoundPlayer()->onSelectionBoxDraw(pos, order);
+            }
+        });
+        return;
     }
     
     Player *lastPlayer = board->getRoundPlayer();
@@ -286,34 +286,22 @@ void GomokuMenu::runGame(int x, int y) {
         buttonDisplayKey->setKeySettings(nullptr);
     }
 
-    BeginBatchDraw();
-    redraw();
-
-    // 在落子位置画出新一轮玩家的选择框
-    Position pos {x, y};
-    if (board->getCenterPositionByOrder(pos, lastPlayer->selectionBoxOrder.x, lastPlayer->selectionBoxOrder.y)) {
-        nowPlayer->onSelectionBoxDraw(pos, lastPlayer->selectionBoxOrder);
-    }
-
-    FlushBatchDraw();
+    redraw([&] {
+        // 在落子位置画出新一轮玩家的选择框
+        Position pos {x, y};
+        if (board->getCenterPositionByOrder(pos, lastPlayer->selectionBoxOrder.x, lastPlayer->selectionBoxOrder.y)) {
+            nowPlayer->onSelectionBoxDraw(pos, lastPlayer->selectionBoxOrder);
+        }
+    });
 }
 
 void GomokuMenu::endGame() {
     setRunning(false);
 }
 
-void GomokuMenu::redraw() {
-    cleardevice();
-    
-    onInit();
-    
-    drawButtons();
-}
-
 void GomokuMenu::drawTime(tm *time, RECT *rect) {
     // 保证线程安全
     const std::lock_guard<std::mutex> lock(mutexDrawTime);
-
     if (time == nullptr || rect == nullptr) return;
     
     clearrectangle(rect->left, rect->top, rect->right, rect->bottom);
@@ -342,9 +330,7 @@ void GomokuMenu::runBot(Bot &bot) {
         // 回合更替
         board->turnRound();
 
-        BeginBatchDraw();
         redraw();
-        FlushBatchDraw();
     }
 }
 
@@ -536,6 +522,10 @@ Position GomokuMenu::botThink(Bot &bot) {
     
     int index = std::rand() % (int) maxPoints.size(); // NOLINT(cert-msc50-cpp)
     return maxPoints[index];
+}
+
+void GomokuMenu::redraw() {
+    redraw([] {});
 }
 
 #pragma clang diagnostic pop
