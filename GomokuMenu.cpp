@@ -11,6 +11,7 @@ GomokuMenu::GomokuMenu()
               buttonRetract(nullptr), buttonForbidden(nullptr), buttonDisplayKey(nullptr),
               imageBackground(IMAGE(MainMenu::WIDTH, MainMenu::HEIGHT)) {
     loadimage(&imageBackground, "../resources/gomoku_background.jpg", MainMenu::WIDTH, MainMenu::HEIGHT);
+    loadimage(&imageVictory, "../resources/victory.png", MainMenu::HEIGHT / 2, MainMenu::HEIGHT / 2);
 }
 
 void GomokuMenu::onOpenInit() {
@@ -261,8 +262,6 @@ void GomokuMenu::runGame(int x, int y) {
     // 胜利判定
     if (board->judge(x, y)) {
         // 游戏结束
-        endGame();
-
         redraw([&] {
             // 在落子位置画出胜利玩家的选择框
             Position pos {}, order {x, y};
@@ -270,6 +269,8 @@ void GomokuMenu::runGame(int x, int y) {
                 board->getRoundPlayer()->onSelectionBoxDraw(pos, order);
             }
         });
+
+        endGame();
         return;
     }
     
@@ -297,6 +298,10 @@ void GomokuMenu::runGame(int x, int y) {
 
 void GomokuMenu::endGame() {
     setRunning(false);
+
+    BeginBatchDraw();
+    putimage(MainMenu::HEIGHT / 2 - imageVictory.getheight() / 2, MainMenu::HEIGHT / 2 - imageVictory.getheight() / 2, &imageVictory);
+    FlushBatchDraw();
 }
 
 void GomokuMenu::drawTime(tm *time, RECT *rect) {

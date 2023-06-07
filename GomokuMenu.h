@@ -22,6 +22,7 @@ private:
     DisplayKeyButton *buttonDisplayKey;
 
     IMAGE imageBackground;
+    IMAGE imageVictory;
     
     std::mutex mutexRedraw;
     std::mutex mutexDrawTime;
