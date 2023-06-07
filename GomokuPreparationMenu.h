@@ -16,6 +16,33 @@ private:
     SelectionButtonGroup sizeSelectionGroup;
     SelectionButtonGroup chessTypeSelectionGroup;
     
+    int radius;
+    int incrementX;
+    int incrementY;
+    
+    RECT relativeRect;
+    RECT smallRelativeRect;
+    RECT squareRect;
+    
+    int rectWidth;
+    int rectHeight;
+    int smallRectWidth;
+    int smallRectHeight;
+    int squareRectWidth;
+    int squareRectHeight;
+    
+    int promptWidth;
+    int promptHeight;
+    
+    int baseX;
+    int baseY;
+
+    IMAGE imageBackground;
+    IMAGE imageModeSelectionPrompt;
+    IMAGE imageNumberSelectionPrompt;
+    IMAGE imageChessTypeSelectionPrompt;
+    IMAGE imageSizeSelectionPrompt;
+    
     
     template <int Number>
     void addNumberSelectionButton(CircleSelectionButton *buttons[]);

@@ -4,6 +4,8 @@
 #include "ChessPiece.h"
 #include "Position.h"
 #include <graphics.h>
+#include <string>
+#include <vector>
 
 
 // 玩家 (表示参与对局的一方)
@@ -41,7 +43,7 @@ struct KeySettings {
     BYTE right;         // 右
     BYTE drop;          // 落子
     
-    wchar_t keys[5];
+    std::string keys[5];
 
     
     static KeySettings none;            // 无
@@ -71,9 +73,17 @@ public:
 
 // 机器人 (表示电脑玩家)
 class Bot : public Player {
-public:
-    Bot(ChessPiece *piece, int selectionBoxHalfWidth, int selectionBoxHalfHeight);
+private:
+    User &user;
     
+public:
+    std::vector<std::vector<int>> scoreMap;
+    
+    
+    Bot(ChessPiece *piece, User &user, int selectionBoxHalfWidth, int selectionBoxHalfHeight);
+
+    User &getUser() const;
+
 };
 
 

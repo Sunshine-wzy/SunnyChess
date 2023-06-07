@@ -33,10 +33,22 @@ GomokuChessBoard::GomokuChessBoard(int x, int y, int width, int height, GomokuOp
             }
         }
 
-        players.push_back(new User(typeUser, selectionBoxHalfWidth, selectionBoxHalfHeight, KeySettings {0x57, 0x53, 0x41, 0x44, 0x52}));
-        players.push_back(new Bot(typeBot, selectionBoxHalfWidth, selectionBoxHalfHeight));
+        User *user = new User(typeUser, selectionBoxHalfWidth, selectionBoxHalfHeight, *KeySettings::defaultSettings[1]);
+        players.push_back(user);
+        
+        Bot *bot = new Bot(typeBot, *user, selectionBoxHalfWidth, selectionBoxHalfHeight);
+        for (int i = 0; i <= getSize(); i++) {
+            std::vector<int> row;
+            for (int j = 0; j <= getSize(); j++) {
+                row.push_back(0);
+            }
+            
+            bot->scoreMap.push_back(row);
+        }
+        
+        players.push_back(bot);
     } else if (options.mode == GomokuOptions::Mode::FRIEND) {
-        // 好友对局
+        // 好友对战
         if (options.number == 2) {
             // 双人对弈
             ChessPiece *typePlayer1 = nullptr, *typePlayer2 = nullptr;

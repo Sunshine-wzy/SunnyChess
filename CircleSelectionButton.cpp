@@ -22,18 +22,18 @@ void CircleSelectionButton::drawNormal() {
     setlinestyle(&MenuManager::main.getLineStyle());
     setfillcolor(WHITE);
     solidcircle(getX(), getY(), radius);
+
+    if (image) {
+        putimage(realRect.left, realRect.top, image);
+    }
     
     if (!text.empty()) {
         settextstyle(30, 15, _T("Consolas"));
         setbkmode(TRANSPARENT);
-        settextcolor(WHITE);
+        settextcolor(BLACK);
         drawtext(_T(text.c_str()), &realRect, DT_CENTER | DT_VCENTER | DT_SINGLELINE | DT_NOCLIP);
 
         rectangle(realRect.left, realRect.top, realRect.right, realRect.bottom);
-    }
-    
-    if (image) {
-        putimage(realRect.left, realRect.top, image, SRCPAINT);
     }
 }
 
