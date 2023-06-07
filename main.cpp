@@ -1,20 +1,27 @@
-#include <graphics.h>
-#include <conio.h>
-
 #include "MenuManager.h"
+#include <graphics.h>
+#include <mmsystem.h>
+#pragma comment(lib, "winmm.lib")           // 加载静态库
 
 
 int main() {
     // 初始化图形模式
     initgraph(MainMenu::WIDTH, MainMenu::HEIGHT);
     
+    // 打开音频文件
+//    mciSendString("open ../resources/piece_drop_sound.wav alias PieceDrop", nullptr, 0, nullptr);
+    mciSendString("open ../resources/victory_sound.wav alias Victory", nullptr, 0, nullptr);
+    
     // 打开主菜单
     MenuManager::main.open();
     
-    _getch();
-    
     // 关闭图形模式
     closegraph();
-    
+
+    // 关闭音频文件
+    mciSendString("close ../resources/piece_drop_sound.wav", nullptr, 0, nullptr);
+    mciSendString("close ../resources/victory_sound.wav", nullptr, 0, nullptr);
+
+
     return 0;
 }

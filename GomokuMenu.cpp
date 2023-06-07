@@ -4,6 +4,8 @@
 #include "MenuManager.h"
 #include "RoundRectangleButton.h"
 #include <thread>
+#include <mmsystem.h>
+#pragma comment(lib, "winmm.lib")           // 加载静态库
 
 GomokuMenu::GomokuMenu()
             : board(nullptr), timerArea(RECT {}),
@@ -281,6 +283,9 @@ void GomokuMenu::runGame(int x, int y) {
     board->record(x, y);
     buttonRetract->setSelected(false);
     
+    // 播放落子音效
+    mciSendString("play PieceDrop", nullptr, 0, nullptr);
+
     // 胜利判定
     if (board->judge(x, y)) {
         // 游戏结束
@@ -313,6 +318,9 @@ void GomokuMenu::runGame(int x, int y) {
 void GomokuMenu::endGame(int x, int y) {
     setRunning(false);
 
+    // 播放胜利音效
+    mciSendString("play Victory", nullptr, 0, nullptr);       // 播放音效
+
     buttonVictory->setVisible(true);
 
     redraw([&] {
@@ -323,7 +331,7 @@ void GomokuMenu::endGame(int x, int y) {
         }
         
         // 在胜利图片上画出胜方棋子
-        board->getRoundPlayer()->getPiece()->draw(MainMenu::WIDTH / 2, MainMenu::HEIGHT / 2, 15);
+        board->getRoundPlayer()->getPiece()->draw(MainMenu::WIDTH / 2, MainMenu::HEIGHT / 2, 30);
     });
 }
 
