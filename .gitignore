@@ -1,4 +1,7 @@
 .idea
 .vscode
+.vs
 build
 cmake-build-debug
+out
+x64
