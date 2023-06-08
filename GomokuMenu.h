@@ -8,6 +8,7 @@
 #include "RoundRectangleButton.h"
 #include "DisplayButton.h"
 #include <mutex>
+#include <atomic>
 
 
 class GomokuMenu : public Menu, public Game {
@@ -27,6 +28,8 @@ private:
     
     std::mutex mutexRedraw;
     std::mutex mutexDrawTime;
+    
+    std::atomic<int> playPieceDropSoundCount;
 
 public:
     GomokuMenu();

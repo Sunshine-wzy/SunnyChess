@@ -57,19 +57,6 @@ void GomokuPreparationMenu::initButtons() {
     sizeSelectionGroup.clear();
     chessTypeSelectionGroup.clear();
 
-    addButton(
-            new RoundRectangleButton("gomoku", MainMenu::WIDTH, MainMenu::HEIGHT * 1 / 3, 100, 50),
-            [](Menu &menu, Button &button, int x, int y) {
-                MenuManager::gomoku.open();
-            }
-    );
-    addButton(
-            new RoundRectangleButton("main", MainMenu::WIDTH, MainMenu::HEIGHT * 2 / 3, 100, 50),
-            [](Menu &menu, Button &button, int x, int y) {
-                MenuManager::main.open();
-            }
-    );
-
     IMAGE *modeSelectionImageFriend = new IMAGE(rectWidth, rectHeight);
     loadimage(modeSelectionImageFriend, "../resources/mode_selection_friend.png", rectWidth, rectHeight);
 
@@ -251,6 +238,14 @@ void GomokuPreparationMenu::initButtons() {
                 gomokuMenu.sizeSelectionGroup.select(&circleButton);
                 gomokuMenu.options.size = 21;
                 menu.reopen();
+            }
+    );
+    
+    // 开始游戏
+    addButton(
+            new RoundRectangleButton("gomoku", MainMenu::WIDTH / 2, (int) (sizeSelectionBaseY + incrementY * 0.8)),
+            [](Menu &menu, Button &button, int x, int y) {
+                MenuManager::gomoku.open();
             }
     );
 }

@@ -11,7 +11,8 @@ GomokuMenu::GomokuMenu()
             : board(nullptr), timerArea(RECT {}),
               sidebarBaseX(0), sidebarCenterX(0),
               buttonRetract(nullptr), buttonForbidden(nullptr), buttonDisplayKey(nullptr), buttonVictory(nullptr),
-              imageBackground(IMAGE(MainMenu::WIDTH, MainMenu::HEIGHT)) {
+              imageBackground(IMAGE(MainMenu::WIDTH, MainMenu::HEIGHT)),
+              playPieceDropSoundCount(0) {
     loadimage(&imageBackground, "../resources/gomoku_background.jpg", MainMenu::WIDTH, MainMenu::HEIGHT);
     loadimage(&imageVictory, "../resources/victory.png", MainMenu::HEIGHT / 2, MainMenu::HEIGHT / 2);
 }
@@ -149,6 +150,22 @@ void GomokuMenu::onEnable() {
     });
     timerThread.detach();
     
+    // 音效线程（播放落子音效）
+    std::thread soundThread([&] {
+        while (isRunning()) {
+            if (playPieceDropSoundCount > 0) {
+                mciSendString("close PieceDrop", nullptr, 0, nullptr);
+                mciSendString("open ../resources/piece_drop_sound.mp3 alias PieceDrop", nullptr, 0, nullptr);
+                mciSendString("play PieceDrop", nullptr, 0, nullptr);
+                
+                playPieceDropSoundCount--;
+            }
+
+            Sleep(10);
+        }
+    });
+    soundThread.detach();
+    
     flushmessage();
     while (true) {
         // 消息处理
@@ -284,7 +301,7 @@ void GomokuMenu::runGame(int x, int y) {
     buttonRetract->setSelected(false);
     
     // 播放落子音效
-    mciSendString("play PieceDrop", nullptr, 0, nullptr);
+    playPieceDropSoundCount++;
 
     // 胜利判定
     if (board->judge(x, y)) {
@@ -319,7 +336,9 @@ void GomokuMenu::endGame(int x, int y) {
     setRunning(false);
 
     // 播放胜利音效
-    mciSendString("play Victory", nullptr, 0, nullptr);       // 播放音效
+    mciSendString("close Victory", nullptr, 0, nullptr);
+    mciSendString("open ../resources/victory_sound.mp3 alias Victory", nullptr, 0, nullptr);
+    mciSendString("play Victory", nullptr, 0, nullptr);
 
     buttonVictory->setVisible(true);
 
