@@ -57,16 +57,6 @@ void GomokuMenu::onInit() {
 }
 
 void GomokuMenu::initButtons() {
-    addButton(
-        new RoundRectangleButton("gomoku_preparation", MainMenu::WIDTH, MainMenu::HEIGHT / 2, 100, 50),
-        [](Menu &menu, Button &button, int x, int y) {
-            auto &gomokuMenu = dynamic_cast<GomokuMenu &>(menu);
-            gomokuMenu.setRunning(false);
-            
-            MenuManager::gomokuPreparation.open();
-        }
-    );
-    
     int radius = 10;
     RECT squareRect = {radius * 2, -radius * 6, radius * 14, radius * 6};
     int squareRectLength = squareRect.right - squareRect.left;
@@ -127,6 +117,16 @@ void GomokuMenu::initButtons() {
             }
     );
     
+    // 返回
+    addButton(
+            new RoundRectangleButton("gomoku_preparation", sidebarCenterX, MainMenu::HEIGHT * 3 / 4, 100, 100),
+            [](Menu &menu, Button &button, int x, int y) {
+                auto &gomokuMenu = dynamic_cast<GomokuMenu &>(menu);
+                gomokuMenu.setRunning(false);
+
+                MenuManager::gomokuPreparation.open();
+            }
+    );
 }
 
 void GomokuMenu::onEnable() {
