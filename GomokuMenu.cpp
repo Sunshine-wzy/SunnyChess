@@ -155,7 +155,7 @@ void GomokuMenu::onEnable() {
         while (isRunning()) {
             if (playPieceDropSoundCount > 0) {
                 mciSendString("close PieceDrop", nullptr, 0, nullptr);
-                mciSendString("open ../resources/piece_drop_sound.mp3 alias PieceDrop", nullptr, 0, nullptr);
+                mciSendString("open ../resources/piece_drop_sound.wav alias PieceDrop", nullptr, 0, nullptr);
                 mciSendString("play PieceDrop", nullptr, 0, nullptr);
                 
                 playPieceDropSoundCount--;
@@ -337,7 +337,7 @@ void GomokuMenu::endGame(int x, int y) {
 
     // 播放胜利音效
     mciSendString("close Victory", nullptr, 0, nullptr);
-    mciSendString("open ../resources/victory_sound.mp3 alias Victory", nullptr, 0, nullptr);
+    mciSendString("open ../resources/victory_sound.wav alias Victory", nullptr, 0, nullptr);
     mciSendString("play Victory", nullptr, 0, nullptr);
 
     buttonVictory->setVisible(true);
