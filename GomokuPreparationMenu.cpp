@@ -20,7 +20,7 @@ GomokuPreparationMenu::GomokuPreparationMenu()
           baseX(MainMenu::WIDTH / 30), baseY(MainMenu::HEIGHT / 6),
           imageBackground(IMAGE(MainMenu::WIDTH, MainMenu::HEIGHT)) {
     loadimage(&imageBackground, "../resources/gomoku_preparation_background.png", MainMenu::WIDTH, MainMenu::HEIGHT);
-    
+    loadimage(&imageTitle, "../resources/gomoku_title.png", Button::BUTTON_WIDTH, Button::BUTTON_HEIGHT);
     loadimage(&imageModeSelectionPrompt, "../resources/mode_selection_prompt.png", promptWidth, promptHeight);
     loadimage(&imageNumberSelectionPrompt, "../resources/number_selection_prompt.png", promptWidth, promptHeight);
     loadimage(&imageChessTypeSelectionPrompt, "../resources/chess_type_selection_prompt.png", promptWidth, promptHeight);
@@ -29,7 +29,7 @@ GomokuPreparationMenu::GomokuPreparationMenu()
 
 void GomokuPreparationMenu::onInit() {
     putimage(0, 0, &imageBackground);
-    
+    putimage(MainMenu::WIDTH / 2 - Button::BUTTON_WIDTH / 2, 10, &imageTitle);
     putimage(baseX, baseY, &imageModeSelectionPrompt);
     putimage(baseX, baseY + incrementY, &imageNumberSelectionPrompt);
     putimage(baseX, (int) (baseY + incrementY * 2.15), &imageChessTypeSelectionPrompt);
@@ -242,8 +242,10 @@ void GomokuPreparationMenu::initButtons() {
     );
     
     // 开始游戏
+    IMAGE *imageStartGame = new IMAGE;
+    loadimage(imageStartGame, "../resources/start_game.png", Button::BUTTON_WIDTH * 1.3, Button::BUTTON_HEIGHT);
     addButton(
-            new RoundRectangleButton("gomoku", MainMenu::WIDTH / 2, (int) (sizeSelectionBaseY + incrementY * 0.8)),
+            new RoundRectangleButton("start_game", MainMenu::WIDTH / 2, (int) (sizeSelectionBaseY + incrementY * 0.8), Button::BUTTON_WIDTH * 1.3, Button::BUTTON_HEIGHT, imageStartGame),
             [](Menu &menu, Button &button, int x, int y) {
                 MenuManager::gomoku.open();
             }

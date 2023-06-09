@@ -12,9 +12,9 @@ RoundRectangleButton::RoundRectangleButton(std::string name, int x, int y, int w
 void RoundRectangleButton::draw() {
     if (!isVisible()) return;
     
-    setcolor(WHITE);
-    setlinestyle(&MenuManager::main.getLineStyle());
-    roundrect(rect.left, rect.top, rect.right, rect.bottom, ellipseWidth, ellipseHeight);
+//    setcolor(WHITE);
+//    setlinestyle(&MenuManager::main.getLineStyle());
+//    roundrect(rect.left, rect.top, rect.right, rect.bottom, ellipseWidth, ellipseHeight);
 
     if (image) {
         putimage(rect.left, rect.top, image);

@@ -38,6 +38,7 @@ private:
     int baseY;
 
     IMAGE imageBackground;
+    IMAGE imageTitle;
     IMAGE imageModeSelectionPrompt;
     IMAGE imageNumberSelectionPrompt;
     IMAGE imageChessTypeSelectionPrompt;

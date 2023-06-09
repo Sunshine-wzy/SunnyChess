@@ -118,8 +118,10 @@ void GomokuMenu::initButtons() {
     );
     
     // 返回
+    IMAGE *imageBack = new IMAGE;
+    loadimage(imageBack, "../resources/back.png", 100, 100);
     addButton(
-            new RoundRectangleButton("gomoku_preparation", sidebarCenterX, MainMenu::HEIGHT * 3 / 4, 100, 100),
+            new RoundRectangleButton("gomoku_preparation", sidebarCenterX, MainMenu::HEIGHT * 3 / 4, 100, 100, imageBack),
             [](Menu &menu, Button &button, int x, int y) {
                 auto &gomokuMenu = dynamic_cast<GomokuMenu &>(menu);
                 gomokuMenu.setRunning(false);
