@@ -6,8 +6,8 @@
 
 class Game {
 private:
-    bool running;
-    Timer timer;
+    bool running;           // 是否正在进行游戏
+    Timer timer;            // 计时器
     
 public:
     explicit Game();

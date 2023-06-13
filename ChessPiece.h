@@ -4,6 +4,7 @@
 #include <graphics.h>
 
 
+// 棋子
 class ChessPiece {
 private:
     COLORREF color;

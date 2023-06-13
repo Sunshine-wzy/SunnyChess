@@ -9,6 +9,7 @@
 
 class GomokuPreparationMenu : public Menu {
 private:
+    // 五子棋选项
     GomokuOptions options;
     
     SelectionButtonGroup modeSelectionGroup;

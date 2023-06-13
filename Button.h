@@ -23,9 +23,12 @@ private:
     // 是否可见
     std::atomic<bool> visible;
     
+    // 可见时计数
     int visibleCount;
+    // 当前可见时计数
     int currentVisibleCount;
     
+    // 可见计数锁
     std::mutex mutexVisibleCountDown;
 
 public:

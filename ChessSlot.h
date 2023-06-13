@@ -4,6 +4,7 @@
 #include "ChessPiece.h"
 
 
+// 格子
 class ChessSlot {
 private:
     ChessPiece *piece;

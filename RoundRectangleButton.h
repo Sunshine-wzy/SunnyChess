@@ -4,14 +4,17 @@
 #include "Button.h"
 
 
+// 圆角矩形选择按钮
 class RoundRectangleButton : public Button {
 private:
+    // 圆角大小
     int ellipseWidth;
     int ellipseHeight;
     
     IMAGE *image;
     std::string text;
     
+    // 图片和文字显示范围
     RECT rect;
     
 public:

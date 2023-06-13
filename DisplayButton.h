@@ -5,6 +5,8 @@
 #include "Player.h"
 
 
+// 显示按钮
+// 只有显示功能，点击反馈被忽略
 class DisplayButton : public Button {
 public:
     DisplayButton(int x, int y);
@@ -15,6 +17,7 @@ private:
 };
 
 
+// 显示按键提示
 class DisplayKeyButton : public DisplayButton {
 private:
     const KeySettings *keySettings;

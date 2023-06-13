@@ -5,6 +5,7 @@
 #include "Direction.h"
 
 
+// 五子棋棋盘
 class GomokuChessBoard : public ChessBoard {
 private:
     int judgeCount;

@@ -6,9 +6,12 @@
 #include "SelectionButton.h"
 
 
+// 选择按钮组
 class SelectionButtonGroup {
 private:
+    // 按钮映射
     std::map<std::string, SelectionButton *> buttons;
+    // 选中按钮的按钮名
     std::string selectedKey;
 
 public:

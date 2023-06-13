@@ -6,13 +6,14 @@
 #include <string>
 
 
+// 圆形选择按钮
 class CircleSelectionButton : public SelectionButton {
 private:
-    int radius;
-    RECT relativeRect;
-    RECT realRect;
-    IMAGE *image;
-    std::string text;
+    int radius;                 // 半径
+    RECT relativeRect;          // 显示范围（相对坐标）
+    RECT realRect;              // 显示范围（绝对坐标）
+    IMAGE *image;               // 显示图片
+    std::string text;           // 显示文字
 
 public:
     CircleSelectionButton(std::string name, int x, int y, int radius, RECT relativeRect = {0, 0, 0, 0}, IMAGE *image = nullptr, std::string text = "");

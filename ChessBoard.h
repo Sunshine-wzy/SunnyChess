@@ -10,6 +10,7 @@
 #include <string>
 
 
+// 棋盘
 class ChessBoard {
 protected:
     // 格子

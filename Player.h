@@ -36,6 +36,7 @@ public:
 };
 
 
+// 按键设置
 struct KeySettings {
     BYTE up;            // 上
     BYTE down;          // 下
