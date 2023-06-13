@@ -22,6 +22,7 @@ public:
 
     virtual ~Menu();
     
+    // 删除所有按钮
     void deleteButtons();
 
     // 打开菜单

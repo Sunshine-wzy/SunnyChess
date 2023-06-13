@@ -23,12 +23,15 @@ public:
     virtual void endGame(int x, int y) = 0;
 
 
+    // 获取游戏是否正在进行
     bool isRunning() const;
 
+    // 设置游戏进行状态
     void setRunning(bool running);
     
     const bool *getRunning();
 
+    // 获取计时器
     Timer &getTimer();
     
 };

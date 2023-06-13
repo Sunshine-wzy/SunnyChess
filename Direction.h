@@ -4,8 +4,8 @@
 
 class Direction {
 private:
-    int offsetX;
-    int offsetY;
+    int offsetX;            // x偏移量
+    int offsetY;            // y偏移量
     
 public:
     Direction(int offsetX, int offsetY);

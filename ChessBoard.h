@@ -42,10 +42,12 @@ private:
     IMAGE boardImage;       // 棋盘背景以及基础格子
     IMAGE drawingImage;     // 包括棋子的棋盘
 
+    // 当前回合玩家
     std::vector<Player *>::iterator round;
     // 玩家数量
     int number;
     
+    // 禁止图片
     IMAGE imageForbidden;
 
 public:
@@ -89,7 +91,7 @@ public:
 
     virtual bool placePiece(ChessPiece *piece, Position &order);
     
-    // 尝试向序号(x, y)放置当前回合方的棋子
+    // 尝试向序号(x, y)放置当前回合玩家的棋子
     virtual bool placePiece(int x, int y);
     
     virtual bool placePiece(Position &order);
@@ -106,12 +108,16 @@ public:
     virtual void retract();
     
     
+    // 获取当前回合玩家的迭代器
     typename std::vector<Player *>::iterator &getRound();
 
+    // 设置当前回合玩家的迭代器
     void setRound(typename std::vector<Player *>::iterator theRound);
     
+    // 获取当前回合玩家
     Player *getRoundPlayer();
     
+    // 回合更替
     virtual void turnRound() = 0;
 
     int getStartX() const;
@@ -144,10 +150,12 @@ public:
 
     IMAGE &getImageForbidden();
     
+    // 设置(x, y)处格子的棋子类型
     void setPiece(ChessPiece *piece, int x, int y);
     
     void setPiece(ChessPiece *piece, const Position &position);
     
+    // 获取(x, y)处格子的棋子类型
     ChessPiece *getPiece(int x, int y);
 
 

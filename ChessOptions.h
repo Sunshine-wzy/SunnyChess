@@ -27,6 +27,7 @@ public:
         FRIEND, BOT
     };
     
+    // 模式
     Mode mode;
     
     GomokuOptions();

@@ -6,6 +6,7 @@
 // 选择按钮
 class SelectionButton : public Button {
 private:
+    // 是否选中
     bool selected;
     
 public:

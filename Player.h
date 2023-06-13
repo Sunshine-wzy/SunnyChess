@@ -11,8 +11,10 @@
 // 玩家 (表示参与对局的一方)
 class Player {
 private:
+    // 执子类型
     ChessPiece *piece;
     
+    // 选择框大小
     int selectionBoxHalfWidth;
     int selectionBoxHalfHeight;
 
@@ -23,8 +25,10 @@ public:
     
     Player(ChessPiece *piece, int selectionBoxHalfWidth, int selectionBoxHalfHeight);
 
+    // 绘制选择框
     virtual void drawSelectionBox(int x, int y);
     
+    // 触发绘制选择框事件
     virtual void onSelectionBoxDraw(const Position &position, const Position &order);
     
     ChessPiece *getPiece() const;
@@ -61,6 +65,7 @@ struct KeySettings {
 // 用户 (表示人类玩家)
 class User : public Player {
 private:
+    // 按键设置
     KeySettings keySettings;
     
 public:
@@ -75,9 +80,11 @@ public:
 // 机器人 (表示电脑玩家)
 class Bot : public Player {
 private:
+    // 对弈玩家
     User &user;
     
 public:
+    // 评分表
     std::vector<std::vector<int>> scoreMap;
     
     

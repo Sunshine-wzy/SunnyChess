@@ -13,23 +13,23 @@
 
 class GomokuMenu : public Menu, public Game {
 private:
-    GomokuChessBoard *board;
-    RECT timerArea;
-    int sidebarBaseX;
-    int sidebarCenterX;
+    GomokuChessBoard *board;                    // 棋盘
+    RECT timerArea;                             // 计时器区域
+    int sidebarBaseX;                           // 侧边栏基础x坐标
+    int sidebarCenterX;                         // 侧边栏中心x坐标
     
-    CircleSelectionButton *buttonRetract;
-    RoundRectangleButton *buttonForbidden;
-    DisplayKeyButton *buttonDisplayKey;
-    RoundRectangleButton *buttonVictory;
+    CircleSelectionButton *buttonRetract;       // 悔棋按钮
+    RoundRectangleButton *buttonForbidden;      // 禁止按钮
+    DisplayKeyButton *buttonDisplayKey;         // 按键提示按钮
+    RoundRectangleButton *buttonVictory;        // 胜利按钮
 
-    IMAGE imageBackground;
-    IMAGE imageVictory;
+    IMAGE imageBackground;                      // 背景图片
+    IMAGE imageVictory;                         // 胜利图片
     
-    std::mutex mutexRedraw;
-    std::mutex mutexDrawTime;
+    std::mutex mutexRedraw;                     // 重新绘制界面锁
+    std::mutex mutexDrawTime;                   // 绘制计时锁
     
-    std::atomic<int> playPieceDropSoundCount;
+    std::atomic<int> playPieceDropSoundCount;   // 播放落子音效计数
 
 public:
     GomokuMenu();
@@ -50,17 +50,22 @@ public:
 
     void initButtons() override;
 
+    // 重新绘制界面
     template <class Callable>
     void redraw(Callable &&callable, bool isRedraw = true);
     
     void redraw();
     
+    // 绘制计时
     void drawTime(tm *time, RECT *rect);
     
+    // 运行机器人
     void runBot(Bot &bot);
     
+    // 计算评分
     void calculateScore(Bot &bot);
     
+    // 获取机器人落子点
     Position botThink(Bot &bot);
 
 };

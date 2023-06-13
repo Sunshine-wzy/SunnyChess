@@ -8,6 +8,7 @@
 // 五子棋棋盘
 class GomokuChessBoard : public ChessBoard {
 private:
+    // 判定棋子数
     int judgeCount;
     
     
@@ -18,6 +19,7 @@ public:
 
     void turnRound() override;
     
+    // 检测direction方向的同色棋子数
     int judgeByDirection(int x, int y, Direction &direction);
 
     int getJudgeCount() const;

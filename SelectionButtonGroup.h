@@ -26,14 +26,19 @@ public:
     // 添加一个按钮
     SelectionButtonGroup &addButton(SelectionButton *button);
 
+    // 获取选中按钮的按钮名
     const std::string &getSelectedKey() const;
 
+    // 获取选中按钮
     SelectionButton *getSelectedButton();
     
+    // 根据按钮名获取按钮
     SelectionButton *getButton(const std::string &key);
     
+    // 判断名为key的按钮是否被选中
     bool isKeySelected(const std::string &key) const;
     
+    // 设置所有按钮的可见性
     void setVisible(bool isVisible);
     
 };
