@@ -81,7 +81,7 @@ void ChessBoard::drawBoard() {
     for (int i = 0; i < size; i++) {
         RECT r = {baseX - 25, static_cast<LONG>(baseY + 10 + (size - 1 - i) * slotHeight), baseX - 5,
                   static_cast<LONG>(baseY - 10 + (size - 1 - i) * slotHeight)};
-        drawtext(_T(numberToString(i + 1).c_str()), &r, DT_CENTER | DT_VCENTER | DT_SINGLELINE | DT_NOCLIP);
+        drawtext(_T(std::to_string(i + 1).c_str()), &r, DT_CENTER | DT_VCENTER | DT_SINGLELINE | DT_NOCLIP);
     }
 
     for (int i = 0; i < size; i++) {
@@ -117,29 +117,6 @@ void ChessBoard::drawPieces() {
 
     SetWorkingImage();
 }
-
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "cppcoreguidelines-narrowing-conversions"
-
-std::string ChessBoard::numberToString(int number) {
-    std::string str;
-
-    if (number <= 9 && number >= 0) {
-        str.push_back('0' + number);
-    } else if (number > 9 && number < 100) {
-        int a = number / 10;
-        number = number % 10;
-
-        str.push_back('0' + a);
-        str.push_back('0' + number);
-    } else {
-        str.push_back('A' + number - 100);
-    }
-
-    return str;
-}
-
-#pragma clang diagnostic pop
 
 bool ChessBoard::getCenterPositionByPosition(Position &position, int x, int y) const {
     if (!getOrderByPosition(position, x, y)) return false;

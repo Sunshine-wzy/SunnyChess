@@ -17,7 +17,7 @@ protected:
     std::vector< std::vector<ChessSlot> > slots;
     // 所有玩家
     std::vector<Player *> players;
-    // 一轮落子记录（用于悔棋）
+    // 落子记录（用于悔棋）
     std::list< std::pair<ChessPiece *, Position> > records;
     
 private:
@@ -63,8 +63,6 @@ public:
 
     // 画出棋子
     void drawPieces();
-
-    static std::string numberToString(int number);
 
     // 根据坐标(x, y)获取格子中心点坐标
     // 若(x, y)不在任何一个格子内，则返回false
